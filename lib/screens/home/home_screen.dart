@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../widgets/spring_card.dart';
+import '../../widgets/radio_buttons.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -28,6 +29,24 @@ class HomeScreen extends StatelessWidget {
                 top: 4,
                 left: 4,
                 child: const SpringCard(),
+              ),
+              // 第一排按钮 - 距离顶部4px，距离右侧4px
+              Positioned(
+                top: 4,
+                right: 4,
+                child: const RadioButtons(
+                  leftButtonText: '分享',
+                  rightButtonText: '消息',
+                ),
+              ),
+              // 第二排按钮 - 底部与寄语区对齐，距离右侧4px
+              Positioned(
+                top: 46, // 寄语区底部(4+90=94) - 按钮高度(48) = 46
+                right: 4,
+                child: const RadioButtons(
+                  leftButtonText: '客服',
+                  rightButtonText: '主题',
+                ),
               ),
               // 其他内容可以在这里添加
             ],

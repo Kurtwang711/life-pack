@@ -13,7 +13,7 @@ class _SpringCardState extends State<SpringCard> {
 
   @override
   Widget build(BuildContext context) {
-    const double cardW = 300;
+    const double cardW = 260;
     const double cardH = 90;
 
     return SizedBox(
@@ -84,7 +84,7 @@ class _SpringCardState extends State<SpringCard> {
                           style: TextStyle(
                             fontSize: 13,
                             fontWeight: FontWeight.w700,
-                            color: Colors.lightBlue,
+                            color: Colors.white,
                             shadows: [
                               Shadow(
                                 offset: Offset(-1, -1),
@@ -96,7 +96,7 @@ class _SpringCardState extends State<SpringCard> {
                                 color: Color(0x4D000000),
                               ),
                               Shadow(
-                                color: Colors.lightBlue,
+                                color: Colors.white,
                                 blurRadius: 12,
                               ),
                             ],
@@ -110,7 +110,7 @@ class _SpringCardState extends State<SpringCard> {
                           style: TextStyle(
                             fontSize: 11, // 比第一行小2个字号
                             fontWeight: FontWeight.w400, // 比第一行轻3号粗度
-                            color: Color(0xFFFFF8DC), // 乳白色
+                            color: Colors.white, // 白色
                             shadows: [
                               Shadow(
                                 offset: Offset(-1, -1),
