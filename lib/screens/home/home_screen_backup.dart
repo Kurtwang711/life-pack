@@ -107,18 +107,6 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
       ),
-      bottomNavigationBar: SafeArea(
-        child: CustomBottomNavigation(
-          currentIndex: _currentNavIndex,
-          onTap: (index) {
-            setState(() {
-              _currentNavIndex = index;
-            });
-            // 可以在这里添加页面跳转逻辑
-            print('导航到索引: $index');
-          },
-        ),
-      ),
     );
   }
 
@@ -172,6 +160,18 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
           ),
+        ),
+      ),
+      bottomNavigationBar: SafeArea(
+        child: CustomBottomNavigation(
+          currentIndex: _currentNavIndex,
+          onTap: (index) {
+            setState(() {
+              _currentNavIndex = index;
+            });
+            // 可以在这里添加页面跳转逻辑
+            print('导航到索引: $index');
+          },
         ),
       ),
     );
