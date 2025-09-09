@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class VaultSection extends StatefulWidget {
-  const VaultSection({Key? key}) : super(key: key);
+  const VaultSection({super.key});
 
   @override
   State<VaultSection> createState() => _VaultSectionState();
@@ -45,85 +45,28 @@ class _VaultSectionState extends State<VaultSection> with TickerProviderStateMix
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      clipBehavior: Clip.none,
-      children: [
-        // 芯片针脚装饰 - 作为背景层
-        _buildChipPins(),
-        
-        // 主容器
-        Container(
-          width: 210,
-          height: 210,
-          decoration: BoxDecoration(
-            color: Colors.black,
-            borderRadius: BorderRadius.circular(30),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.2),
-                blurRadius: 5,
-                spreadRadius: 1,
-              ),
-            ],
-          ),
-          padding: const EdgeInsets.all(6),
-          child: AnimatedSwitcher(
-            duration: const Duration(milliseconds: 200),
-            child: _showMainView ? _buildMainView() : _buildVaultView(),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildChipPins() {
     return Container(
-      width: 230, // 210 + 20
-      height: 230, // 210 + 20
-      child: Stack(
-        children: [
-          // 顶部针脚
-          ...List.generate(9, (index) => Positioned(
-            top: 0,
-            left: 30 + (index * 20).toDouble(),
-            child: _buildPin(false),
-          )),
-          // 底部针脚
-          ...List.generate(9, (index) => Positioned(
-            bottom: 0,
-            left: 30 + (index * 20).toDouble(),
-            child: _buildPin(false),
-          )),
-          // 左侧针脚
-          ...List.generate(9, (index) => Positioned(
-            left: 0,
-            top: 30 + (index * 20).toDouble(),
-            child: _buildPin(true),
-          )),
-          // 右侧针脚
-          ...List.generate(9, (index) => Positioned(
-            right: 0,
-            top: 30 + (index * 20).toDouble(),
-            child: _buildPin(true),
-          )),
+      width: 210,
+      height: 210,
+      decoration: BoxDecoration(
+        color: Colors.black,
+        borderRadius: BorderRadius.circular(30),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.2),
+            blurRadius: 5,
+            spreadRadius: 1,
+          ),
         ],
       ),
-    );
-  }
-
-  Widget _buildPin(bool isVertical) {
-    return Transform.rotate(
-      angle: isVertical ? 1.5708 : 0, // 90度旋转
-      child: Container(
-        width: 4,
-        height: 10,
-        decoration: BoxDecoration(
-          color: const Color(0xFF3C3C3C).withOpacity(0.8),
-          borderRadius: BorderRadius.circular(1),
-        ),
+      padding: const EdgeInsets.all(6),
+      child: AnimatedSwitcher(
+        duration: const Duration(milliseconds: 200),
+        child: _showMainView ? _buildMainView() : _buildVaultView(),
       ),
     );
   }
+
 
   Widget _buildVaultView() {
     return GestureDetector(

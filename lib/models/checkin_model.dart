@@ -30,17 +30,19 @@ class CheckinDay {
         (e) => e.toString().split('.').last == json['status'],
       ),
       blessing: json['blessing'],
-      reward: json['reward'] != null ? CheckinReward.fromJson(json['reward']) : null,
+      reward: json['reward'] != null
+          ? CheckinReward.fromJson(json['reward'])
+          : null,
       rewardRevealed: json['rewardRevealed'] ?? false,
     );
   }
 }
 
 enum CheckinStatus {
-  unsigned,  // 未签到
-  signed,    // 已签到
-  madeUp,    // 已补签
-  future,    // 未来日期
+  unsigned, // 未签到
+  signed, // 已签到
+  madeUp, // 已补签
+  future, // 未来日期
 }
 
 class CheckinReward {
@@ -55,11 +57,7 @@ class CheckinReward {
   });
 
   Map<String, dynamic> toJson() {
-    return {
-      'points': points,
-      'cash': cash,
-      'memberDays': memberDays,
-    };
+    return {'points': points, 'cash': cash, 'memberDays': memberDays};
   }
 
   factory CheckinReward.fromJson(Map<String, dynamic> json) {
@@ -71,24 +69,32 @@ class CheckinReward {
   }
 
   String getDisplayText() {
-    if (points > 0) return '${points}积分';
-    if (cash > 0) return '${cash}现金';
-    if (memberDays > 0) return '${memberDays}天';
+    if (points > 0) return '$points积分';
+    if (cash > 0) return '$cash现金';
+    if (memberDays > 0) return '$memberDays天';
     return '';
   }
 }
 
 class CheckinManager {
   static const List<String> _blessings = [
-    '万事如意', '心想事成', '身体健康', '财源广进', '学业有成', 
-    '爱情美满', '阖家幸福', '事业顺利', '平安喜乐', '幸福安康'
+    '万事如意',
+    '心想事成',
+    '身体健康',
+    '财源广进',
+    '学业有成',
+    '爱情美满',
+    '阖家幸福',
+    '事业顺利',
+    '平安喜乐',
+    '幸福安康',
   ];
-  
+
   static const int _totalDays = 99;
   static final DateTime _startDate = DateTime(2025, 1, 1);
-  
+
   List<CheckinDay> _checkinData = [];
-  
+
   int get totalDays => _totalDays;
   List<CheckinDay> get checkinData => _checkinData;
 
@@ -114,10 +120,10 @@ class CheckinManager {
 
   void handleCheckin(int index) {
     if (index >= _checkinData.length) return;
-    
+
     final todayIndex = getTodayIndex();
     CheckinReward reward;
-    
+
     if (index == todayIndex) {
       // 今日签到
       reward = CheckinReward(points: 40, cash: 0, memberDays: 0);
@@ -131,12 +137,13 @@ class CheckinManager {
         CheckinReward(points: 0, cash: 0, memberDays: 1),
       ];
       reward = rewardOptions[index % rewardOptions.length];
-      _checkinData[index].blessing = _blessings[(index + 1) % _blessings.length];
+      _checkinData[index].blessing =
+          _blessings[(index + 1) % _blessings.length];
       _checkinData[index].status = CheckinStatus.madeUp;
     } else {
       return; // 未来日期不能签到
     }
-    
+
     _checkinData[index].reward = reward;
     _checkinData[index].rewardRevealed = true;
   }
@@ -144,7 +151,7 @@ class CheckinManager {
   String getButtonText(int index) {
     final todayIndex = getTodayIndex();
     final day = _checkinData[index];
-    
+
     if (index < todayIndex) {
       // 过去的日期
       if (day.status == CheckinStatus.unsigned) {
@@ -168,7 +175,7 @@ class CheckinManager {
   bool canCheckin(int index) {
     final todayIndex = getTodayIndex();
     final day = _checkinData[index];
-    
+
     if (index > todayIndex) return false; // 未来日期
     return day.status == CheckinStatus.unsigned; // 未签到的日期
   }
@@ -180,7 +187,8 @@ class CheckinManager {
     int totalMemberDays = 0;
 
     for (var day in _checkinData) {
-      if (day.status == CheckinStatus.signed || day.status == CheckinStatus.madeUp) {
+      if (day.status == CheckinStatus.signed ||
+          day.status == CheckinStatus.madeUp) {
         completedCount++;
         if (day.reward != null) {
           totalPoints += day.reward!.points;

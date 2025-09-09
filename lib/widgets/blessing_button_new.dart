@@ -38,21 +38,19 @@ class _BlessingButtonState extends State<BlessingButton>
   }
 
   void _handleTap() async {
-    final todayIndex = widget.checkinManager.getTodayIndex();
-    if (!widget.checkinManager.canCheckin(todayIndex)) return;
+    if (!widget.checkinManager.canCheckInToday()) return;
 
     // 播放动画
     await _animationController.forward();
     _animationController.reverse();
 
     // 执行签到
-    widget.checkinManager.handleCheckin(todayIndex);
+    widget.checkinManager.handleCheckin();
   }
 
   @override
   Widget build(BuildContext context) {
-    final todayIndex = widget.checkinManager.getTodayIndex();
-    bool canCheckin = widget.checkinManager.canCheckin(todayIndex);
+    bool canCheckin = widget.checkinManager.canCheckInToday();
 
     return MouseRegion(
       onEnter: (_) => setState(() => _isHovering = true),
