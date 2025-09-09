@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../widgets/spring_card.dart';
 import '../../widgets/radio_buttons.dart';
 import '../../widgets/checkin_section.dart';
+import '../../widgets/vault_section.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -57,7 +58,13 @@ class HomeScreen extends StatelessWidget {
                 right: 4,
                 child: const CheckinSection(),
               ),
-              // 其他内容可以在这里添加
+              
+              // 机要库区 - 在签到区下方偏左侧，垂直向下行距10px
+              Positioned(
+                top: 284, // 签到区底部约270px + 间距10px + 4px顶部边距 = 284
+                left: 14, // 偏左侧定位
+                child: const VaultSection(),
+              ),
             ],
           ),
         ),
