@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../widgets/spring_card.dart';
 import '../../widgets/radio_buttons.dart';
+import '../../widgets/checkin_section.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -47,6 +48,14 @@ class HomeScreen extends StatelessWidget {
                   leftButtonText: '客服',
                   rightButtonText: '主题',
                 ),
+              ),
+              
+              // 签到区 - 在寄语区下方，间距10px
+              Positioned(
+                top: 104, // 寄语区底部(4+90=94) + 间距10px = 104
+                left: 4,
+                right: 4,
+                child: const CheckinSection(),
               ),
               // 其他内容可以在这里添加
             ],
