@@ -1,13 +1,23 @@
-# LifePack Flutter应用 - 项目状态报告
+# LifePack Flutter应用 - #### 3. 主页面布局 (HomeScreen)目状态报告
 
-## 🎯 当前版本：v1.0.0-greeting-card
+## 🎯 当前版本：v1.1.0-ui-complete
 
 ### ✅ 已完成功能
 
-#### 1. 寄语区设计 (SpringCard)
+#### 1. 寄语区设计 (SpringCard) ✅ 已完成
 - **组件位置**: `lib/widgets/spring_card.dart`
-- **功能特性**: 300×90px自定义寄语卡片
+- **功能特性**: 260×90px自定义寄语卡片
 - **文字内容**: 双行中文祝福语 + 右对齐签名
+- **视觉升级**: 文字改为纯白色，提升可读性
+- **布局定位**: top:4px, left:4px
+
+#### 2. 小功能区设计 (RadioButtons) ✅ 新增
+- **组件位置**: `lib/widgets/radio_buttons.dart`
+- **功能特性**: 双排4按钮功能区
+- **第一排**: 分享 | 消息 (top:4px, right:4px)
+- **第二排**: 客服 | 主题 (top:46px, right:4px)
+- **按钮规格**: 70×40px，12px字体
+- **交互状态**: 默认黑色，可点击切换光晕效果
 - **视觉效果**: 多层阴影embossed文字效果
 - **布局定位**: 距顶部4px，距左侧4px
 
@@ -17,7 +27,7 @@
 - **布局系统**: Stack + Positioned精确定位
 - **响应式支持**: SafeArea适配不同设备
 
-#### 3. 应用架构
+#### 4. 应用架构
 - **入口文件**: `lib/main.dart` - Material 3 + 深色主题
 - **目录结构**: 8个核心目录完整搭建
   - `/models` - 数据模型
