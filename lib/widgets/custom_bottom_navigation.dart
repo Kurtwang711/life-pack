@@ -48,22 +48,16 @@ class _CustomBottomNavigationState extends State<CustomBottomNavigation>
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: 240, // 设置固定宽度240px
       padding: const EdgeInsets.all(3),
       margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Colors.transparent, // 改为透明背景
         borderRadius: BorderRadius.circular(9999),
-        border: Border.all(color: Colors.grey, width: 1),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
-          ),
-        ],
+        // 移除边框和阴影，实现悬浮效果
       ),
       child: Row(
-        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly, // 均匀分布
         children: [
           // 首页按钮
           _buildNavButton(
@@ -95,8 +89,6 @@ class _CustomBottomNavigationState extends State<CustomBottomNavigation>
     required IconData icon,
     required String label,
   }) {
-    final bool isActive = widget.currentIndex == index;
-    
     return GestureDetector(
       onTap: () => widget.onTap(index),
       child: Container(
@@ -104,12 +96,44 @@ class _CustomBottomNavigationState extends State<CustomBottomNavigation>
         height: 44.8,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(9999),
-          color: isActive ? Colors.grey.withOpacity(0.1) : Colors.transparent,
+          gradient: const LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Color(0xFF333333), Color(0xFF242323)], // 灰底渐变
+          ),
+          border: Border.all(color: Colors.black, width: 1), // 黑边
+          boxShadow: [
+            // 立体感阴影效果
+            BoxShadow(
+              color: Colors.black.withOpacity(0.3),
+              blurRadius: 5,
+              spreadRadius: 1,
+              offset: const Offset(0, 2),
+            ),
+            // 内部高光
+            BoxShadow(
+              color: const Color(0x1AE0E0E0),
+              blurRadius: 2,
+              offset: const Offset(-1, -1),
+            ),
+          ],
         ),
         child: Icon(
           icon,
           size: 19.2,
-          color: isActive ? const Color(0xFF323232) : Colors.grey[600],
+          color: Colors.white, // 白色图标
+          shadows: [
+            // 图标立体感阴影
+            Shadow(
+              offset: const Offset(-0.5, -0.5),
+              color: const Color(0x1AE0E0E0),
+            ),
+            const Shadow(
+              offset: Offset(0.5, 1),
+              blurRadius: 2,
+              color: Color(0x4D000000),
+            ),
+          ],
         ),
       ),
     );
@@ -212,47 +236,155 @@ class RadarPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final center = Offset(size.width / 2, size.height / 2);
-    final radius = size.width / 2;
+    final radius = size.width / 2 - 2; // 留出边框空间
     
-    // 绘制扫描线
-    final paint = Paint()
-      ..color = Colors.white
-      ..strokeWidth = 1
+    // 绘制雷达同心圆
+    _drawRadarCircles(canvas, center, radius);
+    
+    // 绘制雷达十字线
+    _drawRadarCrossLines(canvas, center, radius);
+    
+    // 绘制扫描扇形区域（发光效果）
+    _drawScanArea(canvas, center, radius);
+    
+    // 绘制主扫描线
+    _drawScanLine(canvas, center, radius);
+    
+    // 绘制扫描点效果
+    _drawScanDots(canvas, center, radius);
+  }
+
+  void _drawRadarCircles(Canvas canvas, Offset center, double radius) {
+    final circlePaint = Paint()
+      ..color = const Color(0xFF444444).withOpacity(0.3)
+      ..strokeWidth = 0.5
       ..style = PaintingStyle.stroke;
-    
-    // 从中心到边缘的扫描线
-    final endPoint = Offset(
-      center.dx + radius * math.cos(angle - math.pi / 2),
-      center.dy + radius * math.sin(angle - math.pi / 2),
+
+    // 绘制3个同心圆
+    for (int i = 1; i <= 3; i++) {
+      canvas.drawCircle(center, radius * i / 3, circlePaint);
+    }
+  }
+
+  void _drawRadarCrossLines(Canvas canvas, Offset center, double radius) {
+    final linePaint = Paint()
+      ..color = const Color(0xFF444444).withOpacity(0.4)
+      ..strokeWidth = 0.5
+      ..style = PaintingStyle.stroke;
+
+    // 绘制水平线
+    canvas.drawLine(
+      Offset(center.dx - radius, center.dy),
+      Offset(center.dx + radius, center.dy),
+      linePaint,
     );
+
+    // 绘制垂直线
+    canvas.drawLine(
+      Offset(center.dx, center.dy - radius),
+      Offset(center.dx, center.dy + radius),
+      linePaint,
+    );
+  }
+
+  void _drawScanArea(Canvas canvas, Offset center, double radius) {
+    // 扇形扫描区域 - 60度扇形
+    final scanAngleRange = math.pi / 3; // 60度
+    final startAngle = angle - scanAngleRange / 2;
     
-    canvas.drawLine(center, endPoint, paint);
-    
-    // 绘制发光效果 - 扫描区域
+    // 创建扇形渐变
+    final sweepGradient = SweepGradient(
+      center: Alignment.center,
+      startAngle: startAngle,
+      endAngle: startAngle + scanAngleRange,
+      colors: [
+        Colors.transparent,
+        const Color(0xFFfc5185).withOpacity(0.1),
+        const Color(0xFFfc5185).withOpacity(0.3),
+        const Color(0xFFfc5185).withOpacity(0.6),
+        const Color(0xFFfc5185).withOpacity(0.3),
+        const Color(0xFFfc5185).withOpacity(0.1),
+        Colors.transparent,
+      ],
+      stops: const [0.0, 0.2, 0.4, 0.5, 0.6, 0.8, 1.0],
+    );
+
     final gradientPaint = Paint()
-      ..shader = RadialGradient(
-        center: Alignment.center,
-        radius: 0.5,
-        colors: [
-          const Color(0xFFfc5185).withOpacity(0.6),
-          const Color(0xFFfc5185).withOpacity(0.2),
-          Colors.transparent,
-        ],
-      ).createShader(Rect.fromCircle(center: center, radius: radius));
-    
-    // 绘制扫描扇形区域
-    canvas.drawPath(
-      Path()
-        ..moveTo(center.dx, center.dy)
-        ..arcTo(
-          Rect.fromCircle(center: center, radius: radius),
-          angle - math.pi / 2 - 0.3,
-          0.6,
-          false,
-        )
-        ..close(),
-      gradientPaint,
+      ..shader = sweepGradient.createShader(
+        Rect.fromCircle(center: center, radius: radius),
+      )
+      ..style = PaintingStyle.fill;
+
+    // 绘制扇形区域
+    final path = Path()
+      ..moveTo(center.dx, center.dy)
+      ..arcTo(
+        Rect.fromCircle(center: center, radius: radius),
+        startAngle,
+        scanAngleRange,
+        false,
+      )
+      ..close();
+
+    canvas.drawPath(path, gradientPaint);
+  }
+
+  void _drawScanLine(Canvas canvas, Offset center, double radius) {
+    // 主扫描线 - 从中心到边缘的亮线
+    final scanLinePaint = Paint()
+      ..color = const Color(0xFFfc5185).withOpacity(0.9)
+      ..strokeWidth = 1.5
+      ..style = PaintingStyle.stroke;
+
+    final endPoint = Offset(
+      center.dx + radius * math.cos(angle),
+      center.dy + radius * math.sin(angle),
     );
+
+    canvas.drawLine(center, endPoint, scanLinePaint);
+
+    // 扫描线发光效果
+    final glowPaint = Paint()
+      ..color = const Color(0xFFfc5185).withOpacity(0.4)
+      ..strokeWidth = 3
+      ..style = PaintingStyle.stroke
+      ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 2);
+
+    canvas.drawLine(center, endPoint, glowPaint);
+  }
+
+  void _drawScanDots(Canvas canvas, Offset center, double radius) {
+    // 在扫描线上绘制移动的扫描点
+    final dotPaint = Paint()
+      ..color = const Color(0xFFfc5185)
+      ..style = PaintingStyle.fill;
+
+    // 绘制3个不同距离的扫描点
+    for (int i = 1; i <= 3; i++) {
+      final dotRadius = radius * (0.3 + 0.2 * i);
+      final dotPosition = Offset(
+        center.dx + dotRadius * math.cos(angle),
+        center.dy + dotRadius * math.sin(angle),
+      );
+
+      // 主扫描点
+      canvas.drawCircle(dotPosition, 1.5, dotPaint);
+
+      // 扫描点发光效果
+      final glowDotPaint = Paint()
+        ..color = const Color(0xFFfc5185).withOpacity(0.6)
+        ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 3);
+
+      canvas.drawCircle(dotPosition, 3, glowDotPaint);
+    }
+
+    // 中心点发光
+    final centerGlowPaint = Paint()
+      ..color = const Color(0xFFfc5185).withOpacity(0.8)
+      ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 4);
+
+    canvas.drawCircle(center, 2, centerGlowPaint);
+    canvas.drawCircle(center, 1, dotPaint);
   }
 
   @override

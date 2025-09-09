@@ -103,20 +103,27 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: const CreatePackageButton(),
                 ),
               ),
+              
+              // 悬浮底部导航栏
+              Positioned(
+                bottom: 30, // 距离底部30px悬浮
+                left: 0,
+                right: 0,
+                child: Center(
+                  child: CustomBottomNavigation(
+                    currentIndex: _currentNavIndex,
+                    onTap: (index) {
+                      setState(() {
+                        _currentNavIndex = index;
+                      });
+                      // 可以在这里添加页面跳转逻辑
+                      print('导航到索引: $index');
+                    },
+                  ),
+                ),
+              ),
             ],
           ),
-        ),
-      ),
-      bottomNavigationBar: SafeArea(
-        child: CustomBottomNavigation(
-          currentIndex: _currentNavIndex,
-          onTap: (index) {
-            setState(() {
-              _currentNavIndex = index;
-            });
-            // 可以在这里添加页面跳转逻辑
-            print('导航到索引: $index');
-          },
         ),
       ),
     );
