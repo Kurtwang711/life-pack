@@ -9,13 +9,13 @@ class AnnualRingsAlbumScreen extends StatefulWidget {
 
 class _AnnualRingsAlbumScreenState extends State<AnnualRingsAlbumScreen> {
   // 当前海报图片
-  String _currentPosterImage = 'assets/images/default_poster.jpg';
-  
+  final String _currentPosterImage = 'assets/images/default_poster.jpg';
+
   // 当前年份
   int _selectedYear = DateTime.now().year;
-  
+
   // 海报配文
-  String _posterText = '记录生活中每一个美好的瞬间，让时光在指尖流淌，让回忆在心中绽放。';
+  final String _posterText = '记录生活中每一个美好的瞬间，让时光在指尖流淌，让回忆在心中绽放。';
 
   @override
   Widget build(BuildContext context) {
@@ -38,14 +38,12 @@ class _AnnualRingsAlbumScreenState extends State<AnnualRingsAlbumScreen> {
             children: [
               // 海报墙区域
               _buildPosterWall(),
-              
+
               // 控制区域 (年份设置、查看按钮、配文)
               _buildControlArea(),
-              
+
               // 相册内容区域
-              Expanded(
-                child: _buildAlbumContent(),
-              ),
+              Expanded(child: _buildAlbumContent()),
             ],
           ),
         ),
@@ -89,17 +87,15 @@ class _AnnualRingsAlbumScreenState extends State<AnnualRingsAlbumScreen> {
               ),
             ),
           ),
-          
+
           // 点击区域 - 整个海报都可以点击更换
           Positioned.fill(
             child: GestureDetector(
               onTap: _changePoster,
-              child: Container(
-                color: Colors.transparent,
-              ),
+              child: Container(color: Colors.transparent),
             ),
           ),
-          
+
           // 返回按钮 - 悬浮在左上角
           Positioned(
             top: 16,
@@ -121,7 +117,7 @@ class _AnnualRingsAlbumScreenState extends State<AnnualRingsAlbumScreen> {
               ),
             ),
           ),
-          
+
           // 海报标题或提示文字
           Positioned(
             bottom: 16,
@@ -145,24 +141,25 @@ class _AnnualRingsAlbumScreenState extends State<AnnualRingsAlbumScreen> {
   /// 构建控制区域
   Widget _buildControlArea() {
     return Container(
-      padding: const EdgeInsets.only(left: 4, right: 16, top: 0, bottom: 12), // 海报配文区域与海报区行距为0px
+      padding: const EdgeInsets.only(
+        left: 4,
+        right: 16,
+        top: 0,
+        bottom: 12,
+      ), // 海报配文区域与海报区行距为0px
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.end, // 改为底部对齐，确保配文区域底部与按钮底部对齐
         children: [
           // 年份设置按钮 - 120px*30px
           _buildYearButton(),
-          
+
           const SizedBox(width: 10), // 间距10px
-          
           // 查看按钮
           _buildViewButton(),
-          
+
           const SizedBox(width: 10), // 间距10px
-          
           // 海报配文显示区域
-          Expanded(
-            child: _buildPosterTextArea(),
-          ),
+          Expanded(child: _buildPosterTextArea()),
         ],
       ),
     );
@@ -174,14 +171,11 @@ class _AnnualRingsAlbumScreenState extends State<AnnualRingsAlbumScreen> {
       onTap: _showYearPicker,
       child: Container(
         width: 120, // 宽度120px
-        height: 30,  // 高度30px
+        height: 30, // 高度30px
         decoration: BoxDecoration(
           color: Colors.black.withOpacity(0.8),
           borderRadius: BorderRadius.circular(6),
-          border: Border.all(
-            color: Color(0xFF4E4D4D),
-            width: 1,
-          ),
+          border: Border.all(color: Color(0xFF4E4D4D), width: 1),
         ),
         child: Center(
           child: Text(
@@ -207,16 +201,9 @@ class _AnnualRingsAlbumScreenState extends State<AnnualRingsAlbumScreen> {
         decoration: BoxDecoration(
           color: Colors.black.withOpacity(0.8),
           borderRadius: BorderRadius.circular(6),
-          border: Border.all(
-            color: Color(0xFF4E4D4D),
-            width: 1,
-          ),
+          border: Border.all(color: Color(0xFF4E4D4D), width: 1),
         ),
-        child: const Icon(
-          Icons.visibility,
-          color: Colors.white,
-          size: 18,
-        ),
+        child: const Icon(Icons.visibility, color: Colors.white, size: 18),
       ),
     );
   }
@@ -229,10 +216,7 @@ class _AnnualRingsAlbumScreenState extends State<AnnualRingsAlbumScreen> {
       decoration: BoxDecoration(
         color: Colors.black.withOpacity(0.3),
         borderRadius: BorderRadius.circular(6),
-        border: Border.all(
-          color: Color(0xFF4E4D4D).withOpacity(0.5),
-          width: 1,
-        ),
+        border: Border.all(color: Color(0xFF4E4D4D).withOpacity(0.5), width: 1),
       ),
       child: Align(
         alignment: Alignment.centerLeft,
@@ -241,7 +225,8 @@ class _AnnualRingsAlbumScreenState extends State<AnnualRingsAlbumScreen> {
           style: const TextStyle(
             color: Colors.white,
             fontSize: 14, // 字号14px
-            height: 1.14, // 行距2px (14px字体 + 2px行距 = 16px总行高，所以height = 16/14 ≈ 1.14)
+            height:
+                1.14, // 行距2px (14px字体 + 2px行距 = 16px总行高，所以height = 16/14 ≈ 1.14)
             fontWeight: FontWeight.w400,
           ),
           maxLines: 2, // 支持换行，最多2行
@@ -261,7 +246,7 @@ class _AnnualRingsAlbumScreenState extends State<AnnualRingsAlbumScreen> {
           Expanded(
             child: Center(
               child: Text(
-                '${_selectedYear}年的记忆\n\n即将展示相册内容...',
+                '$_selectedYear年的记忆\n\n即将展示相册内容...',
                 style: TextStyle(
                   color: Colors.white.withOpacity(0.7),
                   fontSize: 16,
@@ -285,10 +270,7 @@ class _AnnualRingsAlbumScreenState extends State<AnnualRingsAlbumScreen> {
       builder: (BuildContext context) {
         return AlertDialog(
           backgroundColor: Color(0xFF2D3748),
-          title: const Text(
-            '更换海报',
-            style: TextStyle(color: Colors.white),
-          ),
+          title: const Text('更换海报', style: TextStyle(color: Colors.white)),
           content: const Text(
             '请选择新的海报图片',
             style: TextStyle(color: Colors.white70),
@@ -296,25 +278,17 @@ class _AnnualRingsAlbumScreenState extends State<AnnualRingsAlbumScreen> {
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text(
-                '取消',
-                style: TextStyle(color: Colors.white70),
-              ),
+              child: const Text('取消', style: TextStyle(color: Colors.white70)),
             ),
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
                 // 这里添加选择图片的逻辑
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('海报更换功能开发中...'),
-                  ),
-                );
+                ScaffoldMessenger.of(
+                  context,
+                ).showSnackBar(const SnackBar(content: Text('海报更换功能开发中...')));
               },
-              child: const Text(
-                '确定',
-                style: TextStyle(color: Colors.blue),
-              ),
+              child: const Text('确定', style: TextStyle(color: Colors.blue)),
             ),
           ],
         );
@@ -329,11 +303,8 @@ class _AnnualRingsAlbumScreenState extends State<AnnualRingsAlbumScreen> {
       builder: (BuildContext context) {
         return AlertDialog(
           backgroundColor: Color(0xFF2D3748),
-          title: const Text(
-            '选择年份',
-            style: TextStyle(color: Colors.white),
-          ),
-          content: Container(
+          title: const Text('选择年份', style: TextStyle(color: Colors.white)),
+          content: SizedBox(
             width: 300,
             height: 200,
             child: YearPicker(
@@ -358,7 +329,7 @@ class _AnnualRingsAlbumScreenState extends State<AnnualRingsAlbumScreen> {
   void _viewAlbumDetails() {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('查看${_selectedYear}年相册详情'),
+        content: Text('查看$_selectedYear年相册详情'),
         backgroundColor: Color(0xFF2D5016),
       ),
     );

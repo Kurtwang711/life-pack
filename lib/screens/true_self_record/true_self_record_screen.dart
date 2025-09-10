@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../home/home_screen.dart';
-import '../../widgets/simple_bottom_navigation.dart';
+import '../../widgets/custom_bottom_navigation.dart';
 
 class TrueSelfRecordScreen extends StatefulWidget {
   const TrueSelfRecordScreen({super.key});
@@ -106,7 +106,7 @@ class _TrueSelfRecordScreenState extends State<TrueSelfRecordScreen> {
               left: 0,
               right: 0,
               child: Center(
-                child: SimpleBottomNavigation(
+                child: CustomBottomNavigation(
                   currentIndex: _currentNavIndex,
                   onTap: (index) {
                     setState(() {

@@ -4,7 +4,7 @@ import '../../widgets/radio_buttons.dart';
 import '../../widgets/checkin_section.dart';
 import '../../widgets/vault_section.dart';
 import '../../widgets/create_package_button.dart';
-import '../../widgets/simple_bottom_navigation.dart';
+import '../../widgets/custom_bottom_navigation.dart';
 import '../album/annual_rings_album_screen.dart';
 import '../true_self_record/true_self_record_screen.dart';
 
@@ -126,7 +126,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 left: 0,
                 right: 0,
                 child: Center(
-                  child: SimpleBottomNavigation(
+                  child: CustomBottomNavigation(
                     currentIndex: _currentNavIndex,
                     onTap: (index) {
                       setState(() {
