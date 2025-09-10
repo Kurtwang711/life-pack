@@ -145,11 +145,11 @@ class _AnnualRingsAlbumScreenState extends State<AnnualRingsAlbumScreen> {
   /// 构建控制区域
   Widget _buildControlArea() {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      padding: const EdgeInsets.only(left: 4, right: 16, top: 12, bottom: 12), // 左侧间距调整为4px
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // 年份设置按钮 - 30px*150px
+          // 年份设置按钮 - 120px*30px
           _buildYearButton(),
           
           const SizedBox(width: 10), // 间距10px
@@ -173,7 +173,7 @@ class _AnnualRingsAlbumScreenState extends State<AnnualRingsAlbumScreen> {
     return GestureDetector(
       onTap: _showYearPicker,
       child: Container(
-        width: 150, // 宽度150px
+        width: 120, // 宽度120px
         height: 30,  // 高度30px
         decoration: BoxDecoration(
           color: Colors.black.withOpacity(0.8),
