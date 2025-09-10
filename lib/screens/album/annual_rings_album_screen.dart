@@ -145,9 +145,9 @@ class _AnnualRingsAlbumScreenState extends State<AnnualRingsAlbumScreen> {
   /// 构建控制区域
   Widget _buildControlArea() {
     return Container(
-      padding: const EdgeInsets.only(left: 4, right: 16, top: 12, bottom: 12), // 左侧间距调整为4px
+      padding: const EdgeInsets.only(left: 4, right: 16, top: 0, bottom: 12), // 海报配文区域与海报区行距为0px
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.end, // 改为底部对齐，确保配文区域底部与按钮底部对齐
         children: [
           // 年份设置按钮 - 120px*30px
           _buildYearButton(),
