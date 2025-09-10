@@ -70,14 +70,14 @@ class _HomeScreenState extends State<HomeScreen> {
               
               // 机要库区 - 在签到区下方，间距10px
               Positioned(
-                top: 294,
+                top: 284, // 原294，向上提升10px
                 left: 14,
                 child: const VaultSection(),
               ),
               
               // 右侧按钮组 - 与右边线保持8px间距
               Positioned(
-                top: 294,
+                top: 284, // 原294，向上提升10px
                 right: 8,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -96,7 +96,7 @@ class _HomeScreenState extends State<HomeScreen> {
               
               // 创建包裹按钮 - 在机要库下方，间距10px，居中位置
               Positioned(
-                top: 514, // 机要库底部(294+210=504) + 间距10px = 514
+                top: 504, // 机要库底部(284+210=494) + 间距10px = 504，向上提升10px
                 left: 0,
                 right: 0,
                 child: Center(

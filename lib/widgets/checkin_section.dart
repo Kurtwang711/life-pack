@@ -120,11 +120,11 @@ class _CheckinSectionState extends State<CheckinSection> {
             ],
           ),
           
-          const SizedBox(height: 16),
+          const SizedBox(height: 4), // 原16，减少与令牌间距
           
           // 令牌列表
           SizedBox(
-            height: 70,
+            height: 68, // 修复溢出问题：60(令牌) + 4(间距) + 4(圆点) = 68px
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
               padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -236,7 +236,7 @@ class _CheckinSectionState extends State<CheckinSection> {
             ),
           ),
           
-          const SizedBox(height: 16),
+          const SizedBox(height: 8), // 原16，令牌与进度条间距调整为8px
           
           // 进度条
           ProgressBarWidget(
