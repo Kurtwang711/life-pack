@@ -6,6 +6,7 @@ import '../../widgets/vault_section.dart';
 import '../../widgets/create_package_button.dart';
 import '../../widgets/custom_bottom_navigation.dart';
 import '../album/annual_rings_album_screen.dart';
+import '../true_self_record/true_self_record_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -94,7 +95,14 @@ class _HomeScreenState extends State<HomeScreen> {
                     }),
                     SizedBox(height: 20),
                     // 真我录按钮
-                    _buildCustomButton('真我录', 140, 50),
+                    _buildCustomButton('真我录', 140, 50, () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const TrueSelfRecordScreen(),
+                        ),
+                      );
+                    }),
                     SizedBox(height: 18), // 继续向上提升1px，使许愿按钮底部黑色边线与机要库底部黑色边线对齐
                     // 许愿按钮
                     _buildCustomButton('许愿', 140, 50),
