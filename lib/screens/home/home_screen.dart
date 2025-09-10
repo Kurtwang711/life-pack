@@ -5,6 +5,7 @@ import '../../widgets/checkin_section.dart';
 import '../../widgets/vault_section.dart';
 import '../../widgets/create_package_button.dart';
 import '../../widgets/custom_bottom_navigation.dart';
+import '../album/annual_rings_album_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -83,7 +84,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // 年轮相册按钮 - 高度缩小至50px
-                    _buildCustomButton('年轮相册', 140, 50),
+                    _buildCustomButton('年轮相册', 140, 50, () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const AnnualRingsAlbumScreen(),
+                        ),
+                      );
+                    }),
                     SizedBox(height: 20),
                     // 真我录按钮
                     _buildCustomButton('真我录', 140, 50),
@@ -130,53 +138,56 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   // 构建自定义按钮的辅助方法
-  Widget _buildCustomButton(String text, double width, double height) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.black,
-        borderRadius: BorderRadius.circular(10),
-      ),
-      padding: const EdgeInsets.all(4),
+  Widget _buildCustomButton(String text, double width, double height, [VoidCallback? onTap]) {
+    return GestureDetector(
+      onTap: onTap,
       child: Container(
-        width: width,
-        height: height,
-        padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
-          gradient: const LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [Color(0xFF333333), Color(0xFF242323)],
-          ),
-          border: const Border(top: BorderSide(color: Color(0xFF4E4D4D))),
-          borderRadius: BorderRadius.circular(6),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.2),
-              blurRadius: 5,
-              spreadRadius: 1,
-            ),
-          ],
+          color: Colors.black,
+          borderRadius: BorderRadius.circular(10),
         ),
-        child: Center(
-          child: Text(
-            text,
-            style: TextStyle(
-              fontSize: width > 100 ? 16 : 12, // 根据宽度调整字体大小
-              fontWeight: FontWeight.w800,
-              color: Colors.black,
-              letterSpacing: 0.5,
-              height: 0.8,
-              shadows: const [
-                Shadow(
-                  offset: Offset(-1, -1),
-                  color: Color(0x1AE0E0E0),
-                ),
-                Shadow(
-                  offset: Offset(0, 2),
-                  blurRadius: 3,
-                  color: Color(0x4D000000),
-                ),
-              ],
+        padding: const EdgeInsets.all(4),
+        child: Container(
+          width: width,
+          height: height,
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            gradient: const LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [Color(0xFF333333), Color(0xFF242323)],
+            ),
+            border: const Border(top: BorderSide(color: Color(0xFF4E4D4D))),
+            borderRadius: BorderRadius.circular(6),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.2),
+                blurRadius: 5,
+                spreadRadius: 1,
+              ),
+            ],
+          ),
+          child: Center(
+            child: Text(
+              text,
+              style: TextStyle(
+                fontSize: width > 100 ? 16 : 12, // 根据宽度调整字体大小
+                fontWeight: FontWeight.w800,
+                color: Colors.black,
+                letterSpacing: 0.5,
+                height: 0.8,
+                shadows: const [
+                  Shadow(
+                    offset: Offset(-1, -1),
+                    color: Color(0x1AE0E0E0),
+                  ),
+                  Shadow(
+                    offset: Offset(0, 2),
+                    blurRadius: 3,
+                    color: Color(0x4D000000),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
