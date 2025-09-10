@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../screens/recording/recording_management_screen.dart';
 
 class VaultSection extends StatefulWidget {
   const VaultSection({super.key});
@@ -12,6 +13,7 @@ class _VaultSectionState extends State<VaultSection> with TickerProviderStateMix
   String? _selectedOption;
   late AnimationController _flashController;
   late Animation<Color?> _flashAnimation;
+  DateTime? _lastAudioTapTime;
 
   final Map<String, VaultOption> _options = {
     'audio': VaultOption('录音', const Color(0xFFD88FA3)), // 春 - 粉色
@@ -262,6 +264,22 @@ class _VaultSectionState extends State<VaultSection> with TickerProviderStateMix
     
     return GestureDetector(
       onTap: () {
+        if (optionKey == 'audio') {
+          // 录音按钮双击导航逻辑
+          final now = DateTime.now();
+          if (_lastAudioTapTime != null && 
+              now.difference(_lastAudioTapTime!).inMilliseconds < 500) {
+            // 双击导航到录音管理页面
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => const RecordingManagementScreen(),
+              ),
+            );
+            return;
+          }
+          _lastAudioTapTime = now;
+        }
+        
         setState(() {
           _selectedOption = isSelected ? null : optionKey;
         });
