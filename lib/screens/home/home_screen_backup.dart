@@ -36,11 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Stack(
             children: [
               // 寄语区卡片 - 距离顶部4px，距离左侧4px
-              Positioned(
-                top: 4,
-                left: 4,
-                child: const SpringCard(),
-              ),
+              Positioned(top: 4, left: 4, child: const SpringCard()),
               // 第一排按钮 - 距离顶部4px，距离右侧4px
               Positioned(
                 top: 4,
@@ -59,7 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   rightButtonText: '主题',
                 ),
               ),
-              
+
               // 签到区 - 在寄语区下方，间距10px
               Positioned(
                 top: 104, // 寄语区底部(4+90=94) + 间距10px = 104
@@ -67,14 +63,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 right: 4,
                 child: const CheckinSection(),
               ),
-              
+
               // 机要库区 - 在签到区下方，间距10px
-              Positioned(
-                top: 294,
-                left: 14,
-                child: const VaultSection(),
-              ),
-              
+              Positioned(top: 294, left: 14, child: const VaultSection()),
+
               // 右侧按钮组 - 与右边线保持8px间距
               Positioned(
                 top: 294,
@@ -93,15 +85,13 @@ class _HomeScreenState extends State<HomeScreen> {
                   ],
                 ),
               ),
-              
+
               // 创建包裹按钮 - 在机要库下方，间距10px，居中位置
               Positioned(
                 top: 514, // 机要库底部(294+210=504) + 间距10px = 514
                 left: 0,
                 right: 0,
-                child: Center(
-                  child: const CreatePackageButton(),
-                ),
+                child: Center(child: const CreatePackageButton()),
               ),
             ],
           ),
@@ -118,6 +108,18 @@ class _HomeScreenState extends State<HomeScreen> {
         borderRadius: BorderRadius.circular(10),
       ),
       padding: const EdgeInsets.all(4),
+      bottomNavigationBar: SafeArea(
+        child: CustomBottomNavigation(
+          currentIndex: _currentNavIndex,
+          onTap: (index) {
+            setState(() {
+              _currentNavIndex = index;
+            });
+            // 可以在这里添加页面跳转逻辑
+            print('导航到索引: $index');
+          },
+        ),
+      ),
       child: Container(
         width: width,
         height: height,
@@ -148,10 +150,7 @@ class _HomeScreenState extends State<HomeScreen> {
               letterSpacing: 0.5,
               height: 0.8,
               shadows: const [
-                Shadow(
-                  offset: Offset(-1, -1),
-                  color: Color(0x1AE0E0E0),
-                ),
+                Shadow(offset: Offset(-1, -1), color: Color(0x1AE0E0E0)),
                 Shadow(
                   offset: Offset(0, 2),
                   blurRadius: 3,
@@ -160,18 +159,6 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
           ),
-        ),
-      ),
-      bottomNavigationBar: SafeArea(
-        child: CustomBottomNavigation(
-          currentIndex: _currentNavIndex,
-          onTap: (index) {
-            setState(() {
-              _currentNavIndex = index;
-            });
-            // 可以在这里添加页面跳转逻辑
-            print('导航到索引: $index');
-          },
         ),
       ),
     );

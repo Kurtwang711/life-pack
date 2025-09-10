@@ -290,9 +290,13 @@ class _VaultSectionState extends State<VaultSection> with TickerProviderStateMix
             ),
           );
         } else if (optionKey == 'assets') {
+          print('尝试导航到资产管理页面');
           Navigator.of(context).push(
             MaterialPageRoute(
-              builder: (context) => const AssetsManagementScreen(),
+              builder: (context) {
+                print('正在构建资产管理页面');
+                return const AssetsManagementScreen();
+              },
             ),
           );
         }
@@ -343,8 +347,16 @@ class _VaultSectionState extends State<VaultSection> with TickerProviderStateMix
     
     return GestureDetector(
       onTap: () {
-        // TODO: 添加资产管理页面导航
-        print('点击了资产管理');
+        print('点击了资产管理中心按钮');
+        print('尝试导航到资产管理页面');
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) {
+              print('正在构建资产管理页面');
+              return const AssetsManagementScreen();
+            },
+          ),
+        );
       },
       child: Container(
         width: 67,

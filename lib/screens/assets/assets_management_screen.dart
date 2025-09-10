@@ -100,12 +100,15 @@ class _AssetsManagementScreenState extends State<AssetsManagementScreen> {
 
             // 功能区域 (搜索框 + 功能按钮)
             Positioned(
-              top: 120,
+              top: 112, // 调整为与录音管理页面一致的112px
               left: 16,
               right: 16,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
+              child: Container(
+                height: 44, // 添加与录音管理页面一致的高度
+                padding: const EdgeInsets.symmetric(horizontal: 8), // 添加与录音管理页面一致的padding
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
                   // 搜索容器 (45%宽度)
                   SizedBox(
                     width: MediaQuery.of(context).size.width * 0.45 - 16,
@@ -113,7 +116,7 @@ class _AssetsManagementScreenState extends State<AssetsManagementScreen> {
                       children: [
                         Expanded(
                           child: Container(
-                            height: 16, // 按要求设置高度16px
+                            height: 36, // 调整为与录音管理页面一致的36px高度
                             decoration: BoxDecoration(
                               color: Colors.black.withOpacity(0.6),
                               borderRadius: BorderRadius.circular(8),
@@ -126,22 +129,22 @@ class _AssetsManagementScreenState extends State<AssetsManagementScreen> {
                               controller: _searchController,
                               style: const TextStyle(
                                 color: Colors.white,
-                                fontSize: 12, // 调整字体大小适配16px高度
+                                fontSize: 14, // 调整字体大小适配36px高度
                               ),
                               decoration: const InputDecoration(
                                 hintText: '搜索资产',
                                 hintStyle: TextStyle(
                                   color: Color(0xFF666666),
-                                  fontSize: 12,
+                                  fontSize: 14,
                                 ),
                                 prefixIcon: Icon(
                                   Icons.search,
                                   color: Color(0xFF666666),
-                                  size: 14, // 调整图标大小
+                                  size: 18, // 调整图标大小
                                 ),
                                 border: InputBorder.none,
-                                contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 8),
-                                isDense: true,
+                                contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 8),
+                                isDense: false,
                               ),
                             ),
                           ),
@@ -167,6 +170,7 @@ class _AssetsManagementScreenState extends State<AssetsManagementScreen> {
                 ],
               ),
             ),
+          ),
 
             // 资产信息列表区域
             Positioned(
@@ -242,8 +246,8 @@ class _AssetsManagementScreenState extends State<AssetsManagementScreen> {
         print('点击了新建按钮');
       },
       child: Container(
-        width: 60,
-        height: 16, // 按要求设置高度16px
+        width: 70,  // 调整为与录音管理页面一致的70px宽度
+        height: 36, // 调整为与录音管理页面一致的36px高度
         decoration: BoxDecoration(
           gradient: const LinearGradient(
             begin: Alignment.topCenter,
@@ -266,7 +270,7 @@ class _AssetsManagementScreenState extends State<AssetsManagementScreen> {
           child: Icon(
             Icons.add,
             color: Colors.black,
-            size: 12, // 调整图标大小适配16px高度
+            size: 18, // 调整图标大小适配36px高度
             shadows: [
               Shadow(
                 offset: Offset(-1, -1),
@@ -292,8 +296,8 @@ class _AssetsManagementScreenState extends State<AssetsManagementScreen> {
         print('点击了$text按钮');
       },
       child: Container(
-        width: 60,
-        height: 16, // 按要求设置高度16px
+        width: 70,  // 调整为与录音管理页面一致的70px宽度
+        height: 36, // 调整为与录音管理页面一致的36px高度
         decoration: BoxDecoration(
           gradient: const LinearGradient(
             begin: Alignment.topCenter,
@@ -316,7 +320,7 @@ class _AssetsManagementScreenState extends State<AssetsManagementScreen> {
           child: Text(
             text.toUpperCase(),
             style: const TextStyle(
-              fontSize: 10, // 调整字体大小适配16px高度
+              fontSize: 12, // 调整字体大小适配36px高度
               fontWeight: FontWeight.w800,
               color: Colors.black,
               letterSpacing: 0.5,
