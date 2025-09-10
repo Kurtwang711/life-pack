@@ -10,10 +10,8 @@ class VaultSection extends StatefulWidget {
 
 class _VaultSectionState extends State<VaultSection> with TickerProviderStateMixin {
   bool _showMainView = false;
-  String? _selectedOption;
   late AnimationController _flashController;
   late Animation<Color?> _flashAnimation;
-  DateTime? _lastAudioTapTime;
 
   final Map<String, VaultOption> _options = {
     'audio': VaultOption('录音', const Color(0xFFD88FA3)), // 春 - 粉色
@@ -181,7 +179,6 @@ class _VaultSectionState extends State<VaultSection> with TickerProviderStateMix
       onTap: () {
         setState(() {
           _showMainView = false;
-          _selectedOption = null;
         });
       },
       child: Container(
@@ -260,93 +257,49 @@ class _VaultSectionState extends State<VaultSection> with TickerProviderStateMix
 
   Widget _buildOptionButton(String optionKey) {
     final option = _options[optionKey]!;
-    final isSelected = _selectedOption == optionKey;
     
     return GestureDetector(
       onTap: () {
+        // 单击直接导航到对应的管理页面
         if (optionKey == 'audio') {
-          // 录音按钮双击导航逻辑
-          final now = DateTime.now();
-          if (_lastAudioTapTime != null && 
-              now.difference(_lastAudioTapTime!).inMilliseconds < 500) {
-            // 双击导航到录音管理页面
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => const RecordingManagementScreen(),
-              ),
-            );
-            return;
-          }
-          _lastAudioTapTime = now;
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => const RecordingManagementScreen(),
+            ),
+          );
         }
-        
-        setState(() {
-          _selectedOption = isSelected ? null : optionKey;
-        });
+        // TODO: 为其他选项添加对应的管理页面导航
+        // 如：图片管理、视频管理、文档管理、资产管理
       },
       child: Container(
         decoration: BoxDecoration(
-          gradient: LinearGradient(
+          gradient: const LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: isSelected 
-                ? [const Color(0xFF1D1D1D), const Color(0xFF1D1D1D)]
-                : [const Color(0xFF333333), const Color(0xFF242323)],
+            colors: [Color(0xFF333333), Color(0xFF242323)],
           ),
           borderRadius: BorderRadius.circular(22),
-          border: isSelected 
-              ? null
-              : const Border(
-                  top: BorderSide(color: Color(0xFF4E4D4D), width: 1),
-                ),
-          boxShadow: isSelected 
-              ? []
-              : [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.2),
-                    blurRadius: 5,
-                    spreadRadius: 1,
-                  ),
-                ],
+          border: const Border(
+            top: BorderSide(color: Color(0xFF4E4D4D), width: 1),
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.2),
+              blurRadius: 5,
+              spreadRadius: 1,
+            ),
+          ],
         ),
         child: Stack(
           children: [
-            // 电路纹路效果
-            if (isSelected)
-              Positioned.fill(
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(25),
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                        Colors.transparent,
-                        option.color,
-                        Colors.transparent,
-                      ],
-                      stops: const [0.1, 0.5, 0.9],
-                    ),
-                  ),
-                ),
-              ),
-            
             // 文字
             Center(
               child: AnimatedDefaultTextStyle(
                 duration: const Duration(milliseconds: 100),
-                style: TextStyle(
-                  color: isSelected ? const Color(0xFF51A5FF) : const Color(0xFF0073E6),
+                style: const TextStyle(
+                  color: Color(0xFF0073E6),
                   fontSize: 13,
                   fontWeight: FontWeight.w700,
-                  shadows: isSelected 
-                      ? [
-                          const Shadow(
-                            color: Color(0xFF51A5FF),
-                            blurRadius: 12,
-                          ),
-                        ]
-                      : [],
                 ),
                 child: Text(
                   option.label.toUpperCase(),
@@ -361,79 +314,43 @@ class _VaultSectionState extends State<VaultSection> with TickerProviderStateMix
 
   Widget _buildCenterButton() {
     final option = _options['assets']!;
-    final isSelected = _selectedOption == 'assets';
     
     return GestureDetector(
       onTap: () {
-        setState(() {
-          _selectedOption = isSelected ? null : 'assets';
-        });
+        // TODO: 添加资产管理页面导航
+        print('点击了资产管理');
       },
       child: Container(
         width: 67,
         height: 67,
         decoration: BoxDecoration(
-          gradient: LinearGradient(
+          gradient: const LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: isSelected 
-                ? [const Color(0xFF1D1D1D), const Color(0xFF1D1D1D)]
-                : [const Color(0xFF333333), const Color(0xFF242323)],
+            colors: [Color(0xFF333333), Color(0xFF242323)],
           ),
           borderRadius: BorderRadius.circular(22),
-          border: isSelected 
-              ? null
-              : const Border(
-                  top: BorderSide(color: Color(0xFF4E4D4D), width: 1),
-                ),
-          boxShadow: isSelected 
-              ? []
-              : [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.2),
-                    blurRadius: 5,
-                    spreadRadius: 1,
-                  ),
-                ],
+          border: const Border(
+            top: BorderSide(color: Color(0xFF4E4D4D), width: 1),
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.2),
+              blurRadius: 5,
+              spreadRadius: 1,
+            ),
+          ],
         ),
         child: Stack(
           children: [
-            // 电路纹路效果
-            if (isSelected)
-              Positioned.fill(
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(25),
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                        Colors.transparent,
-                        option.color,
-                        Colors.transparent,
-                      ],
-                      stops: const [0.1, 0.5, 0.9],
-                    ),
-                  ),
-                ),
-              ),
-            
             // 文字
             Center(
               child: AnimatedDefaultTextStyle(
                 duration: const Duration(milliseconds: 100),
-                style: TextStyle(
-                  color: isSelected ? const Color(0xFF51A5FF) : const Color(0xFF0073E6),
+                style: const TextStyle(
+                  color: Color(0xFF0073E6),
                   fontSize: 13,
                   fontWeight: FontWeight.w700,
-                  shadows: isSelected 
-                      ? [
-                          const Shadow(
-                            color: Color(0xFF51A5FF),
-                            blurRadius: 12,
-                          ),
-                        ]
-                      : [],
                 ),
                 child: Text(
                   option.label.toUpperCase(),
