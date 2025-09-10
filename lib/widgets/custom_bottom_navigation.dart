@@ -140,21 +140,23 @@ class _CustomBottomNavigationState extends State<CustomBottomNavigation>
   }
 
   Widget _buildRadar() {
-    return Container(
-      width: 40,
-      height: 40,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(50),
-        border: Border.all(color: const Color(0xFF333333), width: 1),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.55),
-            blurRadius: 20,
-            offset: const Offset(6.4, 6.4),
-          ),
-        ],
-      ),
-      child: Stack(
+    return GestureDetector(
+      onTap: () => widget.onTap(1), // 守望服务在索引1位置
+      child: Container(
+        width: 40,
+        height: 40,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(50),
+          border: Border.all(color: const Color(0xFF333333), width: 1),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.55),
+              blurRadius: 20,
+              offset: const Offset(6.4, 6.4),
+            ),
+          ],
+        ),
+        child: Stack(
         children: [
           // 内圆虚线边框
           Positioned.fill(
@@ -223,6 +225,7 @@ class _CustomBottomNavigationState extends State<CustomBottomNavigation>
             },
           ),
         ],
+        ),
       ),
     );
   }

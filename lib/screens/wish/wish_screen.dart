@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../home/home_screen.dart';
 import '../../widgets/custom_bottom_navigation.dart';
+import '../guardian_service/guardian_service_screen.dart';
 
 class WishScreen extends StatefulWidget {
   const WishScreen({super.key});
@@ -169,6 +170,11 @@ class _WishScreenState extends State<WishScreen> {
                     if (index == 0) {
                       _navigateToHome();
                     } else if (index == 1) {
+                      // 守望服务
+                      Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => const GuardianServiceScreen()),
+                      );
+                    } else if (index == 2) {
                       print('个人中心功能开发中...');
                     }
                   },

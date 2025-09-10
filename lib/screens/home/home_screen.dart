@@ -8,6 +8,7 @@ import '../../widgets/custom_bottom_navigation.dart';
 import '../album/annual_rings_album_screen.dart';
 import '../true_self_record/true_self_record_screen.dart';
 import '../wish/wish_screen.dart';
+import '../guardian_service/guardian_service_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -137,8 +138,16 @@ class _HomeScreenState extends State<HomeScreen> {
                       setState(() {
                         _currentNavIndex = index;
                       });
-                      // 可以在这里添加页面跳转逻辑
-                      print('导航到索引: $index');
+                      // 导航逻辑
+                      if (index == 1) {
+                        // 守望服务
+                        Navigator.of(context).push(
+                          MaterialPageRoute(builder: (context) => const GuardianServiceScreen()),
+                        );
+                      } else if (index == 2) {
+                        // 个人中心功能开发中
+                        print('个人中心功能开发中...');
+                      }
                     },
                   ),
                 ),
