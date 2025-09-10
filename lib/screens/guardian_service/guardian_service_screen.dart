@@ -16,6 +16,9 @@ class _GuardianServiceScreenState extends State<GuardianServiceScreen> {
   String _loginMonitorDays = '30天未登录';
   String _stepMonitorDays = '30天无步数';
   
+  // 守望流程收缩状态
+  bool _isFlowChartExpanded = true;
+  
   // 守望流程设置
   List<GuardianFlow> _guardianFlows = [
     GuardianFlow(
@@ -111,7 +114,7 @@ class _GuardianServiceScreenState extends State<GuardianServiceScreen> {
             
             // 主内容区域
             Positioned(
-              top: 120,
+              top: 100, // 向下调整10px (90 + 10 = 100)
               left: 16,
               right: 16,
               bottom: 120,
@@ -119,17 +122,6 @@ class _GuardianServiceScreenState extends State<GuardianServiceScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // 守望设置标题
-                    const Text(
-                      '守望设置',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    
                     // 登录频次监控和运动步数监控
                     Row(
                       children: [
@@ -159,26 +151,65 @@ class _GuardianServiceScreenState extends State<GuardianServiceScreen> {
                       ],
                     ),
                     
-                    const SizedBox(height: 32),
+                    const SizedBox(height: 22),
                     
-                    // 守望流程标题
-                    const Text(
-                      '守望流程',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
+                    // 守望流程 - 可收缩的流程图
+                    Column(
+                      children: [
+                        // 守望流程标题栏 - 带收缩按钮
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text(
+                                '守望流程',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    _isFlowChartExpanded = !_isFlowChartExpanded;
+                                  });
+                                },
+                                child: Container(
+                                  padding: const EdgeInsets.all(4),
+                                  child: AnimatedRotation(
+                                    turns: _isFlowChartExpanded ? 0 : -0.5,
+                                    duration: const Duration(milliseconds: 300),
+                                    child: const Icon(
+                                      Icons.keyboard_arrow_down,
+                                      color: Colors.white70,
+                                      size: 20,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        
+                        const SizedBox(height: 16),
+                        
+                        // 可收缩的流程图容器
+                        AnimatedCrossFade(
+                          duration: const Duration(milliseconds: 300),
+                          crossFadeState: _isFlowChartExpanded 
+                              ? CrossFadeState.showFirst 
+                              : CrossFadeState.showSecond,
+                          firstChild: Container(
+                            width: double.infinity,
+                            padding: const EdgeInsets.symmetric(horizontal: 8),
+                            child: _buildGuardianFlowChart(),
+                          ),
+                          secondChild: const SizedBox(width: double.infinity, height: 0),
+                        ),
+                      ],
                     ),
-                    const SizedBox(height: 16),
-                    
-                    // 守望流程列表
-                    ...(_guardianFlows.map((flow) => _buildGuardianFlowCard(flow)).toList()),
-                    
-                    const SizedBox(height: 20),
-                    
-                    // 紧急联系人
-                    _buildEmergencyContact(),
                   ],
                 ),
               ),
@@ -553,6 +584,342 @@ class _GuardianServiceScreenState extends State<GuardianServiceScreen> {
       ),
     );
   }
+
+  /// 构建守望流程图
+  Widget _buildGuardianFlowChart() {
+    return Column(
+      children: [
+        // 第一行：用户超期 -> 企业微信联系
+        Row(
+          children: [
+            // 卡片1 - 向左靠近边线10px
+            Container(
+              margin: const EdgeInsets.only(left: 10),
+              child: _buildFlowCard(
+                number: '1',
+                title: '用户超期',
+                subtitle: '超过设定天数未登录',
+                color: Colors.blue,
+              ),
+            ),
+            Expanded(child: _buildHorizontalConnector('24小时内', '3次')),
+            // 卡片2 - 向右靠近边线10px
+            Container(
+              margin: const EdgeInsets.only(right: 10),
+              child: _buildFlowCard(
+                number: '2',
+                title: '企业微信联系',
+                subtitle: '发送提醒消息',
+                color: Colors.green,
+              ),
+            ),
+          ],
+        ),
+        
+        const SizedBox(height: 8),
+        
+        // 垂直连接器2
+        Container(
+          alignment: Alignment.centerRight,
+          margin: const EdgeInsets.only(right: 70),
+          child: _buildVerticalConnector('24小时 3次'),
+        ),
+        
+        const SizedBox(height: 8),
+        
+        // 第二行：400电话联系 <- 短信联系
+        Row(
+          children: [
+            // 卡片4 - 向左靠近边线10px
+            Container(
+              margin: const EdgeInsets.only(left: 10),
+              child: _buildFlowCard(
+                number: '4',
+                title: '400电话联系',
+                subtitle: '拨打3次确认',
+                color: Colors.red,
+              ),
+            ),
+            Expanded(child: _buildHorizontalConnector('24小时内', '3次', isReversed: true)),
+            // 卡片3 - 向右靠近边线10px
+            Container(
+              margin: const EdgeInsets.only(right: 10),
+              child: _buildFlowCard(
+                number: '3',
+                title: '短信联系',
+                subtitle: '发送紧急提醒',
+                color: Colors.orange,
+              ),
+            ),
+          ],
+        ),
+        
+        const SizedBox(height: 8),
+        
+        // 垂直连接器4
+        Container(
+          alignment: Alignment.centerLeft,
+          margin: const EdgeInsets.only(left: 70),
+          child: _buildVerticalConnector('无限次'),
+        ),
+        
+        const SizedBox(height: 8),
+        
+        // 第三行：紧急联系人 -> 投递收件人
+        Row(
+          children: [
+            // 卡片5 - 向左靠近边线10px
+            Container(
+              margin: const EdgeInsets.only(left: 10),
+              child: _buildFlowCard(
+                number: '5',
+                title: '紧急联系人',
+                subtitle: '按优先级顺序联系',
+                color: Colors.red,
+              ),
+            ),
+            Expanded(child: _buildHorizontalConnector('', '')),
+            // 卡片6 - 向右靠近边线10px
+            Container(
+              margin: const EdgeInsets.only(right: 10),
+              child: _buildFlowCard(
+                number: '6',
+                title: '投递收件人',
+                subtitle: '',
+                color: Colors.red,
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  /// 构建流程卡片
+  Widget _buildFlowCard({
+    required String number,
+    required String title,
+    required String subtitle,
+    required Color color,
+  }) {
+    return Container(
+      width: 120,
+      height: 60,
+      decoration: BoxDecoration(
+        color: const Color(0xFF3f3f3f),
+        borderRadius: BorderRadius.circular(8),
+        border: Border(
+          left: BorderSide(color: color, width: 3),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.3),
+            blurRadius: 4,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            // 第一行：数字 + 标题
+            Text(
+              '$number $title',
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 12,
+                fontWeight: FontWeight.w600,
+              ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+            // 副标题（如果有的话）
+            if (subtitle.isNotEmpty) ...[
+              const SizedBox(height: 4),
+              Text(
+                subtitle,
+                style: TextStyle(
+                  color: Colors.white.withOpacity(0.7),
+                  fontSize: 10,
+                ),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ],
+          ],
+        ),
+      ),
+    );
+  }
+
+  /// 构建水平连接器
+  Widget _buildHorizontalConnector(String topLabel, String bottomLabel, {bool isReversed = false}) {
+    return Container(
+      width: 80,
+      height: 40,
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          // 虚线箭头
+          Row(
+            children: isReversed ? [
+              Icon(
+                Icons.arrow_back_ios,
+                size: 12,
+                color: Color(0xFF6b7280),
+              ),
+              Expanded(
+                child: Container(
+                  height: 2,
+                  child: CustomPaint(
+                    painter: DashedLinePainter(),
+                  ),
+                ),
+              ),
+            ] : [
+              Expanded(
+                child: Container(
+                  height: 2,
+                  child: CustomPaint(
+                    painter: DashedLinePainter(),
+                  ),
+                ),
+              ),
+              const Icon(
+                Icons.arrow_forward_ios,
+                size: 12,
+                color: Color(0xFF6b7280),
+              ),
+            ],
+          ),
+          // 上标签
+          if (topLabel.isNotEmpty)
+            Positioned(
+              top: 0,
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 4),
+                color: const Color(0xFF1a1a1a),
+                child: Text(
+                  topLabel,
+                  style: const TextStyle(
+                    color: Color(0xFF9ca3af),
+                    fontSize: 10,
+                  ),
+                ),
+              ),
+            ),
+          // 下标签
+          if (bottomLabel.isNotEmpty)
+            Positioned(
+              bottom: 0,
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 4),
+                color: const Color(0xFF1a1a1a),
+                child: Text(
+                  bottomLabel,
+                  style: const TextStyle(
+                    color: Color(0xFF9ca3af),
+                    fontSize: 10,
+                  ),
+                ),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+
+  /// 构建垂直连接器
+  Widget _buildVerticalConnector(String sideLabel) {
+    return Container(
+      width: 60,
+      height: 60,
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          // 垂直虚线和箭头
+          Column(
+            children: [
+              Expanded(
+                child: Container(
+                  width: 2,
+                  child: CustomPaint(
+                    painter: DashedLinePainter(isVertical: true),
+                  ),
+                ),
+              ),
+              const Icon(
+                Icons.keyboard_arrow_down,
+                size: 16,
+                color: Color(0xFF6b7280),
+              ),
+            ],
+          ),
+          // 侧边标签
+          if (sideLabel.isNotEmpty)
+            Positioned(
+              left: 8,
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                color: const Color(0xFF1a1a1a),
+                child: Text(
+                  sideLabel,
+                  style: const TextStyle(
+                    color: Color(0xFF9ca3af),
+                    fontSize: 10,
+                  ),
+                ),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+}
+
+/// 虚线画笔
+class DashedLinePainter extends CustomPainter {
+  final bool isVertical;
+
+  DashedLinePainter({this.isVertical = false});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = const Color(0xFF6b7280)
+      ..strokeWidth = 2
+      ..style = PaintingStyle.stroke;
+
+    // 绘制虚线
+    if (isVertical) {
+      _drawDashedLine(canvas, Offset(size.width / 2, 0), Offset(size.width / 2, size.height), paint);
+    } else {
+      _drawDashedLine(canvas, Offset.zero, Offset(size.width, size.height / 2), paint);
+    }
+  }
+
+  void _drawDashedLine(Canvas canvas, Offset start, Offset end, Paint paint) {
+    const dashWidth = 4.0;
+    const dashSpace = 4.0;
+    double distance = (end - start).distance;
+    double dashCount = (distance / (dashWidth + dashSpace)).floor().toDouble();
+    
+    for (int i = 0; i < dashCount; i++) {
+      double startDistance = i * (dashWidth + dashSpace);
+      double endDistance = startDistance + dashWidth;
+      
+      Offset dashStart = Offset.lerp(start, end, startDistance / distance)!;
+      Offset dashEnd = Offset.lerp(start, end, endDistance / distance)!;
+      
+      canvas.drawLine(dashStart, dashEnd, paint);
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
 
 /// 守望流程数据模型
