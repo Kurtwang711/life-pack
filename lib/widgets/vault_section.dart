@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import '../screens/recording/recording_management_screen.dart';
+import '../screens/image/image_management_screen.dart';
+import '../screens/video/video_management_screen.dart';
 
 class VaultSection extends StatefulWidget {
   const VaultSection({super.key});
@@ -267,9 +269,21 @@ class _VaultSectionState extends State<VaultSection> with TickerProviderStateMix
               builder: (context) => const RecordingManagementScreen(),
             ),
           );
+        } else if (optionKey == 'image') {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => const ImageManagementScreen(),
+            ),
+          );
+        } else if (optionKey == 'video') {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => const VideoManagementScreen(),
+            ),
+          );
         }
         // TODO: 为其他选项添加对应的管理页面导航
-        // 如：图片管理、视频管理、文档管理、资产管理
+        // 如：文档管理、资产管理
       },
       child: Container(
         decoration: BoxDecoration(
