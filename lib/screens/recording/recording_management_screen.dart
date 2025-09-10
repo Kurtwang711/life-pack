@@ -101,7 +101,7 @@ class _RecordingManagementScreenState extends State<RecordingManagementScreen> {
 
             // 搜索和功能区域
             Positioned(
-              top: 120,
+              top: 112,
               left: 16,
               right: 16,
               child: Container(
@@ -178,7 +178,7 @@ class _RecordingManagementScreenState extends State<RecordingManagementScreen> {
 
             // 录音列表区域 (预留空间)
             Positioned(
-              top: 180,
+              top: 156,
               left: 16,
               right: 16,
               bottom: 120,
@@ -227,14 +227,16 @@ class _RecordingManagementScreenState extends State<RecordingManagementScreen> {
               bottom: 0,
               left: 0,
               right: 0,
-              child: CustomBottomNavigation(
-                currentIndex: 0,
-                onTap: (index) {
-                  if (index == 0) {
-                    _navigateToHome();
-                  }
-                  // 其他导航项可以根据需要实现
-                },
+              child: Center(
+                child: CustomBottomNavigation(
+                  currentIndex: 0,
+                  onTap: (index) {
+                    if (index == 0) {
+                      _navigateToHome();
+                    }
+                    // 其他导航项可以根据需要实现
+                  },
+                ),
               ),
             ),
           ],
