@@ -3,6 +3,7 @@ import '../screens/recording/recording_management_screen.dart';
 import '../screens/image/image_management_screen.dart';
 import '../screens/video/video_management_screen.dart';
 import '../screens/document/document_management_screen.dart';
+import '../screens/assets/assets_management_screen.dart';
 
 class VaultSection extends StatefulWidget {
   const VaultSection({super.key});
@@ -288,9 +289,13 @@ class _VaultSectionState extends State<VaultSection> with TickerProviderStateMix
               builder: (context) => const DocumentManagementScreen(),
             ),
           );
+        } else if (optionKey == 'assets') {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => const AssetsManagementScreen(),
+            ),
+          );
         }
-        // TODO: 为其他选项添加对应的管理页面导航
-        // 如：资产管理
       },
       child: Container(
         decoration: BoxDecoration(
