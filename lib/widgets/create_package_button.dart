@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package_creation_form.dart';
+import 'file_upload_dialog.dart';
 import '../services/package_manager.dart';
 
 class CreatePackageButton extends StatefulWidget {
@@ -19,7 +20,7 @@ class _CreatePackageButtonState extends State<CreatePackageButton> {
       backgroundColor: Colors.transparent,
       builder: (modalContext) => PackageCreationForm(
         onClose: () => Navigator.of(modalContext).pop(),
-        onSubmit: (formData) {
+        onSubmit: (formData) async {
           print('开始创建包裹，表单数据: $formData');
           try {
             // 通过包裹管理器创建包裹
@@ -29,14 +30,38 @@ class _CreatePackageButtonState extends State<CreatePackageButton> {
             // 关闭模态框 - 使用modalContext确保关闭的是模态框而不是主屏幕
             Navigator.of(modalContext).pop();
             
-            // 显示成功消息 - 使用原始的context
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('包裹创建成功！'),
-                backgroundColor: Colors.green,
-                duration: Duration(seconds: 2),
+            // 显示包裹创建成功的文件上传对话框
+            final shouldUploadFile = await showDialog<bool>(
+              context: context,
+              barrierDismissible: false,
+              builder: (context) => FileUploadDialog(
+                onConfirm: () => Navigator.of(context).pop(true),
+                onCancel: () => Navigator.of(context).pop(false),
               ),
             );
+            
+            if (shouldUploadFile == true) {
+              // 用户选择"好" - 处理文件上传
+              print('用户选择添加文件到包裹');
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('包裹创建成功！正在准备文件上传...'),
+                  backgroundColor: Colors.green,
+                  duration: Duration(seconds: 2),
+                ),
+              );
+              // TODO: 在这里实现文件上传功能
+            } else {
+              // 用户选择"不" - 只显示成功消息
+              print('用户选择不添加文件');
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('包裹创建成功！'),
+                  backgroundColor: Colors.green,
+                  duration: Duration(seconds: 2),
+                ),
+              );
+            }
           } catch (e) {
             print('创建包裹时发生错误: $e');
             
