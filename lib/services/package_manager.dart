@@ -70,6 +70,48 @@ class PackageManager extends ChangeNotifier {
     }
   }
 
+  /// 从表单数据更新包裹信息
+  void updatePackageFromForm(Map<String, dynamic> formData) {
+    try {
+      final packageId = formData['id'];
+      print('正在更新包裹，ID: $packageId, 表单数据: $formData');
+      
+      // 查找要更新的包裹
+      final packageIndex = _packages.indexWhere((p) => p.id == packageId);
+      if (packageIndex == -1) {
+        throw Exception('未找到ID为 $packageId 的包裹');
+      }
+      
+      final originalPackage = _packages[packageIndex];
+      
+      // 创建更新后的包裹对象
+      final updatedPackage = PackageModel(
+        id: originalPackage.id,
+        packageNumber: originalPackage.packageNumber,
+        recipient: formData['recipient'] ?? originalPackage.recipient,
+        phone: formData['phone'] ?? originalPackage.phone,
+        deliveryMethod: formData['deliveryMethod'] ?? originalPackage.deliveryMethod,
+        address: formData['address'],
+        email: formData['email'],
+        createdAt: originalPackage.createdAt,
+        lastModified: DateTime.now(), // 更新修改时间
+        sequenceNumber: originalPackage.sequenceNumber,
+      );
+      
+      // 替换原包裹
+      _packages[packageIndex] = updatedPackage;
+      print('包裹更新成功: ${updatedPackage.packageNumber}');
+      
+      // 立即通知监听器
+      notifyListeners();
+      print('监听器通知完成');
+    } catch (e) {
+      print('包裹更新失败: $e');
+      // 重新抛出异常，让调用方知道失败了
+      rethrow;
+    }
+  }
+
   /// 删除包裹
   void removePackage(String packageId) {
     _packages.removeWhere((package) => package.id == packageId);

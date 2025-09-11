@@ -12,6 +12,7 @@ import '../true_self_record/true_self_record_screen.dart';
 import '../wish/wish_screen.dart';
 import '../guardian_service/guardian_service_screen.dart';
 import '../profile/profile_screen.dart';
+import '../package_content/package_content_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -188,12 +189,14 @@ class _HomeScreenState extends State<HomeScreen> {
                             return PackageList(
                               packages: _packageManager.packages,
                               onPackageTap: (package) {
-                                // 处理包裹点击事件
+                                // 导航到包裹内容管理页面
                                 print('点击了包裹: ${package.packageNumber}');
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text('包裹: ${package.packageNumber}'),
-                                    duration: const Duration(seconds: 1),
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => PackageContentScreen(
+                                      packageNumber: package.packageNumber,
+                                      sequenceNumber: package.sequenceNumber,
+                                    ),
                                   ),
                                 );
                               },
