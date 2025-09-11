@@ -9,6 +9,7 @@ import '../album/annual_rings_album_screen.dart';
 import '../true_self_record/true_self_record_screen.dart';
 import '../wish/wish_screen.dart';
 import '../guardian_service/guardian_service_screen.dart';
+import '../profile/profile_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -145,8 +146,10 @@ class _HomeScreenState extends State<HomeScreen> {
                           MaterialPageRoute(builder: (context) => const GuardianServiceScreen()),
                         );
                       } else if (index == 2) {
-                        // 个人中心功能开发中
-                        print('个人中心功能开发中...');
+                        // 个人中心
+                        Navigator.of(context).push(
+                          MaterialPageRoute(builder: (context) => const ProfileScreen()),
+                        );
                       }
                     },
                   ),

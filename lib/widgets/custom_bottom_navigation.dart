@@ -75,7 +75,7 @@ class _CustomBottomNavigationState extends State<CustomBottomNavigation>
           
           // 个人中心按钮
           _buildNavButton(
-            index: 1,
+            index: 2,
             icon: Icons.person_outline,
             label: '个人中心',
           ),

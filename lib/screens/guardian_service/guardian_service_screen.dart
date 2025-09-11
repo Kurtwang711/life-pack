@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../home/home_screen.dart';
+import '../profile/profile_screen.dart';
 import '../../widgets/custom_bottom_navigation.dart';
 
 class GuardianServiceScreen extends StatefulWidget {
@@ -15,12 +16,12 @@ class _GuardianServiceScreenState extends State<GuardianServiceScreen> {
   // 守望设置状态
   String _loginMonitorDays = '30天未登录';
   String _stepMonitorDays = '30天无步数';
-  
+
   // 守望流程收缩状态
   bool _isFlowChartExpanded = true;
-  
+
   // 守望流程设置
-  List<GuardianFlow> _guardianFlows = [
+  final List<GuardianFlow> _guardianFlows = [
     GuardianFlow(
       title: '用户超期',
       subtitle: '超过设定天数未登录',
@@ -46,10 +47,7 @@ class _GuardianServiceScreenState extends State<GuardianServiceScreen> {
         decoration: BoxDecoration(
           color: const Color(0xFF1a1a1a),
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(
-            color: Colors.black,
-            width: 2,
-          ),
+          border: Border.all(color: Colors.black, width: 2),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.5),
@@ -111,7 +109,7 @@ class _GuardianServiceScreenState extends State<GuardianServiceScreen> {
                 ),
               ),
             ),
-            
+
             // 主内容区域
             Positioned(
               top: 100, // 向下调整10px (90 + 10 = 100)
@@ -129,11 +127,15 @@ class _GuardianServiceScreenState extends State<GuardianServiceScreen> {
                           child: _buildMonitorSetting(
                             '登录频次监控',
                             _loginMonitorDays,
-                            () => _showDaysSelector('登录频次监控', _loginMonitorDays, (value) {
-                              setState(() {
-                                _loginMonitorDays = value;
-                              });
-                            }),
+                            () => _showDaysSelector(
+                              '登录频次监控',
+                              _loginMonitorDays,
+                              (value) {
+                                setState(() {
+                                  _loginMonitorDays = value;
+                                });
+                              },
+                            ),
                           ),
                         ),
                         const SizedBox(width: 16),
@@ -141,18 +143,22 @@ class _GuardianServiceScreenState extends State<GuardianServiceScreen> {
                           child: _buildMonitorSetting(
                             '运动步数监控',
                             _stepMonitorDays,
-                            () => _showDaysSelector('运动步数监控', _stepMonitorDays, (value) {
-                              setState(() {
-                                _stepMonitorDays = value;
-                              });
-                            }),
+                            () => _showDaysSelector(
+                              '运动步数监控',
+                              _stepMonitorDays,
+                              (value) {
+                                setState(() {
+                                  _stepMonitorDays = value;
+                                });
+                              },
+                            ),
                           ),
                         ),
                       ],
                     ),
-                    
+
                     const SizedBox(height: 22),
-                    
+
                     // 守望流程 - 可收缩的流程图
                     Column(
                       children: [
@@ -173,7 +179,8 @@ class _GuardianServiceScreenState extends State<GuardianServiceScreen> {
                               GestureDetector(
                                 onTap: () {
                                   setState(() {
-                                    _isFlowChartExpanded = !_isFlowChartExpanded;
+                                    _isFlowChartExpanded =
+                                        !_isFlowChartExpanded;
                                   });
                                 },
                                 child: Container(
@@ -192,21 +199,24 @@ class _GuardianServiceScreenState extends State<GuardianServiceScreen> {
                             ],
                           ),
                         ),
-                        
+
                         const SizedBox(height: 16),
-                        
+
                         // 可收缩的流程图容器
                         AnimatedCrossFade(
                           duration: const Duration(milliseconds: 300),
-                          crossFadeState: _isFlowChartExpanded 
-                              ? CrossFadeState.showFirst 
+                          crossFadeState: _isFlowChartExpanded
+                              ? CrossFadeState.showFirst
                               : CrossFadeState.showSecond,
                           firstChild: Container(
                             width: double.infinity,
                             padding: const EdgeInsets.symmetric(horizontal: 8),
                             child: _buildGuardianFlowChart(),
                           ),
-                          secondChild: const SizedBox(width: double.infinity, height: 0),
+                          secondChild: const SizedBox(
+                            width: double.infinity,
+                            height: 0,
+                          ),
                         ),
                       ],
                     ),
@@ -214,7 +224,7 @@ class _GuardianServiceScreenState extends State<GuardianServiceScreen> {
                 ),
               ),
             ),
-            
+
             // 底部导航栏
             Positioned(
               bottom: 30,
@@ -231,6 +241,11 @@ class _GuardianServiceScreenState extends State<GuardianServiceScreen> {
                       _navigateToHome();
                     } else if (index == 1) {
                       // 当前页面，不需要导航
+                    } else if (index == 2) {
+                      // 个人中心
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(builder: (context) => const ProfileScreen()),
+                      );
                     }
                   },
                 ),
@@ -264,20 +279,14 @@ class _GuardianServiceScreenState extends State<GuardianServiceScreen> {
             decoration: BoxDecoration(
               color: const Color(0xFF2a2a2a),
               borderRadius: BorderRadius.circular(8),
-              border: Border.all(
-                color: const Color(0xFF404040),
-                width: 1,
-              ),
+              border: Border.all(color: const Color(0xFF404040), width: 1),
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
                   value,
-                  style: const TextStyle(
-                    fontSize: 14,
-                    color: Colors.white,
-                  ),
+                  style: const TextStyle(fontSize: 14, color: Colors.white),
                 ),
                 const Icon(
                   Icons.keyboard_arrow_down,
@@ -300,10 +309,7 @@ class _GuardianServiceScreenState extends State<GuardianServiceScreen> {
       decoration: BoxDecoration(
         color: const Color(0xFF2a2a2a),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: flow.color.withOpacity(0.3),
-          width: 1,
-        ),
+        border: Border.all(color: flow.color.withOpacity(0.3), width: 1),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -342,18 +348,15 @@ class _GuardianServiceScreenState extends State<GuardianServiceScreen> {
               ),
             ],
           ),
-          
+
           const SizedBox(height: 16),
-          
+
           // 时间限制和次数
           Row(
             children: [
               Text(
                 flow.timeLimit,
-                style: const TextStyle(
-                  fontSize: 14,
-                  color: Colors.white,
-                ),
+                style: const TextStyle(fontSize: 14, color: Colors.white),
               ),
               const SizedBox(width: 20),
               Container(
@@ -364,16 +367,13 @@ class _GuardianServiceScreenState extends State<GuardianServiceScreen> {
               const SizedBox(width: 20),
               Text(
                 '${flow.maxAttempts}次',
-                style: const TextStyle(
-                  fontSize: 14,
-                  color: Colors.white,
-                ),
+                style: const TextStyle(fontSize: 14, color: Colors.white),
               ),
             ],
           ),
-          
+
           const SizedBox(height: 16),
-          
+
           // 联系方式流程图
           _buildContactFlow(flow.contactMethods),
         ],
@@ -386,10 +386,7 @@ class _GuardianServiceScreenState extends State<GuardianServiceScreen> {
     return Column(
       children: [
         for (int i = 0; i < methods.length; i++) ...[
-          _buildContactMethod(
-            methods[i],
-            _getContactColor(methods[i]),
-          ),
+          _buildContactMethod(methods[i], _getContactColor(methods[i])),
           if (i < methods.length - 1) _buildFlowConnector(),
         ],
       ],
@@ -403,10 +400,7 @@ class _GuardianServiceScreenState extends State<GuardianServiceScreen> {
       decoration: BoxDecoration(
         color: color.withOpacity(0.2),
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(
-          color: color.withOpacity(0.5),
-          width: 1,
-        ),
+        border: Border.all(color: color.withOpacity(0.5), width: 1),
       ),
       child: Text(
         method,
@@ -425,11 +419,7 @@ class _GuardianServiceScreenState extends State<GuardianServiceScreen> {
       margin: const EdgeInsets.symmetric(vertical: 8),
       child: Column(
         children: [
-          Container(
-            width: 2,
-            height: 12,
-            color: Colors.white.withOpacity(0.3),
-          ),
+          Container(width: 2, height: 12, color: Colors.white.withOpacity(0.3)),
           const Icon(
             Icons.keyboard_arrow_down,
             color: Colors.white54,
@@ -447,10 +437,7 @@ class _GuardianServiceScreenState extends State<GuardianServiceScreen> {
       decoration: BoxDecoration(
         color: const Color(0xFF2a2a2a),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: Colors.red.withOpacity(0.3),
-          width: 1,
-        ),
+        border: Border.all(color: Colors.red.withOpacity(0.3), width: 1),
       ),
       child: Row(
         children: [
@@ -477,19 +464,12 @@ class _GuardianServiceScreenState extends State<GuardianServiceScreen> {
                 ),
                 Text(
                   '按优先级顺序联系',
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Colors.white70,
-                  ),
+                  style: TextStyle(fontSize: 12, color: Colors.white70),
                 ),
               ],
             ),
           ),
-          const Icon(
-            Icons.arrow_forward_ios,
-            color: Colors.white54,
-            size: 16,
-          ),
+          const Icon(Icons.arrow_forward_ios, color: Colors.white54, size: 16),
         ],
       ),
     );
@@ -508,7 +488,11 @@ class _GuardianServiceScreenState extends State<GuardianServiceScreen> {
   }
 
   /// 显示天数选择器
-  void _showDaysSelector(String title, String currentValue, Function(String) onSelected) {
+  void _showDaysSelector(
+    String title,
+    String currentValue,
+    Function(String) onSelected,
+  ) {
     final days = ['7天', '15天', '30天', '60天', '90天'];
     showModalBottomSheet(
       context: context,
@@ -531,8 +515,10 @@ class _GuardianServiceScreenState extends State<GuardianServiceScreen> {
                 ),
               ),
               const SizedBox(height: 20),
-              
-              ...days.map((day) => _buildDayOption(day, currentValue, onSelected)).toList(),
+
+              ...days.map(
+                (day) => _buildDayOption(day, currentValue, onSelected),
+              ),
             ],
           ),
         );
@@ -541,17 +527,26 @@ class _GuardianServiceScreenState extends State<GuardianServiceScreen> {
   }
 
   /// 构建天数选项
-  Widget _buildDayOption(String day, String currentValue, Function(String) onSelected) {
+  Widget _buildDayOption(
+    String day,
+    String currentValue,
+    Function(String) onSelected,
+  ) {
     final isSelected = currentValue.contains(day);
     return GestureDetector(
       onTap: () {
         String newValue;
-        if (day == '7天') newValue = '7天未登录';
-        else if (day == '15天') newValue = '15天未登录';
-        else if (day == '30天') newValue = '30天未登录';
-        else if (day == '60天') newValue = '60天未登录';
-        else newValue = '90天未登录';
-        
+        if (day == '7天') {
+          newValue = '7天未登录';
+        } else if (day == '15天')
+          newValue = '15天未登录';
+        else if (day == '30天')
+          newValue = '30天未登录';
+        else if (day == '60天')
+          newValue = '60天未登录';
+        else
+          newValue = '90天未登录';
+
         onSelected(newValue);
         Navigator.pop(context);
       },
@@ -560,14 +555,10 @@ class _GuardianServiceScreenState extends State<GuardianServiceScreen> {
         margin: const EdgeInsets.only(bottom: 12),
         padding: const EdgeInsets.symmetric(vertical: 16),
         decoration: BoxDecoration(
-          color: isSelected 
-            ? Colors.blue.withOpacity(0.3)
-            : Colors.transparent,
+          color: isSelected ? Colors.blue.withOpacity(0.3) : Colors.transparent,
           borderRadius: BorderRadius.circular(8),
           border: Border.all(
-            color: isSelected 
-              ? Colors.blue
-              : Colors.white.withOpacity(0.3),
+            color: isSelected ? Colors.blue : Colors.white.withOpacity(0.3),
             width: 1,
           ),
         ),
@@ -615,18 +606,18 @@ class _GuardianServiceScreenState extends State<GuardianServiceScreen> {
             ),
           ],
         ),
-        
+
         const SizedBox(height: 8),
-        
+
         // 垂直连接器2
         Container(
           alignment: Alignment.centerRight,
           margin: const EdgeInsets.only(right: 70),
           child: _buildVerticalConnector('24小时 3次'),
         ),
-        
+
         const SizedBox(height: 8),
-        
+
         // 第二行：400电话联系 <- 短信联系
         Row(
           children: [
@@ -640,7 +631,9 @@ class _GuardianServiceScreenState extends State<GuardianServiceScreen> {
                 color: Colors.red,
               ),
             ),
-            Expanded(child: _buildHorizontalConnector('24小时内', '3次', isReversed: true)),
+            Expanded(
+              child: _buildHorizontalConnector('24小时内', '3次', isReversed: true),
+            ),
             // 卡片3 - 向右靠近边线10px
             Container(
               margin: const EdgeInsets.only(right: 10),
@@ -653,18 +646,18 @@ class _GuardianServiceScreenState extends State<GuardianServiceScreen> {
             ),
           ],
         ),
-        
+
         const SizedBox(height: 8),
-        
+
         // 垂直连接器4
         Container(
           alignment: Alignment.centerLeft,
           margin: const EdgeInsets.only(left: 70),
           child: _buildVerticalConnector('无限次'),
         ),
-        
+
         const SizedBox(height: 8),
-        
+
         // 第三行：紧急联系人 -> 投递收件人
         Row(
           children: [
@@ -708,9 +701,7 @@ class _GuardianServiceScreenState extends State<GuardianServiceScreen> {
       decoration: BoxDecoration(
         color: const Color(0xFF3f3f3f),
         borderRadius: BorderRadius.circular(8),
-        border: Border(
-          left: BorderSide(color: color, width: 3),
-        ),
+        border: Border(left: BorderSide(color: color, width: 3)),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.3),
@@ -756,8 +747,12 @@ class _GuardianServiceScreenState extends State<GuardianServiceScreen> {
   }
 
   /// 构建水平连接器
-  Widget _buildHorizontalConnector(String topLabel, String bottomLabel, {bool isReversed = false}) {
-    return Container(
+  Widget _buildHorizontalConnector(
+    String topLabel,
+    String bottomLabel, {
+    bool isReversed = false,
+  }) {
+    return SizedBox(
       width: 80,
       height: 40,
       child: Stack(
@@ -765,35 +760,33 @@ class _GuardianServiceScreenState extends State<GuardianServiceScreen> {
         children: [
           // 虚线箭头
           Row(
-            children: isReversed ? [
-              Icon(
-                Icons.arrow_back_ios,
-                size: 12,
-                color: Color(0xFF6b7280),
-              ),
-              Expanded(
-                child: Container(
-                  height: 2,
-                  child: CustomPaint(
-                    painter: DashedLinePainter(),
-                  ),
-                ),
-              ),
-            ] : [
-              Expanded(
-                child: Container(
-                  height: 2,
-                  child: CustomPaint(
-                    painter: DashedLinePainter(),
-                  ),
-                ),
-              ),
-              const Icon(
-                Icons.arrow_forward_ios,
-                size: 12,
-                color: Color(0xFF6b7280),
-              ),
-            ],
+            children: isReversed
+                ? [
+                    Icon(
+                      Icons.arrow_back_ios,
+                      size: 12,
+                      color: Color(0xFF6b7280),
+                    ),
+                    Expanded(
+                      child: SizedBox(
+                        height: 2,
+                        child: CustomPaint(painter: DashedLinePainter()),
+                      ),
+                    ),
+                  ]
+                : [
+                    Expanded(
+                      child: SizedBox(
+                        height: 2,
+                        child: CustomPaint(painter: DashedLinePainter()),
+                      ),
+                    ),
+                    const Icon(
+                      Icons.arrow_forward_ios,
+                      size: 12,
+                      color: Color(0xFF6b7280),
+                    ),
+                  ],
           ),
           // 上标签
           if (topLabel.isNotEmpty)
@@ -834,7 +827,7 @@ class _GuardianServiceScreenState extends State<GuardianServiceScreen> {
 
   /// 构建垂直连接器
   Widget _buildVerticalConnector(String sideLabel) {
-    return Container(
+    return SizedBox(
       width: 60,
       height: 60,
       child: Stack(
@@ -844,7 +837,7 @@ class _GuardianServiceScreenState extends State<GuardianServiceScreen> {
           Column(
             children: [
               Expanded(
-                child: Container(
+                child: SizedBox(
                   width: 2,
                   child: CustomPaint(
                     painter: DashedLinePainter(isVertical: true),
@@ -895,9 +888,19 @@ class DashedLinePainter extends CustomPainter {
 
     // 绘制虚线
     if (isVertical) {
-      _drawDashedLine(canvas, Offset(size.width / 2, 0), Offset(size.width / 2, size.height), paint);
+      _drawDashedLine(
+        canvas,
+        Offset(size.width / 2, 0),
+        Offset(size.width / 2, size.height),
+        paint,
+      );
     } else {
-      _drawDashedLine(canvas, Offset.zero, Offset(size.width, size.height / 2), paint);
+      _drawDashedLine(
+        canvas,
+        Offset.zero,
+        Offset(size.width, size.height / 2),
+        paint,
+      );
     }
   }
 
@@ -906,14 +909,14 @@ class DashedLinePainter extends CustomPainter {
     const dashSpace = 4.0;
     double distance = (end - start).distance;
     double dashCount = (distance / (dashWidth + dashSpace)).floor().toDouble();
-    
+
     for (int i = 0; i < dashCount; i++) {
       double startDistance = i * (dashWidth + dashSpace);
       double endDistance = startDistance + dashWidth;
-      
+
       Offset dashStart = Offset.lerp(start, end, startDistance / distance)!;
       Offset dashEnd = Offset.lerp(start, end, endDistance / distance)!;
-      
+
       canvas.drawLine(dashStart, dashEnd, paint);
     }
   }
