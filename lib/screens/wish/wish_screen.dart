@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../home/home_screen.dart';
+import '../profile/profile_screen.dart';
 import '../../widgets/custom_bottom_navigation.dart';
 import '../guardian_service/guardian_service_screen.dart';
 
@@ -29,10 +30,7 @@ class _WishScreenState extends State<WishScreen> {
         decoration: BoxDecoration(
           color: const Color(0xFF1a1a1a),
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(
-            color: Colors.black,
-            width: 2,
-          ),
+          border: Border.all(color: Colors.black, width: 2),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.5),
@@ -113,7 +111,7 @@ class _WishScreenState extends State<WishScreen> {
                 ),
               ),
             ),
-            
+
             // 四个功能按钮
             Positioned(
               top: 120, // 头部下方
@@ -145,7 +143,7 @@ class _WishScreenState extends State<WishScreen> {
                 ],
               ),
             ),
-            
+
             // 愿望卡片展示区域
             Positioned(
               top: 210, // 功能按钮下方
@@ -154,7 +152,7 @@ class _WishScreenState extends State<WishScreen> {
               bottom: 120, // 为底部导航栏留出空间
               child: _buildWishCardsArea(),
             ),
-            
+
             // 底部导航栏
             Positioned(
               bottom: 30,
@@ -172,10 +170,17 @@ class _WishScreenState extends State<WishScreen> {
                     } else if (index == 1) {
                       // 守望服务
                       Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => const GuardianServiceScreen()),
+                        MaterialPageRoute(
+                          builder: (context) => const GuardianServiceScreen(),
+                        ),
                       );
                     } else if (index == 2) {
-                      print('个人中心功能开发中...');
+                      // 个人中心
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const ProfileScreen(),
+                        ),
+                      );
                     }
                   },
                 ),
@@ -209,10 +214,7 @@ class _WishScreenState extends State<WishScreen> {
             ],
           ),
           borderRadius: BorderRadius.circular(8),
-          border: Border.all(
-            color: Colors.black,
-            width: 2,
-          ),
+          border: Border.all(color: Colors.black, width: 2),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.3),
@@ -224,11 +226,7 @@ class _WishScreenState extends State<WishScreen> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              icon,
-              size: 14,
-              color: Colors.black,
-            ),
+            Icon(icon, size: 14, color: Colors.black),
             const SizedBox(width: 4),
             Text(
               label,
@@ -255,10 +253,7 @@ class _WishScreenState extends State<WishScreen> {
           decoration: BoxDecoration(
             color: Colors.blue.withOpacity(0.2),
             borderRadius: BorderRadius.circular(15),
-            border: Border.all(
-              color: Colors.blue.withOpacity(0.5),
-              width: 1,
-            ),
+            border: Border.all(color: Colors.blue.withOpacity(0.5), width: 1),
           ),
           child: Text(
             '当前筛选: $_selectedFilter',
@@ -270,7 +265,7 @@ class _WishScreenState extends State<WishScreen> {
           ),
         ),
         const SizedBox(height: 16),
-        
+
         // 愿望卡片列表
         Expanded(
           child: ListView.builder(
@@ -294,9 +289,9 @@ class _WishScreenState extends State<WishScreen> {
         color: Colors.black.withOpacity(0.3),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: wish['status'] == '进行中' 
-            ? Colors.orange.withOpacity(0.5)
-            : Colors.green.withOpacity(0.5),
+          color: wish['status'] == '进行中'
+              ? Colors.orange.withOpacity(0.5)
+              : Colors.green.withOpacity(0.5),
           width: 1,
         ),
         boxShadow: [
@@ -327,9 +322,9 @@ class _WishScreenState extends State<WishScreen> {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
-                  color: wish['status'] == '进行中' 
-                    ? Colors.orange.withOpacity(0.8)
-                    : Colors.green.withOpacity(0.8),
+                  color: wish['status'] == '进行中'
+                      ? Colors.orange.withOpacity(0.8)
+                      : Colors.green.withOpacity(0.8),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Text(
@@ -344,7 +339,7 @@ class _WishScreenState extends State<WishScreen> {
             ],
           ),
           const SizedBox(height: 8),
-          
+
           // 愿望描述
           Text(
             wish['description'],
@@ -355,7 +350,7 @@ class _WishScreenState extends State<WishScreen> {
             ),
           ),
           const SizedBox(height: 8),
-          
+
           // 创建时间
           Text(
             '创建于: ${wish['createdAt']}',
@@ -392,7 +387,7 @@ class _WishScreenState extends State<WishScreen> {
                 ),
               ),
               const SizedBox(height: 20),
-              
+
               _buildFilterOption('进行中'),
               const SizedBox(height: 12),
               _buildFilterOption('已实现'),
@@ -417,14 +412,10 @@ class _WishScreenState extends State<WishScreen> {
         width: double.infinity,
         padding: const EdgeInsets.symmetric(vertical: 16),
         decoration: BoxDecoration(
-          color: isSelected 
-            ? Colors.blue.withOpacity(0.3)
-            : Colors.transparent,
+          color: isSelected ? Colors.blue.withOpacity(0.3) : Colors.transparent,
           borderRadius: BorderRadius.circular(8),
           border: Border.all(
-            color: isSelected 
-              ? Colors.blue
-              : Colors.white.withOpacity(0.3),
+            color: isSelected ? Colors.blue : Colors.white.withOpacity(0.3),
             width: 1,
           ),
         ),
@@ -445,7 +436,9 @@ class _WishScreenState extends State<WishScreen> {
   /// 获取筛选后的愿望列表
   List<Map<String, dynamic>> _getFilteredWishes() {
     final allWishes = _getDemoWishes();
-    return allWishes.where((wish) => wish['status'] == _selectedFilter).toList();
+    return allWishes
+        .where((wish) => wish['status'] == _selectedFilter)
+        .toList();
   }
 
   /// 获取演示数据
@@ -512,9 +505,7 @@ class _WishScreenState extends State<WishScreen> {
         backgroundColor: Colors.blue.withOpacity(0.8),
         behavior: SnackBarBehavior.floating,
         duration: const Duration(seconds: 2),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       ),
     );
   }

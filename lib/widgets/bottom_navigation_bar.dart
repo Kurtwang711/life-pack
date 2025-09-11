@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class CustomBottomNavigationBar extends StatefulWidget {
   final int currentIndex;
   final Function(int) onTap;
-  
+
   const CustomBottomNavigationBar({
     super.key,
     required this.currentIndex,
@@ -11,7 +11,8 @@ class CustomBottomNavigationBar extends StatefulWidget {
   });
 
   @override
-  State<CustomBottomNavigationBar> createState() => _CustomBottomNavigationBarState();
+  State<CustomBottomNavigationBar> createState() =>
+      _CustomBottomNavigationBarState();
 }
 
 class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar>
@@ -20,43 +21,35 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar>
   late AnimationController _hoverController;
   late Animation<double> _radarAnimation;
   late Animation<double> _hoverAnimation;
-  
+
   @override
   void initState() {
     super.initState();
-    
+
     // 雷达动画控制器 - 更慢的动画效果
     _radarController = AnimationController(
       duration: const Duration(seconds: 3),
       vsync: this,
     );
-    
+
     // 悬浮动画控制器
     _hoverController = AnimationController(
       duration: const Duration(milliseconds: 300),
       vsync: this,
     );
-    
-    _radarAnimation = Tween<double>(
-      begin: 0,
-      end: 1,
-    ).animate(CurvedAnimation(
-      parent: _radarController,
-      curve: Curves.easeInOut,
-    ));
-    
-    _hoverAnimation = Tween<double>(
-      begin: 0,
-      end: 1,
-    ).animate(CurvedAnimation(
-      parent: _hoverController,
-      curve: Curves.easeInOut,
-    ));
-    
+
+    _radarAnimation = Tween<double>(begin: 0, end: 1).animate(
+      CurvedAnimation(parent: _radarController, curve: Curves.easeInOut),
+    );
+
+    _hoverAnimation = Tween<double>(begin: 0, end: 1).animate(
+      CurvedAnimation(parent: _hoverController, curve: Curves.easeInOut),
+    );
+
     // 开始雷达动画
     _radarController.repeat();
   }
-  
+
   @override
   void dispose() {
     _radarController.dispose();
@@ -80,10 +73,7 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar>
               const Color(0xFF191818).withOpacity(0.3),
             ],
           ),
-          border: Border.all(
-            color: Colors.white.withOpacity(0.1),
-            width: 1,
-          ),
+          border: Border.all(color: Colors.white.withOpacity(0.1), width: 1),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.3),
@@ -122,7 +112,7 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar>
     required bool hasAnimation,
   }) {
     final isSelected = widget.currentIndex == index;
-    
+
     return GestureDetector(
       onTap: () => widget.onTap(index),
       child: AnimatedContainer(
@@ -136,10 +126,7 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar>
           decoration: BoxDecoration(
             color: const Color(0xFF191818),
             borderRadius: BorderRadius.circular(20),
-            border: Border.all(
-              color: Colors.white.withOpacity(0.1),
-              width: 1,
-            ),
+            border: Border.all(color: Colors.white.withOpacity(0.1), width: 1),
           ),
           child: hasAnimation && index == 1
               ? AnimatedBuilder(
@@ -177,20 +164,12 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar>
                           ),
                         ),
                         // 中心图标
-                        SizedBox(
-                          width: 24,
-                          height: 24,
-                          child: icon,
-                        ),
+                        SizedBox(width: 24, height: 24, child: icon),
                       ],
                     );
                   },
                 )
-              : SizedBox(
-                  width: 24,
-                  height: 24,
-                  child: icon,
-                ),
+              : SizedBox(width: 24, height: 24, child: icon),
         ),
       ),
     );
@@ -198,26 +177,17 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar>
 
   // 自定义首页图标
   Widget _buildCustomHomeIcon() {
-    return CustomPaint(
-      size: const Size(24, 24),
-      painter: HomeIconPainter(),
-    );
+    return CustomPaint(size: const Size(24, 24), painter: HomeIconPainter());
   }
 
   // 自定义雷达图标
   Widget _buildCustomRadarIcon() {
-    return CustomPaint(
-      size: const Size(24, 24),
-      painter: RadarIconPainter(),
-    );
+    return CustomPaint(size: const Size(24, 24), painter: RadarIconPainter());
   }
 
   // 自定义个人图标
   Widget _buildCustomPersonIcon() {
-    return CustomPaint(
-      size: const Size(24, 24),
-      painter: PersonIconPainter(),
-    );
+    return CustomPaint(size: const Size(24, 24), painter: PersonIconPainter());
   }
 }
 
@@ -245,7 +215,7 @@ class HomeIconPainter extends CustomPainter {
     path.lineTo(size.width * 0.6, size.height * 0.9);
     path.lineTo(size.width * 0.6, size.height * 0.65);
     path.close();
-    
+
     canvas.drawPath(path, paint);
   }
 
@@ -263,13 +233,13 @@ class RadarIconPainter extends CustomPainter {
       ..strokeWidth = 1.5;
 
     final center = Offset(size.width / 2, size.height / 2);
-    
+
     // 绘制雷达圆圈
     canvas.drawCircle(center, size.width * 0.4, paint);
     canvas.drawCircle(center, size.width * 0.3, paint);
     canvas.drawCircle(center, size.width * 0.2, paint);
     canvas.drawCircle(center, size.width * 0.1, paint);
-    
+
     // 绘制雷达扫描线
     canvas.drawLine(
       center,
@@ -297,14 +267,14 @@ class PersonIconPainter extends CustomPainter {
       ..strokeWidth = 1.5;
 
     final center = Offset(size.width / 2, size.height / 2);
-    
+
     // 绘制头部
     canvas.drawCircle(
       Offset(center.dx, size.height * 0.3),
       size.width * 0.15,
       paint,
     );
-    
+
     // 绘制身体
     canvas.drawArc(
       Rect.fromCenter(

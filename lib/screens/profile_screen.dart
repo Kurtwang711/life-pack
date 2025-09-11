@@ -12,11 +12,7 @@ class ProfileScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(
-                Icons.person_outline,
-                size: 80,
-                color: Colors.white,
-              ),
+              Icon(Icons.person_outline, size: 80, color: Colors.white),
               SizedBox(height: 20),
               Text(
                 '个人中心',

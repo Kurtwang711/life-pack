@@ -3,7 +3,7 @@ import '../../widgets/custom_bottom_navigation.dart';
 import '../guardian_service/guardian_service_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({Key? key}) : super(key: key);
+  const ProfileScreen({super.key});
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
@@ -27,32 +27,32 @@ class _ProfileScreenState extends State<ProfileScreen> {
             children: [
               // 头部用户信息区域
               _buildUserHeader(),
-              
+
               const SizedBox(height: 20),
-              
+
               // 用户状态卡片区域 (实名认证、会员资格、存储容量)
               _buildStatusCards(),
-              
+
               const SizedBox(height: 30),
-              
+
               // 积分区域
               _buildPointsSection(),
-              
+
               const SizedBox(height: 30),
-              
+
               // 现金区域
               _buildCashSection(),
-              
+
               const SizedBox(height: 30),
-              
+
               // 管理区域
               _buildManagementSection(),
-              
+
               const SizedBox(height: 30),
-              
+
               // 其他功能区域
               _buildOtherSection(),
-              
+
               const SizedBox(height: 100), // 为底部导航栏留出空间
             ],
           ),
@@ -71,7 +71,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
           } else if (index == 1) {
             // 守望服务
             Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (context) => const GuardianServiceScreen()),
+              MaterialPageRoute(
+                builder: (context) => const GuardianServiceScreen(),
+              ),
             );
           }
           // index == 2 是当前页面（个人中心），无需跳转
@@ -114,9 +116,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
           ),
-          
+
           const SizedBox(width: 16),
-          
+
           // 用户信息区域
           Expanded(
             child: Column(
@@ -147,20 +149,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                   ],
                 ),
-                
+
                 const SizedBox(height: 8),
-                
+
                 // 账户号
                 Text(
                   "账户号：$_accountId",
-                  style: const TextStyle(
-                    color: Colors.white70,
-                    fontSize: 12,
-                  ),
+                  style: const TextStyle(color: Colors.white70, fontSize: 12),
                 ),
-                
+
                 const SizedBox(height: 4),
-                
+
                 // 手机号
                 Row(
                   children: [
@@ -185,7 +184,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ],
             ),
           ),
-          
+
           // 设置按钮
           Container(
             width: 60,
@@ -195,11 +194,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               color: const Color(0xFFFFA726),
               border: Border.all(color: Colors.white, width: 3),
             ),
-            child: const Icon(
-              Icons.settings,
-              color: Colors.white,
-              size: 24,
-            ),
+            child: const Icon(Icons.settings, color: Colors.white, size: 24),
           ),
         ],
       ),
@@ -220,9 +215,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
             backgroundColor: Colors.white,
           ),
         ),
-        
+
         const SizedBox(width: 12),
-        
+
         // 会员资格
         Expanded(
           child: _buildStatusCard(
@@ -233,9 +228,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
             backgroundColor: Colors.white,
           ),
         ),
-        
+
         const SizedBox(width: 12),
-        
+
         // 存储容量
         Expanded(
           child: _buildStatusCard(
@@ -281,11 +276,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               color: iconColor,
               borderRadius: BorderRadius.circular(20),
             ),
-            child: Icon(
-              icon,
-              color: Colors.white,
-              size: 20,
-            ),
+            child: Icon(icon, color: Colors.white, size: 20),
           ),
           const SizedBox(height: 8),
           Text(
@@ -301,10 +292,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             const SizedBox(height: 4),
             Text(
               subtitle,
-              style: const TextStyle(
-                fontSize: 10,
-                color: Colors.grey,
-              ),
+              style: const TextStyle(fontSize: 10, color: Colors.grey),
               textAlign: TextAlign.center,
             ),
           ],
@@ -509,19 +497,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
             color: color,
             borderRadius: BorderRadius.circular(25),
           ),
-          child: Icon(
-            icon,
-            color: Colors.white,
-            size: 24,
-          ),
+          child: Icon(icon, color: Colors.white, size: 24),
         ),
         const SizedBox(height: 8),
         Text(
           label,
-          style: const TextStyle(
-            fontSize: 12,
-            color: Colors.black87,
-          ),
+          style: const TextStyle(fontSize: 12, color: Colors.black87),
           textAlign: TextAlign.center,
         ),
       ],
@@ -557,9 +538,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           title: const Text('设置昵称'),
           content: TextField(
             controller: controller,
-            decoration: const InputDecoration(
-              hintText: '请输入昵称',
-            ),
+            decoration: const InputDecoration(hintText: '请输入昵称'),
             maxLength: 20,
           ),
           actions: [

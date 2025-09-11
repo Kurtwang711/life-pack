@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class RadioButtons extends StatefulWidget {
   final String leftButtonText;
   final String rightButtonText;
-  
+
   const RadioButtons({
     super.key,
     this.leftButtonText = 'PLAY',
@@ -38,7 +38,7 @@ class _RadioButtonsState extends State<RadioButtons> {
 
   Widget _buildRadioButton(String value, String text, bool isFirst) {
     final bool isSelected = selectedValue == value;
-    
+
     return GestureDetector(
       onTap: () {
         setState(() {
@@ -108,10 +108,7 @@ class _RadioButtonsState extends State<RadioButtons> {
                 ),
                 child: Text(
                   text,
-                  style: const TextStyle(
-                    letterSpacing: 0.5,
-                    height: 0.8,
-                  ),
+                  style: const TextStyle(letterSpacing: 0.5, height: 0.8),
                 ),
               ),
             ),

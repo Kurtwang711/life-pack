@@ -12,11 +12,7 @@ class HomeScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(
-                Icons.home_outlined,
-                size: 80,
-                color: Colors.white,
-              ),
+              Icon(Icons.home_outlined, size: 80, color: Colors.white),
               SizedBox(height: 20),
               Text(
                 '首页',

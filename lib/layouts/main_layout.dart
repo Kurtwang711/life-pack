@@ -28,7 +28,7 @@ class _MainLayoutState extends State<MainLayout> {
         children: [
           // 页面内容
           _pages[_currentIndex],
-          
+
           // 底部导航栏
           Positioned(
             left: 0,

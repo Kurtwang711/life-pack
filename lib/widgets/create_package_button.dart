@@ -32,7 +32,7 @@ class _CreatePackageButtonState extends State<CreatePackageButton> {
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
-                colors: _isHovering 
+                colors: _isHovering
                     ? [const Color(0xFF1D1D1D), const Color(0xFF1D1D1D)]
                     : [const Color(0xFF333333), const Color(0xFF242323)],
               ),
@@ -57,10 +57,7 @@ class _CreatePackageButtonState extends State<CreatePackageButton> {
                   height: 0.8,
                   shadows: const [
                     // 凹凸感阴影效果 - 高光
-                    Shadow(
-                      offset: Offset(-1, -1),
-                      color: Color(0x4AE0E0E0),
-                    ),
+                    Shadow(offset: Offset(-1, -1), color: Color(0x4AE0E0E0)),
                     // 凹凸感阴影效果 - 深色阴影
                     Shadow(
                       offset: Offset(1, 1),
@@ -68,10 +65,7 @@ class _CreatePackageButtonState extends State<CreatePackageButton> {
                       color: Color(0x80000000),
                     ),
                     // 蓝色发光效果
-                    Shadow(
-                      color: Color(0xFF51A5FF),
-                      blurRadius: 8,
-                    ),
+                    Shadow(color: Color(0xFF51A5FF), blurRadius: 8),
                   ],
                 ),
               ),
@@ -82,5 +76,3 @@ class _CreatePackageButtonState extends State<CreatePackageButton> {
     );
   }
 }
-
-

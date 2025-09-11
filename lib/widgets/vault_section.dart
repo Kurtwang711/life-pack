@@ -12,7 +12,8 @@ class VaultSection extends StatefulWidget {
   State<VaultSection> createState() => _VaultSectionState();
 }
 
-class _VaultSectionState extends State<VaultSection> with TickerProviderStateMixin {
+class _VaultSectionState extends State<VaultSection>
+    with TickerProviderStateMixin {
   bool _showMainView = false;
   late AnimationController _flashController;
   late Animation<Color?> _flashAnimation;
@@ -36,7 +37,7 @@ class _VaultSectionState extends State<VaultSection> with TickerProviderStateMix
       begin: Colors.black,
       end: const Color(0xFFFFD700), // 金色
     ).animate(_flashController);
-    
+
     // 开始闪烁动画
     _flashController.repeat(reverse: true);
   }
@@ -71,7 +72,6 @@ class _VaultSectionState extends State<VaultSection> with TickerProviderStateMix
     );
   }
 
-
   Widget _buildVaultView() {
     return GestureDetector(
       onTap: () {
@@ -91,10 +91,7 @@ class _VaultSectionState extends State<VaultSection> with TickerProviderStateMix
           ),
           borderRadius: BorderRadius.circular(22),
           border: Border(
-            top: BorderSide(
-              color: const Color(0xFF4E4D4D),
-              width: 1,
-            ),
+            top: BorderSide(color: const Color(0xFF4E4D4D), width: 1),
           ),
         ),
         child: Stack(
@@ -118,7 +115,7 @@ class _VaultSectionState extends State<VaultSection> with TickerProviderStateMix
                 ),
               ),
             ),
-            
+
             // 内容
             Center(
               child: Column(
@@ -145,7 +142,7 @@ class _VaultSectionState extends State<VaultSection> with TickerProviderStateMix
                     ),
                   ),
                   const SizedBox(height: 8),
-                  
+
                   // 锁形图标 - 带闪烁效果
                   AnimatedBuilder(
                     animation: _flashAnimation,
@@ -197,10 +194,7 @@ class _VaultSectionState extends State<VaultSection> with TickerProviderStateMix
           ),
           borderRadius: BorderRadius.circular(22),
           border: Border(
-            top: BorderSide(
-              color: const Color(0xFF4E4D4D),
-              width: 1,
-            ),
+            top: BorderSide(color: const Color(0xFF4E4D4D), width: 1),
           ),
         ),
         child: Padding(
@@ -211,19 +205,15 @@ class _VaultSectionState extends State<VaultSection> with TickerProviderStateMix
               Expanded(
                 child: Row(
                   children: [
-                    Expanded(
-                      child: _buildOptionButton('audio'),
-                    ),
+                    Expanded(child: _buildOptionButton('audio')),
                     const SizedBox(width: 2),
                     const SizedBox(width: 67), // 中心按钮占位
                     const SizedBox(width: 2),
-                    Expanded(
-                      child: _buildOptionButton('image'),
-                    ),
+                    Expanded(child: _buildOptionButton('image')),
                   ],
                 ),
               ),
-              
+
               // 中间行
               SizedBox(
                 height: 67,
@@ -235,20 +225,16 @@ class _VaultSectionState extends State<VaultSection> with TickerProviderStateMix
                   ],
                 ),
               ),
-              
+
               // 下排按钮
               Expanded(
                 child: Row(
                   children: [
-                    Expanded(
-                      child: _buildOptionButton('video'),
-                    ),
+                    Expanded(child: _buildOptionButton('video')),
                     const SizedBox(width: 2),
                     const SizedBox(width: 67), // 中心按钮占位
                     const SizedBox(width: 2),
-                    Expanded(
-                      child: _buildOptionButton('document'),
-                    ),
+                    Expanded(child: _buildOptionButton('document')),
                   ],
                 ),
               ),
@@ -261,7 +247,7 @@ class _VaultSectionState extends State<VaultSection> with TickerProviderStateMix
 
   Widget _buildOptionButton(String optionKey) {
     final option = _options[optionKey]!;
-    
+
     return GestureDetector(
       onTap: () {
         // 单击直接导航到对应的管理页面
@@ -331,9 +317,7 @@ class _VaultSectionState extends State<VaultSection> with TickerProviderStateMix
                   fontSize: 13,
                   fontWeight: FontWeight.w700,
                 ),
-                child: Text(
-                  option.label.toUpperCase(),
-                ),
+                child: Text(option.label.toUpperCase()),
               ),
             ),
           ],
@@ -344,7 +328,7 @@ class _VaultSectionState extends State<VaultSection> with TickerProviderStateMix
 
   Widget _buildCenterButton() {
     final option = _options['assets']!;
-    
+
     return GestureDetector(
       onTap: () {
         print('点击了资产管理中心按钮');
@@ -390,9 +374,7 @@ class _VaultSectionState extends State<VaultSection> with TickerProviderStateMix
                   fontSize: 13,
                   fontWeight: FontWeight.w700,
                 ),
-                child: Text(
-                  option.label.toUpperCase(),
-                ),
+                child: Text(option.label.toUpperCase()),
               ),
             ),
           ],
@@ -405,6 +387,6 @@ class _VaultSectionState extends State<VaultSection> with TickerProviderStateMix
 class VaultOption {
   final String label;
   final Color color;
-  
+
   VaultOption(this.label, this.color);
 }

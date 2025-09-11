@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import '../home/home_screen.dart';
+import '../guardian_service/guardian_service_screen.dart';
+import '../profile/profile_screen.dart';
 import '../../widgets/custom_bottom_navigation.dart';
 
 class TrueSelfRecordScreen extends StatefulWidget {
@@ -27,10 +29,7 @@ class _TrueSelfRecordScreenState extends State<TrueSelfRecordScreen> {
         decoration: BoxDecoration(
           color: const Color(0xFF1a1a1a),
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(
-            color: Colors.black,
-            width: 2,
-          ),
+          border: Border.all(color: Colors.black, width: 2),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.5),
@@ -92,14 +91,14 @@ class _TrueSelfRecordScreenState extends State<TrueSelfRecordScreen> {
                 ),
               ),
             ),
-            
+
             // 头像上传区域 - 位于返回键下方
             Positioned(
               top: 114, // 返回键底部(60+44=104) + 10px垂直间距 = 114
-              left: 4,  // 距离左侧边线4px
+              left: 4, // 距离左侧边线4px
               child: _buildAvatarUploadArea(),
             ),
-            
+
             // 底部导航栏
             Positioned(
               bottom: 30, // 距离底部30px悬浮
@@ -117,8 +116,19 @@ class _TrueSelfRecordScreenState extends State<TrueSelfRecordScreen> {
                       // 首页按钮
                       _navigateToHome();
                     } else if (index == 1) {
-                      // 个人中心按钮 - 暂时不实现
-                      print('个人中心功能开发中...');
+                      // 守望服务
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const GuardianServiceScreen(),
+                        ),
+                      );
+                    } else if (index == 2) {
+                      // 个人中心
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const ProfileScreen(),
+                        ),
+                      );
                     }
                   },
                 ),
@@ -135,15 +145,12 @@ class _TrueSelfRecordScreenState extends State<TrueSelfRecordScreen> {
     return GestureDetector(
       onTap: _handleAvatarUpload,
       child: Container(
-        width: 120,  // 宽度120px
+        width: 120, // 宽度120px
         height: 160, // 高度160px
         decoration: BoxDecoration(
           color: Colors.black.withOpacity(0.3),
           borderRadius: BorderRadius.circular(12), // 圆角设计
-          border: Border.all(
-            color: const Color(0xFF333333),
-            width: 1.5,
-          ),
+          border: Border.all(color: const Color(0xFF333333), width: 1.5),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.2),
@@ -197,7 +204,7 @@ class _TrueSelfRecordScreenState extends State<TrueSelfRecordScreen> {
         duration: Duration(seconds: 2),
       ),
     );
-    
+
     // 这里后续可以集成图片选择器
     // 例如: image_picker 包
     print('触发头像上传功能');

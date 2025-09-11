@@ -41,11 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Stack(
             children: [
               // 寄语区卡片 - 距离顶部4px，距离左侧4px
-              Positioned(
-                top: 4,
-                left: 4,
-                child: const SpringCard(),
-              ),
+              Positioned(top: 4, left: 4, child: const SpringCard()),
               // 第一排按钮 - 距离顶部4px，距离右侧4px
               Positioned(
                 top: 4,
@@ -64,7 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   rightButtonText: '主题',
                 ),
               ),
-              
+
               // 签到区 - 在寄语区下方，间距10px
               Positioned(
                 top: 104, // 寄语区底部(4+90=94) + 间距10px = 104
@@ -72,14 +68,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 right: 4,
                 child: const CheckinSection(),
               ),
-              
+
               // 机要库区 - 在签到区下方，间距10px
               Positioned(
                 top: 284, // 原294，向上提升10px
                 left: 14,
                 child: const VaultSection(),
               ),
-              
+
               // 右侧按钮组 - 与右边线保持8px间距
               Positioned(
                 top: 284, // 原294，向上提升10px
@@ -110,23 +106,23 @@ class _HomeScreenState extends State<HomeScreen> {
                     // 许愿按钮
                     _buildCustomButton('许愿', 140, 50, () {
                       Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => const WishScreen()),
+                        MaterialPageRoute(
+                          builder: (context) => const WishScreen(),
+                        ),
                       );
                     }),
                   ],
                 ),
               ),
-              
+
               // 创建包裹按钮 - 在机要库下方，间距10px，居中位置
               Positioned(
                 top: 504, // 机要库底部(284+210=494) + 间距10px = 504，向上提升10px
                 left: 0,
                 right: 0,
-                child: Center(
-                  child: const CreatePackageButton(),
-                ),
+                child: Center(child: const CreatePackageButton()),
               ),
-              
+
               // 悬浮底部导航栏
               Positioned(
                 bottom: 30, // 距离底部30px悬浮
@@ -143,12 +139,16 @@ class _HomeScreenState extends State<HomeScreen> {
                       if (index == 1) {
                         // 守望服务
                         Navigator.of(context).push(
-                          MaterialPageRoute(builder: (context) => const GuardianServiceScreen()),
+                          MaterialPageRoute(
+                            builder: (context) => const GuardianServiceScreen(),
+                          ),
                         );
                       } else if (index == 2) {
                         // 个人中心
                         Navigator.of(context).push(
-                          MaterialPageRoute(builder: (context) => const ProfileScreen()),
+                          MaterialPageRoute(
+                            builder: (context) => const ProfileScreen(),
+                          ),
                         );
                       }
                     },
@@ -163,7 +163,12 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   // 构建自定义按钮的辅助方法
-  Widget _buildCustomButton(String text, double width, double height, [VoidCallback? onTap]) {
+  Widget _buildCustomButton(
+    String text,
+    double width,
+    double height, [
+    VoidCallback? onTap,
+  ]) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -202,10 +207,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 letterSpacing: 0.5,
                 height: 0.8,
                 shadows: const [
-                  Shadow(
-                    offset: Offset(-1, -1),
-                    color: Color(0x1AE0E0E0),
-                  ),
+                  Shadow(offset: Offset(-1, -1), color: Color(0x1AE0E0E0)),
                   Shadow(
                     offset: Offset(0, 2),
                     blurRadius: 3,

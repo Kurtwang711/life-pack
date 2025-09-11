@@ -12,11 +12,7 @@ class WatchScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(
-                Icons.radar,
-                size: 80,
-                color: Colors.white,
-              ),
+              Icon(Icons.radar, size: 80, color: Colors.white),
               SizedBox(height: 20),
               Text(
                 '守望',

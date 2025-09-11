@@ -36,11 +36,7 @@ class SimpleHomeScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              Icons.favorite,
-              size: 100,
-              color: Colors.red,
-            ),
+            Icon(Icons.favorite, size: 100, color: Colors.red),
             SizedBox(height: 20),
             Text(
               'Life Pack 应用运行正常！',
@@ -53,10 +49,7 @@ class SimpleHomeScreen extends StatelessWidget {
             SizedBox(height: 20),
             Text(
               '如果您看到这个页面，说明应用已成功安装',
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.white70,
-              ),
+              style: TextStyle(fontSize: 16, color: Colors.white70),
               textAlign: TextAlign.center,
             ),
           ],

@@ -4,15 +4,12 @@ import '../models/checkin_model.dart';
 class StatsSection extends StatelessWidget {
   final CheckinManager checkinManager;
 
-  const StatsSection({
-    super.key,
-    required this.checkinManager,
-  });
+  const StatsSection({super.key, required this.checkinManager});
 
   @override
   Widget build(BuildContext context) {
     final stats = checkinManager.getStats();
-    
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [

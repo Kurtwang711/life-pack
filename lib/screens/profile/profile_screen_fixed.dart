@@ -40,7 +40,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     // 数据统计行
                     _buildStatsRow(),
 
-                    const SizedBox(height: 4),
+                    const SizedBox(height: 16),
 
                     // 我的积分区域
                     _buildPointsSection(),
@@ -281,7 +281,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   // 我的积分区域 - 卡片式容器
   Widget _buildPointsSection() {
     return Container(
-      margin: const EdgeInsets.fromLTRB(16, 4, 16, 4),
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: const Color(0xFF2a2a2a),
@@ -321,7 +321,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ],
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: 16),
           Row(
             children: [
               Expanded(child: _buildCustomButton('挣积分', 80, 40)),
@@ -339,7 +339,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   // 我的钱包区域 - 卡片式容器
   Widget _buildWalletSection() {
     return Container(
-      margin: const EdgeInsets.fromLTRB(16, 4, 16, 4),
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: const Color(0xFF2a2a2a),
@@ -350,6 +350,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
         children: [
           Row(
             children: [
+              Container(
+                width: 24,
+                height: 24,
+                decoration: BoxDecoration(
+                  color: const Color(0xFF4CAF50), // 绿色
+                  borderRadius: BorderRadius.circular(4), // 方形圆角
+                ),
+                child: const Icon(
+                  Icons.account_balance_wallet,
+                  color: Colors.white,
+                  size: 16,
+                ),
+              ),
+              const SizedBox(width: 8),
               const Text(
                 '我的钱包',
                 style: TextStyle(
@@ -358,20 +372,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   fontWeight: FontWeight.w600,
                 ),
               ),
-              const Spacer(),
-              const Text(
-                '¥128.50',
-                style: TextStyle(
-                  color: Color(0xFF4CAF50),
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
             ],
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: 16),
           Row(
             children: [
+              Expanded(child: _buildCustomButton('现金余额\n¥128.50', 80, 50)),
+              const SizedBox(width: 8),
               Expanded(child: _buildCustomButton('消费明细', 80, 40)),
               const SizedBox(width: 8),
               Expanded(child: _buildCustomButton('充值提现', 80, 40)),
@@ -385,7 +392,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   // 管理区域 - 卡片式容器
   Widget _buildManagementSection() {
     return Container(
-      margin: const EdgeInsets.fromLTRB(16, 4, 16, 4),
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: const Color(0xFF2a2a2a),
@@ -394,26 +401,40 @@ class _ProfileScreenState extends State<ProfileScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            '管理',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-          const SizedBox(height: 4),
           Row(
             children: [
-              Expanded(child: _buildCustomButton('联系人', 0, 35)),
-              const SizedBox(width: 2),
-              Expanded(child: _buildCustomButton('主题皮肤', 0, 35)),
-              const SizedBox(width: 2),
-              Expanded(child: _buildCustomButton('登录密码', 0, 35)),
-              const SizedBox(width: 2),
-              Expanded(child: _buildCustomButton('人脸识别', 0, 35)),
-              const SizedBox(width: 2),
-              Expanded(child: _buildCustomButton('邀请码', 0, 35)),
+              Container(
+                width: 24,
+                height: 24,
+                decoration: BoxDecoration(
+                  color: const Color(0xFF2196F3), // 蓝色
+                  borderRadius: BorderRadius.circular(4), // 方形圆角
+                ),
+                child: const Icon(
+                  Icons.settings,
+                  color: Colors.white,
+                  size: 16,
+                ),
+              ),
+              const SizedBox(width: 8),
+              const Text(
+                '管理区',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: [
+              _buildCustomButton('联系人', 70, 35),
+              _buildCustomButton('主题皮肤', 70, 35),
+              _buildCustomButton('登录密码', 70, 35),
             ],
           ),
         ],
@@ -424,7 +445,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   // 其他区域 - 卡片式容器
   Widget _buildOtherSection() {
     return Container(
-      margin: const EdgeInsets.fromLTRB(16, 4, 16, 4),
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: const Color(0xFF2a2a2a),
@@ -433,40 +454,43 @@ class _ProfileScreenState extends State<ProfileScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            '其他',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-          const SizedBox(height: 4),
-          Column(
+          Row(
             children: [
-              Row(
-                children: [
-                  Expanded(child: _buildCustomButton('帮助中心', 0, 35)),
-                  const SizedBox(width: 2),
-                  Expanded(child: _buildCustomButton('意见反馈', 0, 35)),
-                  const SizedBox(width: 2),
-                  Expanded(child: _buildCustomButton('关于我们', 0, 35)),
-                  const SizedBox(width: 2),
-                  Expanded(child: _buildCustomButton('隐私政策', 0, 35)),
-                ],
+              Container(
+                width: 24,
+                height: 24,
+                decoration: BoxDecoration(
+                  color: const Color(0xFFFF9800), // 橙色
+                  borderRadius: BorderRadius.circular(4), // 方形圆角
+                ),
+                child: const Icon(
+                  Icons.more_horiz,
+                  color: Colors.white,
+                  size: 16,
+                ),
               ),
-              const SizedBox(height: 8),
-              Row(
-                children: [
-                  Expanded(child: _buildCustomButton('用户协议', 0, 35)),
-                  const SizedBox(width: 2),
-                  Expanded(child: _buildCustomButton('退出登录', 0, 35)),
-                  const SizedBox(width: 2),
-                  Expanded(child: _buildCustomButton('注销账户', 0, 35)),
-                  const SizedBox(width: 2),
-                  Expanded(child: _buildCustomButton('评分', 0, 35)),
-                ],
+              const SizedBox(width: 8),
+              const Text(
+                '其他区',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: [
+              _buildCustomButton('帮助中心', 70, 35),
+              _buildCustomButton('意见反馈', 70, 35),
+              _buildCustomButton('关于我们', 70, 35),
+              _buildCustomButton('隐私政策', 70, 35),
+              _buildCustomButton('用户协议', 70, 35),
+              _buildCustomButton('退出登录', 70, 35),
             ],
           ),
         ],
@@ -500,7 +524,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
         padding: const EdgeInsets.all(4),
         child: Container(
-          width: width > 0 ? width : null,
+          width: width,
           height: height,
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(

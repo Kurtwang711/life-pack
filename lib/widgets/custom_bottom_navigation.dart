@@ -23,18 +23,18 @@ class _CustomBottomNavigationState extends State<CustomBottomNavigation>
   @override
   void initState() {
     super.initState();
-    
+
     // 雷达动画控制器
     _radarController = AnimationController(
       duration: const Duration(seconds: 2),
       vsync: this,
     );
-    
+
     _radarAnimation = Tween<double>(
       begin: 0.0,
       end: 2 * math.pi,
     ).animate(_radarController);
-    
+
     // 开始循环动画
     _radarController.repeat();
   }
@@ -60,25 +60,15 @@ class _CustomBottomNavigationState extends State<CustomBottomNavigation>
         mainAxisAlignment: MainAxisAlignment.spaceEvenly, // 均匀分布
         children: [
           // 首页按钮
-          _buildNavButton(
-            index: 0,
-            icon: Icons.home_outlined,
-            label: '首页',
-          ),
-          
+          _buildNavButton(index: 0, icon: Icons.home_outlined, label: '首页'),
+
           const SizedBox(width: 32), // 2rem gap
-          
           // 动态雷达
           _buildRadar(),
-          
+
           const SizedBox(width: 32), // 2rem gap
-          
           // 个人中心按钮
-          _buildNavButton(
-            index: 2,
-            icon: Icons.person_outline,
-            label: '个人中心',
-          ),
+          _buildNavButton(index: 2, icon: Icons.person_outline, label: '个人中心'),
         ],
       ),
     );
@@ -157,74 +147,69 @@ class _CustomBottomNavigationState extends State<CustomBottomNavigation>
           ],
         ),
         child: Stack(
-        children: [
-          // 内圆虚线边框
-          Positioned.fill(
-            child: Container(
-              margin: const EdgeInsets.all(5.2),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(50),
-                border: Border.all(
-                  color: const Color(0xFF444444),
-                  width: 1,
-                  style: BorderStyle.solid, // Flutter不支持虚线，用实线代替
+          children: [
+            // 内圆虚线边框
+            Positioned.fill(
+              child: Container(
+                margin: const EdgeInsets.all(5.2),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(50),
+                  border: Border.all(
+                    color: const Color(0xFF444444),
+                    width: 1,
+                    style: BorderStyle.solid, // Flutter不支持虚线，用实线代替
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.25),
+                      blurRadius: 6.4,
+                      offset: const Offset(-1.2, -1.2),
+                    ),
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.25),
+                      blurRadius: 9.6,
+                      offset: const Offset(1.2, 1.2),
+                    ),
+                  ],
                 ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.25),
-                    blurRadius: 6.4,
-                    offset: const Offset(-1.2, -1.2),
-                  ),
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.25),
-                    blurRadius: 9.6,
-                    offset: const Offset(1.2, 1.2),
-                  ),
-                ],
               ),
             ),
-          ),
-          
-          // 中心圆点
-          Center(
-            child: Container(
-              width: 12.8,
-              height: 12.8,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(50),
-                border: Border.all(
-                  color: const Color(0xFF444444),
-                  width: 1,
+
+            // 中心圆点
+            Center(
+              child: Container(
+                width: 12.8,
+                height: 12.8,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(50),
+                  border: Border.all(color: const Color(0xFF444444), width: 1),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.25),
+                      blurRadius: 6.4,
+                      offset: const Offset(-1.2, -1.2),
+                    ),
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.25),
+                      blurRadius: 9.6,
+                      offset: const Offset(1.2, 1.2),
+                    ),
+                  ],
                 ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.25),
-                    blurRadius: 6.4,
-                    offset: const Offset(-1.2, -1.2),
-                  ),
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.25),
-                    blurRadius: 9.6,
-                    offset: const Offset(1.2, 1.2),
-                  ),
-                ],
               ),
             ),
-          ),
-          
-          // 雷达扫描线
-          AnimatedBuilder(
-            animation: _radarAnimation,
-            builder: (context, child) {
-              return CustomPaint(
-                size: const Size(40, 40),
-                painter: RadarPainter(
-                  angle: _radarAnimation.value,
-                ),
-              );
-            },
-          ),
-        ],
+
+            // 雷达扫描线
+            AnimatedBuilder(
+              animation: _radarAnimation,
+              builder: (context, child) {
+                return CustomPaint(
+                  size: const Size(40, 40),
+                  painter: RadarPainter(angle: _radarAnimation.value),
+                );
+              },
+            ),
+          ],
         ),
       ),
     );
@@ -240,19 +225,19 @@ class RadarPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final center = Offset(size.width / 2, size.height / 2);
     final radius = size.width / 2 - 2; // 留出边框空间
-    
+
     // 绘制雷达同心圆
     _drawRadarCircles(canvas, center, radius);
-    
+
     // 绘制雷达十字线
     _drawRadarCrossLines(canvas, center, radius);
-    
+
     // 绘制扫描扇形区域（发光效果）
     _drawScanArea(canvas, center, radius);
-    
+
     // 绘制主扫描线
     _drawScanLine(canvas, center, radius);
-    
+
     // 绘制扫描点效果
     _drawScanDots(canvas, center, radius);
   }
@@ -294,7 +279,7 @@ class RadarPainter extends CustomPainter {
     // 扇形扫描区域 - 60度扇形
     final scanAngleRange = math.pi / 3; // 60度
     final startAngle = angle - scanAngleRange / 2;
-    
+
     // 创建扇形渐变
     final sweepGradient = SweepGradient(
       center: Alignment.center,

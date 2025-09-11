@@ -41,217 +41,241 @@ class _GuardianServiceScreenState extends State<GuardianServiceScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF1a1a1a),
       body: Container(
-        margin: const EdgeInsets.all(8),
-        decoration: BoxDecoration(
-          color: const Color(0xFF1a1a1a),
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: Colors.black, width: 2),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.5),
-              blurRadius: 8,
-              offset: const Offset(0, 2),
-            ),
-          ],
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Color(0xFF1B4332), // 墨绿偏暗色
+              Color(0xFF2D5016), // 深绿色
+              Color(0xFF081C15), // 更深的绿黑色
+            ],
+            stops: [0.0, 0.6, 1.0],
+          ),
         ),
-        child: Stack(
-          children: [
-            // 头部区域
-            Positioned(
-              top: 60,
-              left: 0,
-              right: 0,
-              child: Container(
-                height: 44,
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Row(
-                  children: [
-                    // 返回按钮
-                    GestureDetector(
-                      onTap: _navigateToHome,
-                      child: Container(
-                        width: 40,
-                        height: 40,
-                        decoration: BoxDecoration(
-                          color: Colors.black.withOpacity(0.6),
-                          borderRadius: BorderRadius.circular(8),
-                          border: Border.all(
-                            color: const Color(0xFF333333),
-                            width: 1,
-                          ),
-                        ),
-                        child: const Icon(
-                          Icons.arrow_back_ios_new,
-                          color: Colors.white,
-                          size: 18,
-                        ),
-                      ),
-                    ),
-                    // 居中标题
-                    Expanded(
-                      child: Container(
-                        alignment: Alignment.center,
-                        child: const Text(
-                          '守望设置',
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    ),
-                    // 占位空间保持标题居中
-                    const SizedBox(width: 40),
-                  ],
+        child: SafeArea(
+          child: Container(
+            margin: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: const Color(0xFF1a1a1a),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: Colors.black, width: 2),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.5),
+                  blurRadius: 8,
+                  offset: const Offset(0, 2),
                 ),
-              ),
+              ],
             ),
-
-            // 主内容区域
-            Positioned(
-              top: 100, // 向下调整10px (90 + 10 = 100)
-              left: 16,
-              right: 16,
-              bottom: 120,
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // 登录频次监控和运动步数监控
-                    Row(
+            child: Stack(
+              children: [
+                // 头部区域
+                Positioned(
+                  top: 60,
+                  left: 0,
+                  right: 0,
+                  child: Container(
+                    height: 44,
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Row(
                       children: [
-                        Expanded(
-                          child: _buildMonitorSetting(
-                            '登录频次监控',
-                            _loginMonitorDays,
-                            () => _showDaysSelector(
-                              '登录频次监控',
-                              _loginMonitorDays,
-                              (value) {
-                                setState(() {
-                                  _loginMonitorDays = value;
-                                });
-                              },
+                        // 返回按钮
+                        GestureDetector(
+                          onTap: _navigateToHome,
+                          child: Container(
+                            width: 40,
+                            height: 40,
+                            decoration: BoxDecoration(
+                              color: Colors.black.withOpacity(0.6),
+                              borderRadius: BorderRadius.circular(8),
+                              border: Border.all(
+                                color: const Color(0xFF333333),
+                                width: 1,
+                              ),
+                            ),
+                            child: const Icon(
+                              Icons.arrow_back_ios_new,
+                              color: Colors.white,
+                              size: 18,
                             ),
                           ),
                         ),
-                        const SizedBox(width: 16),
+                        // 居中标题
                         Expanded(
-                          child: _buildMonitorSetting(
-                            '运动步数监控',
-                            _stepMonitorDays,
-                            () => _showDaysSelector(
-                              '运动步数监控',
-                              _stepMonitorDays,
-                              (value) {
-                                setState(() {
-                                  _stepMonitorDays = value;
-                                });
-                              },
+                          child: Container(
+                            alignment: Alignment.center,
+                            child: const Text(
+                              '守望设置',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.white,
+                              ),
                             ),
                           ),
                         ),
+                        // 占位空间保持标题居中
+                        const SizedBox(width: 40),
                       ],
                     ),
+                  ),
+                ),
 
-                    const SizedBox(height: 22),
-
-                    // 守望流程 - 可收缩的流程图
-                    Column(
+                // 主内容区域
+                Positioned(
+                  top: 100, // 向下调整10px (90 + 10 = 100)
+                  left: 16,
+                  right: 16,
+                  bottom: 120,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // 守望流程标题栏 - 带收缩按钮
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const Text(
-                                '守望流程',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.white,
+                        // 登录频次监控和运动步数监控
+                        Row(
+                          children: [
+                            Expanded(
+                              child: _buildMonitorSetting(
+                                '登录频次监控',
+                                _loginMonitorDays,
+                                () => _showDaysSelector(
+                                  '登录频次监控',
+                                  _loginMonitorDays,
+                                  (value) {
+                                    setState(() {
+                                      _loginMonitorDays = value;
+                                    });
+                                  },
                                 ),
                               ),
-                              GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    _isFlowChartExpanded =
-                                        !_isFlowChartExpanded;
-                                  });
-                                },
-                                child: Container(
-                                  padding: const EdgeInsets.all(4),
-                                  child: AnimatedRotation(
-                                    turns: _isFlowChartExpanded ? 0 : -0.5,
-                                    duration: const Duration(milliseconds: 300),
-                                    child: const Icon(
-                                      Icons.keyboard_arrow_down,
-                                      color: Colors.white70,
-                                      size: 20,
+                            ),
+                            const SizedBox(width: 16),
+                            Expanded(
+                              child: _buildMonitorSetting(
+                                '运动步数监控',
+                                _stepMonitorDays,
+                                () => _showDaysSelector(
+                                  '运动步数监控',
+                                  _stepMonitorDays,
+                                  (value) {
+                                    setState(() {
+                                      _stepMonitorDays = value;
+                                    });
+                                  },
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+
+                        const SizedBox(height: 22),
+
+                        // 守望流程 - 可收缩的流程图
+                        Column(
+                          children: [
+                            // 守望流程标题栏 - 带收缩按钮
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                              ),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  const Text(
+                                    '守望流程',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.white,
                                     ),
                                   ),
-                                ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        _isFlowChartExpanded =
+                                            !_isFlowChartExpanded;
+                                      });
+                                    },
+                                    child: Container(
+                                      padding: const EdgeInsets.all(4),
+                                      child: AnimatedRotation(
+                                        turns: _isFlowChartExpanded ? 0 : -0.5,
+                                        duration: const Duration(
+                                          milliseconds: 300,
+                                        ),
+                                        child: const Icon(
+                                          Icons.keyboard_arrow_down,
+                                          color: Colors.white70,
+                                          size: 20,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
-                        ),
+                            ),
 
-                        const SizedBox(height: 16),
+                            const SizedBox(height: 16),
 
-                        // 可收缩的流程图容器
-                        AnimatedCrossFade(
-                          duration: const Duration(milliseconds: 300),
-                          crossFadeState: _isFlowChartExpanded
-                              ? CrossFadeState.showFirst
-                              : CrossFadeState.showSecond,
-                          firstChild: Container(
-                            width: double.infinity,
-                            padding: const EdgeInsets.symmetric(horizontal: 8),
-                            child: _buildGuardianFlowChart(),
-                          ),
-                          secondChild: const SizedBox(
-                            width: double.infinity,
-                            height: 0,
-                          ),
+                            // 可收缩的流程图容器
+                            AnimatedCrossFade(
+                              duration: const Duration(milliseconds: 300),
+                              crossFadeState: _isFlowChartExpanded
+                                  ? CrossFadeState.showFirst
+                                  : CrossFadeState.showSecond,
+                              firstChild: Container(
+                                width: double.infinity,
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 8,
+                                ),
+                                child: _buildGuardianFlowChart(),
+                              ),
+                              secondChild: const SizedBox(
+                                width: double.infinity,
+                                height: 0,
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
-                  ],
+                  ),
                 ),
-              ),
-            ),
 
-            // 底部导航栏
-            Positioned(
-              bottom: 30,
-              left: 0,
-              right: 0,
-              child: Center(
-                child: CustomBottomNavigation(
-                  currentIndex: _currentNavIndex,
-                  onTap: (index) {
-                    setState(() {
-                      _currentNavIndex = index;
-                    });
-                    if (index == 0) {
-                      _navigateToHome();
-                    } else if (index == 1) {
-                      // 当前页面，不需要导航
-                    } else if (index == 2) {
-                      // 个人中心
-                      Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(builder: (context) => const ProfileScreen()),
-                      );
-                    }
-                  },
+                // 底部导航栏
+                Positioned(
+                  bottom: 30,
+                  left: 0,
+                  right: 0,
+                  child: Center(
+                    child: CustomBottomNavigation(
+                      currentIndex: _currentNavIndex,
+                      onTap: (index) {
+                        setState(() {
+                          _currentNavIndex = index;
+                        });
+                        if (index == 0) {
+                          _navigateToHome();
+                        } else if (index == 1) {
+                          // 当前页面，不需要导航
+                        } else if (index == 2) {
+                          // 个人中心
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                              builder: (context) => const ProfileScreen(),
+                            ),
+                          );
+                        }
+                      },
+                    ),
+                  ),
                 ),
-              ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );

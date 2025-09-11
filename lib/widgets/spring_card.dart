@@ -95,10 +95,7 @@ class _SpringCardState extends State<SpringCard> {
                                 blurRadius: 3,
                                 color: Color(0x4D000000),
                               ),
-                              Shadow(
-                                color: Colors.white,
-                                blurRadius: 12,
-                              ),
+                              Shadow(color: Colors.white, blurRadius: 12),
                             ],
                           ),
                         ),
