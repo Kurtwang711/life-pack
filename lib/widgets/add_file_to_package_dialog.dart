@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 
-class FileUploadDialog extends StatefulWidget {
+class AddFileToPackageDialog extends StatefulWidget {
   final VoidCallback? onConfirm;
   final VoidCallback? onCancel;
 
-  const FileUploadDialog({
+  const AddFileToPackageDialog({
     super.key,
     this.onConfirm,
     this.onCancel,
   });
 
   @override
-  State<FileUploadDialog> createState() => _FileUploadDialogState();
+  State<AddFileToPackageDialog> createState() => _AddFileToPackageDialogState();
 }
 
-class _FileUploadDialogState extends State<FileUploadDialog> {
+class _AddFileToPackageDialogState extends State<AddFileToPackageDialog> {
   bool _isConfirmHovered = false;
   bool _isCancelHovered = false;
 

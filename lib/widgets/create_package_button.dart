@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package_creation_form.dart';
-import 'file_upload_dialog.dart';
+import 'add_file_to_package_dialog.dart';
 import '../services/package_manager.dart';
+import '../screens/package_content/package_content_screen.dart';
 
 class CreatePackageButton extends StatefulWidget {
   const CreatePackageButton({super.key});
@@ -30,30 +31,35 @@ class _CreatePackageButtonState extends State<CreatePackageButton> {
             // 关闭模态框 - 使用modalContext确保关闭的是模态框而不是主屏幕
             Navigator.of(modalContext).pop();
             
-            // 显示包裹创建成功的文件上传对话框
-            final shouldUploadFile = await showDialog<bool>(
+            // 获取刚创建的包裹信息
+            final packageManager = PackageManager();
+            final packages = packageManager.packages;
+            final latestPackage = packages.isNotEmpty ? packages.last : null;
+            
+            // 显示包裹创建成功的文件添加确认对话框
+            final shouldAddFile = await showDialog<bool>(
               context: context,
               barrierDismissible: false,
-              builder: (context) => FileUploadDialog(
+              builder: (context) => AddFileToPackageDialog(
                 onConfirm: () => Navigator.of(context).pop(true),
                 onCancel: () => Navigator.of(context).pop(false),
               ),
             );
             
-            if (shouldUploadFile == true) {
-              // 用户选择"好" - 处理文件上传
-              print('用户选择添加文件到包裹');
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('包裹创建成功！正在准备文件上传...'),
-                  backgroundColor: Colors.green,
-                  duration: Duration(seconds: 2),
+            if (shouldAddFile == true && latestPackage != null) {
+              // 用户选择"好" - 导航到包裹内容管理页面
+              print('用户选择添加文件到包裹，导航到包裹内容管理页面');
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => PackageContentScreen(
+                    packageNumber: latestPackage.packageNumber,
+                    sequenceNumber: latestPackage.sequenceNumber,
+                  ),
                 ),
               );
-              // TODO: 在这里实现文件上传功能
             } else {
-              // 用户选择"不" - 只显示成功消息
-              print('用户选择不添加文件');
+              // 用户选择"不" - 返回首页并显示成功消息
+              print('用户选择不添加文件，返回首页');
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
                   content: Text('包裹创建成功！'),
