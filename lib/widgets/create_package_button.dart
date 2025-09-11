@@ -53,6 +53,7 @@ class _CreatePackageButtonState extends State<CreatePackageButton> {
                 MaterialPageRoute(
                   builder: (context) => PackageContentScreen(
                     packageNumber: latestPackage.packageNumber,
+                    sequenceNumber: latestPackage.sequenceNumber,
                   ),
                 ),
               );

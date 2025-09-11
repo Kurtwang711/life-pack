@@ -36,223 +36,209 @@ class _ImageManagementScreenState extends State<ImageManagementScreen> {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              Color(0xFF0A3A5C), // 深蓝色
-              Color(0xFF1A365D), // 稍浅蓝色
-              Color(0xFF2C5282), // 中蓝色
+              Color(0xFF1B4332), // 墨绿偏暗色
+              Color(0xFF2D5016), // 深绿色
+              Color(0xFF081C15), // 更深的绿黑色
             ],
             stops: [0.0, 0.6, 1.0],
           ),
         ),
         child: SafeArea(
-          child: Column(
-            children: [
-              // 头部区域
-              Container(
-                height: 60,
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Row(
-                  children: [
-                    // 返回按钮
-                    GestureDetector(
-                      onTap: _navigateToHome,
-                      child: Container(
-                        width: 40,
-                        height: 40,
-                        decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: const Icon(
-                          Icons.arrow_back_ios,
-                          color: Colors.white,
-                          size: 20,
-                        ),
-                      ),
-                    ),
-                    
-                    // 标题
-                    Expanded(
-                      child: Text(
-                        '图片管理',
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                    
-                    // 占位，保持标题居中
-                    const SizedBox(width: 40),
-                  ],
+          child: Container(
+            margin: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: const Color(0xFF1a1a1a),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: Colors.black, width: 2),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.5),
+                  blurRadius: 8,
+                  offset: const Offset(0, 2),
                 ),
-              ),
-
-              // 搜索和功能区域
-              Container(
-                margin: const EdgeInsets.only(top: 4),
-                child: Container(
-                  height: 44,
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      // 搜索容器 (45%宽度)
-                      Container(
-                        width: MediaQuery.of(context).size.width * 0.45 - 24,
-                        height: 36,
-                        decoration: BoxDecoration(
-                          color: Colors.black.withOpacity(0.6),
-                          borderRadius: BorderRadius.circular(8),
-                          border: Border.all(
-                            color: const Color(0xFF333333),
-                            width: 1,
+              ],
+            ),
+            child: Stack(
+              children: [
+                // 头部区域
+                Positioned(
+                  top: 60,
+                  left: 0,
+                  right: 0,
+                  child: Container(
+                    height: 44,
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Row(
+                      children: [
+                        // 返回按钮
+                        GestureDetector(
+                          onTap: _navigateToHome,
+                          child: Container(
+                            width: 40,
+                            height: 40,
+                            decoration: BoxDecoration(
+                              color: Colors.black.withOpacity(0.6),
+                              borderRadius: BorderRadius.circular(8),
+                              border: Border.all(
+                                color: const Color(0xFF333333),
+                                width: 1,
+                              ),
+                            ),
+                            child: const Icon(
+                              Icons.arrow_back_ios_new,
+                              color: Colors.white,
+                              size: 18,
+                            ),
                           ),
                         ),
-                        child: Row(
-                          children: [
-                            const Padding(
-                              padding: EdgeInsets.only(left: 12),
-                              child: Icon(
-                                Icons.search,
-                                color: Color(0xFF999999),
-                                size: 18,
+                        // 居中标题
+                        Expanded(
+                          child: Container(
+                            alignment: Alignment.center,
+                            child: const Text(
+                              '图片管理',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.white,
                               ),
                             ),
-                            Expanded(
-                              child: TextField(
-                                controller: _searchController,
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 14,
-                                ),
-                                decoration: const InputDecoration(
-                                  hintText: '搜索图片...',
-                                  hintStyle: TextStyle(
-                                    color: Color(0xFF666666),
-                                    fontSize: 14,
-                                  ),
-                                  border: InputBorder.none,
-                                  contentPadding: EdgeInsets.symmetric(
-                                    vertical: 10,
-                                    horizontal: 8,
-                                  ),
-                                  isDense: false,
-                                ),
-                              ),
-                            ),
-                          ],
+                          ),
                         ),
-                      ),
-
-                      // 功能按钮组 (45%宽度)
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.45 - 24,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            // 新建按钮 (+ 图标)
-                            _buildAddButton(),
-
-                            // 编辑按钮
-                            _buildFunctionButton('编辑'),
-                          ],
-                        ),
-                      ),
-                    ],
+                        // 右侧占位，保持标题居中
+                        const SizedBox(width: 40),
+                      ],
+                    ),
                   ),
                 ),
-              ),
 
-              // 图片列表区域
-              Expanded(
-                child: Container(
-                  margin: const EdgeInsets.only(top: 4),
+                // 搜索和功能区域
+                Positioned(
+                  top: 112,
+                  left: 16,
+                  right: 16,
+                  child: Container(
+                    height: 44,
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        // 搜索容器 (45%宽度)
+                        Container(
+                          width: MediaQuery.of(context).size.width * 0.45 - 24,
+                          height: 36,
+                          decoration: BoxDecoration(
+                            color: Colors.black.withOpacity(0.6),
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(
+                              color: const Color(0xFF333333),
+                              width: 1,
+                            ),
+                          ),
+                          child: Row(
+                            children: [
+                              const Padding(
+                                padding: EdgeInsets.only(left: 12),
+                                child: Icon(
+                                  Icons.search,
+                                  color: Color(0xFF999999),
+                                  size: 18,
+                                ),
+                              ),
+                              Expanded(
+                                child: TextField(
+                                  controller: _searchController,
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 14,
+                                  ),
+                                  decoration: const InputDecoration(
+                                    hintText: '搜索图片...',
+                                    hintStyle: TextStyle(
+                                      color: Color(0xFF666666),
+                                      fontSize: 14,
+                                    ),
+                                    border: InputBorder.none,
+                                    contentPadding: EdgeInsets.symmetric(
+                                      horizontal: 8,
+                                      vertical: 10,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+
+                        // 功能按钮组 (45%宽度)
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.45 - 24,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              // 上传按钮
+                              _buildFunctionButton('上传'),
+
+                              // 编辑按钮
+                              _buildFunctionButton('编辑'),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+
+                // 图片列表区域
+                Positioned(
+                  top: 156,
+                  left: 16,
+                  right: 16,
+                  bottom: 120,
                   child: VaultFileDisplayArea(
                     title: '图片文件列表',
                     icon: Icons.image,
                     titleColor: const Color(0xFF2196F3), // 蓝色主题
                     emptyMessage: '暂无图片文件',
-                    emptySubMessage: '点击上传按钮添加图片文件\n支持jpg、png、gif、webp等格式',
+                    emptySubMessage: '点击上传按钮选择或拍摄图片\n支持jpg、png、gif、webp等格式',
                     emptyIcon: Icons.image_outlined,
                   ),
                 ),
-              ),
-            ],
-          ),
-        ),
-      ),
-      // 底部导航栏
-      bottomNavigationBar: CustomBottomNavigation(
-        currentIndex: 0,
-        onTap: (index) {
-          setState(() {
-            // 更新当前导航索引
-          });
-          // 导航逻辑
-          if (index == 0) {
-            Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (context) => const HomeScreen()),
-            );
-          } else if (index == 1) {
-            Navigator.of(context).pushReplacement(
-              MaterialPageRoute(
-                  builder: (context) => const GuardianServiceScreen()),
-            );
-          } else if (index == 2) {
-            Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (context) => const ProfileScreen()),
-            );
-          }
-        },
-      ),
-    );
-  }
 
-  // 构建添加按钮 - 采用首页年轮相册按钮同样的风格
-  Widget _buildAddButton() {
-    return GestureDetector(
-      onTap: () {
-        print('上传图片文件');
-      },
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.black,
-          borderRadius: BorderRadius.circular(10),
-        ),
-        padding: const EdgeInsets.all(4),
-        child: Container(
-          width: 58,
-          height: 28,
-          padding: const EdgeInsets.all(8),
-          decoration: BoxDecoration(
-            gradient: const LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [Color(0xFF333333), Color(0xFF242323)],
-            ),
-            border: const Border(top: BorderSide(color: Color(0xFF4E4D4D))),
-            borderRadius: BorderRadius.circular(6),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.2),
-                blurRadius: 5,
-                spreadRadius: 1,
-              ),
-            ],
-          ),
-          child: const Center(
-            child: Icon(
-              Icons.add,
-              color: Colors.black,
-              size: 16,
-              shadows: [
-                Shadow(offset: Offset(-1, -1), color: Color(0x1AE0E0E0)),
-                Shadow(
-                  offset: Offset(0, 2),
-                  blurRadius: 3,
-                  color: Color(0x4D000000),
+                // 底部导航栏
+                Positioned(
+                  bottom: 30, // 距离底部30px悬浮
+                  left: 0,
+                  right: 0,
+                  child: Center(
+                    child: CustomBottomNavigation(
+                      currentIndex: 0,
+                      onTap: (index) {
+                        setState(() {
+                          // 更新当前导航索引
+                        });
+                        // 导航逻辑
+                        if (index == 0) {
+                          // 当前页面是从首页进入的，无需跳转
+                        } else if (index == 1) {
+                          // 守望服务
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  const GuardianServiceScreen(),
+                            ),
+                          );
+                        } else if (index == 2) {
+                          // 个人中心
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => const ProfileScreen(),
+                            ),
+                          );
+                        }
+                      },
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -262,54 +248,48 @@ class _ImageManagementScreenState extends State<ImageManagementScreen> {
     );
   }
 
-  // 构建功能按钮 - 采用首页年轮相册按钮同样的风格
-  Widget _buildFunctionButton(String title) {
+  Widget _buildFunctionButton(String text) {
     return GestureDetector(
       onTap: () {
-        print('点击了$title按钮');
+        // TODO: 实现对应功能
+        print('点击了$text按钮');
       },
       child: Container(
+        width: 70,
+        height: 36,
         decoration: BoxDecoration(
-          color: Colors.black,
-          borderRadius: BorderRadius.circular(10),
-        ),
-        padding: const EdgeInsets.all(4),
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-          decoration: BoxDecoration(
-            gradient: const LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [Color(0xFF333333), Color(0xFF242323)],
-            ),
-            border: const Border(top: BorderSide(color: Color(0xFF4E4D4D))),
-            borderRadius: BorderRadius.circular(6),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.2),
-                blurRadius: 5,
-                spreadRadius: 1,
-              ),
-            ],
+          gradient: const LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Color(0xFF333333), Color(0xFF242323)],
           ),
-          child: Center(
-            child: Text(
-              title,
-              style: const TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.w800,
-                color: Colors.black,
-                letterSpacing: 0.5,
-                height: 0.8,
-                shadows: [
-                  Shadow(offset: Offset(-1, -1), color: Color(0x1AE0E0E0)),
-                  Shadow(
-                    offset: Offset(0, 2),
-                    blurRadius: 3,
-                    color: Color(0x4D000000),
-                  ),
-                ],
-              ),
+          border: const Border(top: BorderSide(color: Color(0xFF4E4D4D))),
+          borderRadius: BorderRadius.circular(6),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.2),
+              blurRadius: 5,
+              spreadRadius: 1,
+            ),
+          ],
+        ),
+        child: Center(
+          child: Text(
+            text.toUpperCase(),
+            style: const TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w800,
+              color: Colors.black,
+              letterSpacing: 0.5,
+              height: 0.8,
+              shadows: [
+                Shadow(offset: Offset(-1, -1), color: Color(0x1AE0E0E0)),
+                Shadow(
+                  offset: Offset(0, 2),
+                  blurRadius: 3,
+                  color: Color(0x4D000000),
+                ),
+              ],
             ),
           ),
         ),
