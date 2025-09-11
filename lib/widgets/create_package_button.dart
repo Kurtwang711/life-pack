@@ -20,10 +20,22 @@ class _CreatePackageButtonState extends State<CreatePackageButton> {
       builder: (context) => PackageCreationForm(
         onClose: () => Navigator.of(context).pop(),
         onSubmit: (formData) {
-          // 通过包裹管理器创建包裹
-          PackageManager().createPackageFromForm(formData);
-          print('包裹创建数据: $formData');
-          Navigator.of(context).pop();
+          try {
+            // 通过包裹管理器创建包裹
+            PackageManager().createPackageFromForm(formData);
+            print('包裹创建数据: $formData');
+            Navigator.of(context).pop();
+          } catch (e) {
+            print('创建包裹时发生错误: $e');
+            Navigator.of(context).pop();
+            // 显示错误信息
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('创建包裹失败: $e'),
+                backgroundColor: Colors.red,
+              ),
+            );
+          }
         },
       ),
     );

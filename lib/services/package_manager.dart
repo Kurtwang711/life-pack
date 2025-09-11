@@ -45,13 +45,21 @@ class PackageManager extends ChangeNotifier {
 
   /// 从表单数据创建包裹
   void createPackageFromForm(Map<String, dynamic> formData) {
-    addPackage(
-      recipient: formData['recipient'] ?? '',
-      phone: formData['phone'] ?? '',
-      deliveryMethod: formData['deliveryMethod'] ?? '',
-      address: formData['address'],
-      email: formData['email'],
-    );
+    try {
+      print('正在创建包裹，表单数据: $formData');
+      addPackage(
+        recipient: formData['recipient'] ?? '',
+        phone: formData['phone'] ?? '',
+        deliveryMethod: formData['deliveryMethod'] ?? '',
+        address: formData['address'],
+        email: formData['email'],
+      );
+      print('包裹创建成功，当前包裹数量: ${_packages.length}');
+    } catch (e) {
+      print('包裹创建失败: $e');
+      // 重新抛出异常，让调用方知道失败了
+      rethrow;
+    }
   }
 
   /// 删除包裹
