@@ -217,46 +217,38 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
 
-                    const SizedBox(height: 120), // 底部留白，避免被导航栏遮挡
+                    // 移除底部留白，因为使用标准底部导航栏
                   ],
-                ),
-              ),
-
-              // 悬浮底部导航栏
-              Positioned(
-                bottom: 30, // 距离底部30px悬浮
-                left: 0,
-                right: 0,
-                child: Center(
-                  child: CustomBottomNavigation(
-                    currentIndex: _currentNavIndex,
-                    onTap: (index) {
-                      setState(() {
-                        _currentNavIndex = index;
-                      });
-                      // 导航逻辑
-                      if (index == 1) {
-                        // 守望服务
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => const GuardianServiceScreen(),
-                          ),
-                        );
-                      } else if (index == 2) {
-                        // 个人中心
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => const ProfileScreen(),
-                          ),
-                        );
-                      }
-                    },
-                  ),
                 ),
               ),
             ],
           ),
         ),
+      ),
+      // 标准底部导航栏
+      bottomNavigationBar: CustomBottomNavigation(
+        currentIndex: _currentNavIndex,
+        onTap: (index) {
+          setState(() {
+            _currentNavIndex = index;
+          });
+          // 导航逻辑
+          if (index == 1) {
+            // 守望服务
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => const GuardianServiceScreen(),
+              ),
+            );
+          } else if (index == 2) {
+            // 个人中心
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => const ProfileScreen(),
+              ),
+            );
+          }
+        },
       ),
     );
   }
