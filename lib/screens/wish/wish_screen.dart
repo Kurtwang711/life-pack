@@ -12,7 +12,6 @@ class WishScreen extends StatefulWidget {
 }
 
 class _WishScreenState extends State<WishScreen> {
-  int _currentNavIndex = 0;
   String _selectedFilter = '进行中'; // 当前筛选状态
 
   void _navigateToHome() {
@@ -149,45 +148,35 @@ class _WishScreenState extends State<WishScreen> {
               top: 210, // 功能按钮下方
               left: 16,
               right: 16,
-              bottom: 120, // 为底部导航栏留出空间
+              bottom: 0, // 为底部导航栏留出空间
               child: _buildWishCardsArea(),
-            ),
-
-            // 底部导航栏
-            Positioned(
-              bottom: 30,
-              left: 0,
-              right: 0,
-              child: Center(
-                child: CustomBottomNavigation(
-                  currentIndex: _currentNavIndex,
-                  onTap: (index) {
-                    setState(() {
-                      _currentNavIndex = index;
-                    });
-                    if (index == 0) {
-                      _navigateToHome();
-                    } else if (index == 1) {
-                      // 守望服务
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => const GuardianServiceScreen(),
-                        ),
-                      );
-                    } else if (index == 2) {
-                      // 个人中心
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => const ProfileScreen(),
-                        ),
-                      );
-                    }
-                  },
-                ),
-              ),
             ),
           ],
         ),
+      ),
+      // 底部导航栏
+      bottomNavigationBar: CustomBottomNavigation(
+        currentIndex: 0,
+        onTap: (index) {
+          setState(() {
+            // 更新当前导航索引
+          });
+          // 导航逻辑
+          if (index == 0) {
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (context) => const HomeScreen()),
+            );
+          } else if (index == 1) {
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                  builder: (context) => const GuardianServiceScreen()),
+            );
+          } else if (index == 2) {
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (context) => const ProfileScreen()),
+            );
+          }
+        },
       ),
     );
   }

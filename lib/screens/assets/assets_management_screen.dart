@@ -210,49 +210,108 @@ class _AssetsManagementScreenState extends State<AssetsManagementScreen> {
     );
   }
 
-  // 构建添加按钮
+  // 构建添加按钮 - 采用首页年轮相册按钮同样的风格
   Widget _buildAddButton() {
     return GestureDetector(
       onTap: () {
         print('添加资产信息');
       },
       child: Container(
-        width: 32,
-        height: 32,
         decoration: BoxDecoration(
-          color: Colors.black.withOpacity(0.6),
-          borderRadius: BorderRadius.circular(8),
-          border: Border.all(
-            color: const Color(0xFF333333),
-            width: 1,
-          ),
+          color: Colors.black,
+          borderRadius: BorderRadius.circular(10),
         ),
-        child: const Icon(
-          Icons.add,
-          color: Colors.white,
-          size: 16,
+        padding: const EdgeInsets.all(4),
+        child: Container(
+          width: 58,
+          height: 28,
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            gradient: const LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [Color(0xFF333333), Color(0xFF242323)],
+            ),
+            border: const Border(top: BorderSide(color: Color(0xFF4E4D4D))),
+            borderRadius: BorderRadius.circular(6),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.2),
+                blurRadius: 5,
+                spreadRadius: 1,
+              ),
+            ],
+          ),
+          child: const Center(
+            child: Icon(
+              Icons.add,
+              color: Colors.black,
+              size: 16,
+              shadows: [
+                Shadow(offset: Offset(-1, -1), color: Color(0x1AE0E0E0)),
+                Shadow(
+                  offset: Offset(0, 2),
+                  blurRadius: 3,
+                  color: Color(0x4D000000),
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );
   }
 
-  // 构建功能按钮
+  // 构建功能按钮 - 采用首页年轮相册按钮同样的风格
   Widget _buildFunctionButton(String title) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-      decoration: BoxDecoration(
-        color: Colors.black.withOpacity(0.6),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: const Color(0xFF333333),
-          width: 1,
+    return GestureDetector(
+      onTap: () {
+        print('点击了$title按钮');
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.black,
+          borderRadius: BorderRadius.circular(10),
         ),
-      ),
-      child: Text(
-        title,
-        style: const TextStyle(
-          color: Colors.white,
-          fontSize: 12,
+        padding: const EdgeInsets.all(4),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+          decoration: BoxDecoration(
+            gradient: const LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [Color(0xFF333333), Color(0xFF242323)],
+            ),
+            border: const Border(top: BorderSide(color: Color(0xFF4E4D4D))),
+            borderRadius: BorderRadius.circular(6),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.2),
+                blurRadius: 5,
+                spreadRadius: 1,
+              ),
+            ],
+          ),
+          child: Center(
+            child: Text(
+              title,
+              style: const TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w800,
+                color: Colors.black,
+                letterSpacing: 0.5,
+                height: 0.8,
+                shadows: [
+                  Shadow(offset: Offset(-1, -1), color: Color(0x1AE0E0E0)),
+                  Shadow(
+                    offset: Offset(0, 2),
+                    blurRadius: 3,
+                    color: Color(0x4D000000),
+                  ),
+                ],
+              ),
+            ),
+          ),
         ),
       ),
     );

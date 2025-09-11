@@ -12,8 +12,6 @@ class TrueSelfRecordScreen extends StatefulWidget {
 }
 
 class _TrueSelfRecordScreenState extends State<TrueSelfRecordScreen> {
-  int _currentNavIndex = 0;
-
   void _navigateToHome() {
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(builder: (context) => const HomeScreen()),
@@ -99,43 +97,33 @@ class _TrueSelfRecordScreenState extends State<TrueSelfRecordScreen> {
               child: _buildAvatarUploadArea(),
             ),
 
-            // 底部导航栏
-            Positioned(
-              bottom: 30, // 距离底部30px悬浮
-              left: 0,
-              right: 0,
-              child: Center(
-                child: CustomBottomNavigation(
-                  currentIndex: _currentNavIndex,
-                  onTap: (index) {
-                    setState(() {
-                      _currentNavIndex = index;
-                    });
-                    // 导航逻辑
-                    if (index == 0) {
-                      // 首页按钮
-                      _navigateToHome();
-                    } else if (index == 1) {
-                      // 守望服务
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => const GuardianServiceScreen(),
-                        ),
-                      );
-                    } else if (index == 2) {
-                      // 个人中心
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => const ProfileScreen(),
-                        ),
-                      );
-                    }
-                  },
-                ),
-              ),
-            ),
+
           ],
         ),
+      ),
+      // 底部导航栏
+      bottomNavigationBar: CustomBottomNavigation(
+        currentIndex: 0,
+        onTap: (index) {
+          setState(() {
+            // 更新当前导航索引
+          });
+          // 导航逻辑
+          if (index == 0) {
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (context) => const HomeScreen()),
+            );
+          } else if (index == 1) {
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                  builder: (context) => const GuardianServiceScreen()),
+            );
+          } else if (index == 2) {
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (context) => const ProfileScreen()),
+            );
+          }
+        },
       ),
     );
   }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
+import 'message_submission_dialog.dart';
 
 class SpringCard extends StatefulWidget {
   const SpringCard({super.key});
@@ -11,23 +12,32 @@ class SpringCard extends StatefulWidget {
 class _SpringCardState extends State<SpringCard> {
   bool selected = true; // 固定为选中状态，取消点击切换
 
+  void _showSubmissionDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => const MessageSubmissionDialog(),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     const double cardW = 260;
     const double cardH = 90;
 
-    return SizedBox(
-      width: cardW,
-      height: cardH,
-      child: Stack(
-        children: [
-          // 背景黑卡片
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.black,
-              borderRadius: BorderRadius.circular(30),
+    return GestureDetector(
+      onTap: _showSubmissionDialog,
+      child: SizedBox(
+        width: cardW,
+        height: cardH,
+        child: Stack(
+          children: [
+            // 背景黑卡片
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.black,
+                borderRadius: BorderRadius.circular(30),
+              ),
             ),
-          ),
           // 中心小方块
           Center(
             child: Transform.rotate(
@@ -130,6 +140,7 @@ class _SpringCardState extends State<SpringCard> {
           ),
         ],
       ),
+      ), // GestureDetector 的闭合
     );
   }
 }

@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import '../home/home_screen.dart';
+import '../guardian_service/guardian_service_screen.dart';
+import '../profile/profile_screen.dart';
+import '../../widgets/custom_bottom_navigation.dart';
 
 class AnnualRingsAlbumScreen extends StatefulWidget {
   const AnnualRingsAlbumScreen({super.key});
@@ -47,6 +51,30 @@ class _AnnualRingsAlbumScreenState extends State<AnnualRingsAlbumScreen> {
             ],
           ),
         ),
+      ),
+      // 底部导航栏
+      bottomNavigationBar: CustomBottomNavigation(
+        currentIndex: 0,
+        onTap: (index) {
+          setState(() {
+            // 更新当前导航索引
+          });
+          // 导航逻辑
+          if (index == 0) {
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (context) => const HomeScreen()),
+            );
+          } else if (index == 1) {
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                  builder: (context) => const GuardianServiceScreen()),
+            );
+          } else if (index == 2) {
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (context) => const ProfileScreen()),
+            );
+          }
+        },
       ),
     );
   }
