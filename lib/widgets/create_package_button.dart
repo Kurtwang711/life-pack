@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package_creation_form.dart';
+import '../services/package_manager.dart';
 
 class CreatePackageButton extends StatefulWidget {
   const CreatePackageButton({super.key});
@@ -19,7 +20,8 @@ class _CreatePackageButtonState extends State<CreatePackageButton> {
       builder: (context) => PackageCreationForm(
         onClose: () => Navigator.of(context).pop(),
         onSubmit: (formData) {
-          // 处理表单提交数据
+          // 通过包裹管理器创建包裹
+          PackageManager().createPackageFromForm(formData);
           print('包裹创建数据: $formData');
           Navigator.of(context).pop();
         },

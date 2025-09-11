@@ -4,11 +4,7 @@ class PackageCreationForm extends StatefulWidget {
   final VoidCallback? onClose;
   final Function(Map<String, dynamic>)? onSubmit;
 
-  const PackageCreationForm({
-    super.key,
-    this.onClose,
-    this.onSubmit,
-  });
+  const PackageCreationForm({super.key, this.onClose, this.onSubmit});
 
   @override
   State<PackageCreationForm> createState() => _PackageCreationFormState();
@@ -66,19 +62,21 @@ class _PackageCreationFormState extends State<PackageCreationForm>
         'address': _addressController.text,
         'email': _emailController.text,
       };
-      
+
       widget.onSubmit?.call(formData);
-      
+
       // 显示提交成功提示
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: const Text('包裹创建成功！'),
           backgroundColor: const Color(0xFF4CAF50),
           behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
         ),
       );
-      
+
       // 关闭表单
       widget.onClose?.call();
     }
@@ -105,7 +103,7 @@ class _PackageCreationFormState extends State<PackageCreationForm>
         children: [
           // 头部区域
           _buildHeader(),
-          
+
           // 表单内容区域
           Expanded(
             child: SingleChildScrollView(
@@ -127,9 +125,9 @@ class _PackageCreationFormState extends State<PackageCreationForm>
                         return null;
                       },
                     ),
-                    
+
                     const SizedBox(height: 16),
-                    
+
                     // 手机号输入
                     _buildInputField(
                       label: '手机号',
@@ -146,17 +144,17 @@ class _PackageCreationFormState extends State<PackageCreationForm>
                         return null;
                       },
                     ),
-                    
+
                     const SizedBox(height: 24),
-                    
+
                     // 投递方式选择
                     _buildDeliveryMethodSection(),
-                    
+
                     const SizedBox(height: 32),
-                    
+
                     // 确认按钮
                     _buildSubmitButton(),
-                    
+
                     const SizedBox(height: 20),
                   ],
                 ),
@@ -173,9 +171,7 @@ class _PackageCreationFormState extends State<PackageCreationForm>
       height: 60,
       padding: const EdgeInsets.symmetric(horizontal: 16),
       decoration: const BoxDecoration(
-        border: Border(
-          bottom: BorderSide(color: Color(0xFF333333), width: 1),
-        ),
+        border: Border(bottom: BorderSide(color: Color(0xFF333333), width: 1)),
       ),
       child: Row(
         children: [
@@ -197,11 +193,7 @@ class _PackageCreationFormState extends State<PackageCreationForm>
                 color: const Color(0xFF333333),
                 borderRadius: BorderRadius.circular(16),
               ),
-              child: const Icon(
-                Icons.close,
-                color: Colors.white,
-                size: 20,
-              ),
+              child: const Icon(Icons.close, color: Colors.white, size: 20),
             ),
           ),
         ],
@@ -254,7 +246,10 @@ class _PackageCreationFormState extends State<PackageCreationForm>
               borderRadius: BorderRadius.circular(8),
               borderSide: const BorderSide(color: Colors.red, width: 2),
             ),
-            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: 12,
+            ),
           ),
         ),
       ],
@@ -274,7 +269,7 @@ class _PackageCreationFormState extends State<PackageCreationForm>
           ),
         ),
         const SizedBox(height: 12),
-        
+
         // 实体U盘选项
         _buildDeliveryOption(
           value: 'physical_usb',
@@ -283,7 +278,7 @@ class _PackageCreationFormState extends State<PackageCreationForm>
           isSelected: _selectedDeliveryMethod == 'physical_usb',
           onTap: () => _onDeliveryMethodChanged('physical_usb'),
         ),
-        
+
         // 实体U盘展开内容
         if (_selectedDeliveryMethod == 'physical_usb')
           AnimatedBuilder(
@@ -297,7 +292,10 @@ class _PackageCreationFormState extends State<PackageCreationForm>
                   decoration: BoxDecoration(
                     color: const Color(0xFF2a2a2a),
                     borderRadius: BorderRadius.circular(8),
-                    border: Border.all(color: const Color(0xFF444444), width: 1),
+                    border: Border.all(
+                      color: const Color(0xFF444444),
+                      width: 1,
+                    ),
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -325,9 +323,9 @@ class _PackageCreationFormState extends State<PackageCreationForm>
               );
             },
           ),
-        
+
         const SizedBox(height: 12),
-        
+
         // 邮件+云盘选项
         _buildDeliveryOption(
           value: 'email_cloud',
@@ -336,7 +334,7 @@ class _PackageCreationFormState extends State<PackageCreationForm>
           isSelected: _selectedDeliveryMethod == 'email_cloud',
           onTap: () => _onDeliveryMethodChanged('email_cloud'),
         ),
-        
+
         // 邮件+云盘展开内容
         if (_selectedDeliveryMethod == 'email_cloud')
           AnimatedBuilder(
@@ -350,7 +348,10 @@ class _PackageCreationFormState extends State<PackageCreationForm>
                   decoration: BoxDecoration(
                     color: const Color(0xFF2a2a2a),
                     borderRadius: BorderRadius.circular(8),
-                    border: Border.all(color: const Color(0xFF444444), width: 1),
+                    border: Border.all(
+                      color: const Color(0xFF444444),
+                      width: 1,
+                    ),
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -368,7 +369,9 @@ class _PackageCreationFormState extends State<PackageCreationForm>
                                 if (value == null || value.trim().isEmpty) {
                                   return '请输入收件人电子邮箱';
                                 }
-                                if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value.trim())) {
+                                if (!RegExp(
+                                  r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
+                                ).hasMatch(value.trim())) {
                                   return '请输入正确的邮箱格式';
                                 }
                                 return null;
@@ -381,9 +384,9 @@ class _PackageCreationFormState extends State<PackageCreationForm>
               );
             },
           ),
-        
+
         const SizedBox(height: 12),
-        
+
         // 包裹号登录app选项
         _buildDeliveryOption(
           value: 'package_id_app',
@@ -392,7 +395,7 @@ class _PackageCreationFormState extends State<PackageCreationForm>
           isSelected: _selectedDeliveryMethod == 'package_id_app',
           onTap: () => _onDeliveryMethodChanged('package_id_app'),
         ),
-        
+
         // 包裹号登录app展开内容
         if (_selectedDeliveryMethod == 'package_id_app')
           AnimatedBuilder(
@@ -406,7 +409,10 @@ class _PackageCreationFormState extends State<PackageCreationForm>
                   decoration: BoxDecoration(
                     color: const Color(0xFF2a2a2a),
                     borderRadius: BorderRadius.circular(8),
-                    border: Border.all(color: const Color(0xFF444444), width: 1),
+                    border: Border.all(
+                      color: const Color(0xFF444444),
+                      width: 1,
+                    ),
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -439,7 +445,9 @@ class _PackageCreationFormState extends State<PackageCreationForm>
           color: isSelected ? const Color(0xFF333333) : const Color(0xFF2a2a2a),
           borderRadius: BorderRadius.circular(8),
           border: Border.all(
-            color: isSelected ? const Color(0xFF51A5FF) : const Color(0xFF444444),
+            color: isSelected
+                ? const Color(0xFF51A5FF)
+                : const Color(0xFF444444),
             width: isSelected ? 2 : 1,
           ),
         ),
@@ -451,10 +459,14 @@ class _PackageCreationFormState extends State<PackageCreationForm>
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 border: Border.all(
-                  color: isSelected ? const Color(0xFF51A5FF) : const Color(0xFF666666),
+                  color: isSelected
+                      ? const Color(0xFF51A5FF)
+                      : const Color(0xFF666666),
                   width: 2,
                 ),
-                color: isSelected ? const Color(0xFF51A5FF) : Colors.transparent,
+                color: isSelected
+                    ? const Color(0xFF51A5FF)
+                    : Colors.transparent,
               ),
               child: isSelected
                   ? const Icon(Icons.check, color: Colors.white, size: 14)
@@ -464,7 +476,9 @@ class _PackageCreationFormState extends State<PackageCreationForm>
             if (icon != null) ...[
               Icon(
                 icon,
-                color: isSelected ? const Color(0xFF51A5FF) : const Color(0xFF666666),
+                color: isSelected
+                    ? const Color(0xFF51A5FF)
+                    : const Color(0xFF666666),
                 size: 18,
               ),
               const SizedBox(width: 8),
@@ -498,10 +512,11 @@ class _PackageCreationFormState extends State<PackageCreationForm>
   }
 
   Widget _buildSubmitButton() {
-    final bool canSubmit = _selectedDeliveryMethod.isNotEmpty &&
+    final bool canSubmit =
+        _selectedDeliveryMethod.isNotEmpty &&
         _recipientController.text.trim().isNotEmpty &&
         _phoneController.text.trim().isNotEmpty;
-    
+
     return SizedBox(
       width: double.infinity,
       child: GestureDetector(

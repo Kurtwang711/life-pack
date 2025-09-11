@@ -5,6 +5,8 @@ import '../../widgets/checkin_section.dart';
 import '../../widgets/vault_section.dart';
 import '../../widgets/create_package_button.dart';
 import '../../widgets/custom_bottom_navigation.dart';
+import '../../widgets/package_list.dart';
+import '../../services/package_manager.dart';
 import '../album/annual_rings_album_screen.dart';
 import '../true_self_record/true_self_record_screen.dart';
 import '../wish/wish_screen.dart';
@@ -20,6 +22,15 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _currentNavIndex = 0;
+  late PackageManager _packageManager;
+
+  @override
+  void initState() {
+    super.initState();
+    _packageManager = PackageManager();
+    // 加载测试数据
+    _packageManager.loadTestData();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,87 +51,130 @@ class _HomeScreenState extends State<HomeScreen> {
         child: SafeArea(
           child: Stack(
             children: [
-              // 寄语区卡片 - 距离顶部4px，距离左侧4px
-              Positioned(top: 4, left: 4, child: const SpringCard()),
-              // 第一排按钮 - 距离顶部4px，距离右侧4px
-              Positioned(
-                top: 4,
-                right: 4,
-                child: const RadioButtons(
-                  leftButtonText: '分享',
-                  rightButtonText: '消息',
-                ),
-              ),
-              // 第二排按钮 - 底部与寄语区对齐，距离右侧4px
-              Positioned(
-                top: 46, // 寄语区底部(4+90=94) - 按钮高度(48) = 46
-                right: 4,
-                child: const RadioButtons(
-                  leftButtonText: '客服',
-                  rightButtonText: '主题',
-                ),
-              ),
-
-              // 签到区 - 在寄语区下方，间距10px
-              Positioned(
-                top: 104, // 寄语区底部(4+90=94) + 间距10px = 104
-                left: 4,
-                right: 4,
-                child: const CheckinSection(),
-              ),
-
-              // 机要库区 - 在签到区下方，间距10px
-              Positioned(
-                top: 284, // 原294，向上提升10px
-                left: 14,
-                child: const VaultSection(),
-              ),
-
-              // 右侧按钮组 - 与右边线保持8px间距
-              Positioned(
-                top: 284, // 原294，向上提升10px
-                right: 8,
+              // 可滚动的内容区域
+              SingleChildScrollView(
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // 年轮相册按钮 - 高度缩小至50px
-                    _buildCustomButton('年轮相册', 140, 50, () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const AnnualRingsAlbumScreen(),
-                        ),
-                      );
-                    }),
-                    SizedBox(height: 20),
-                    // 真我录按钮
-                    _buildCustomButton('真我录', 140, 50, () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const TrueSelfRecordScreen(),
-                        ),
-                      );
-                    }),
-                    SizedBox(height: 18), // 继续向上提升1px，使许愿按钮底部黑色边线与机要库底部黑色边线对齐
-                    // 许愿按钮
-                    _buildCustomButton('许愿', 140, 50, () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => const WishScreen(),
-                        ),
-                      );
-                    }),
+                    // 寄语区卡片 - 距离顶部4px，距离左侧4px
+                    Padding(
+                      padding: const EdgeInsets.only(top: 4, left: 4, right: 4),
+                      child: Row(
+                        children: [
+                          const SpringCard(),
+                          const SizedBox(width: 4),
+                          // 右侧按钮组
+                          Expanded(
+                            child: Column(
+                              children: [
+                                // 第一排按钮
+                                const RadioButtons(
+                                  leftButtonText: '分享',
+                                  rightButtonText: '消息',
+                                ),
+                                const SizedBox(height: 4),
+                                // 第二排按钮
+                                const RadioButtons(
+                                  leftButtonText: '客服',
+                                  rightButtonText: '主题',
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    const SizedBox(height: 10), // 间距
+                    // 签到区
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 4),
+                      child: CheckinSection(),
+                    ),
+
+                    const SizedBox(height: 10), // 间距
+                    // 机要库区和右侧按钮组
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 4),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // 机要库区
+                          const Padding(
+                            padding: EdgeInsets.only(left: 10),
+                            child: VaultSection(),
+                          ),
+                          const SizedBox(width: 4),
+                          // 右侧按钮组
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.only(right: 4),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  // 年轮相册按钮
+                                  _buildCustomButton('年轮相册', 140, 50, () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            const AnnualRingsAlbumScreen(),
+                                      ),
+                                    );
+                                  }),
+                                  const SizedBox(height: 20),
+                                  // 真我录按钮
+                                  _buildCustomButton('真我录', 140, 50, () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            const TrueSelfRecordScreen(),
+                                      ),
+                                    );
+                                  }),
+                                  const SizedBox(height: 18),
+                                  // 许愿按钮
+                                  _buildCustomButton('许愿', 140, 50, () {
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            const WishScreen(),
+                                      ),
+                                    );
+                                  }),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    const SizedBox(height: 10), // 间距
+                    // 创建包裹按钮 - 居中位置
+                    const Center(child: CreatePackageButton()),
+
+                    const SizedBox(height: 4), // 与包裹卡片的4px间距
+                    // 包裹卡片列表
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: ListenableBuilder(
+                        listenable: _packageManager,
+                        builder: (context, child) {
+                          return PackageList(
+                            packages: _packageManager.packages,
+                            onPackageTap: (package) {
+                              // 处理包裹点击事件
+                              print('点击了包裹: ${package.packageNumber}');
+                            },
+                          );
+                        },
+                      ),
+                    ),
+
+                    const SizedBox(height: 120), // 底部留白，避免被导航栏遮挡
                   ],
                 ),
-              ),
-
-              // 创建包裹按钮 - 在机要库下方，间距10px，居中位置
-              Positioned(
-                top: 504, // 机要库底部(284+210=494) + 间距10px = 504，向上提升10px
-                left: 0,
-                right: 0,
-                child: Center(child: const CreatePackageButton()),
               ),
 
               // 悬浮底部导航栏
