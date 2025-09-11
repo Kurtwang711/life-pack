@@ -27,9 +27,28 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    _packageManager = PackageManager();
-    // 加载测试数据
-    _packageManager.loadTestData();
+    try {
+      print('HomeScreen initState 开始');
+      _packageManager = PackageManager();
+      print('PackageManager 实例获取成功');
+      
+      // 使用WidgetsBinding确保在下一帧加载数据
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        try {
+          if (mounted) {
+            print('开始加载测试数据');
+            _packageManager.loadTestData();
+            print('测试数据加载完成');
+          }
+        } catch (e) {
+          print('加载测试数据时发生错误: $e');
+        }
+      });
+    } catch (e) {
+      print('HomeScreen 初始化错误: $e');
+      // 确保有一个可用的包管理器实例
+      _packageManager = PackageManager();
+    }
   }
 
   @override
@@ -158,16 +177,39 @@ class _HomeScreenState extends State<HomeScreen> {
                     // 包裹卡片列表
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: ListenableBuilder(
-                        listenable: _packageManager,
+                      child: AnimatedBuilder(
+                        animation: _packageManager,
                         builder: (context, child) {
-                          return PackageList(
-                            packages: _packageManager.packages,
-                            onPackageTap: (package) {
-                              // 处理包裹点击事件
-                              print('点击了包裹: ${package.packageNumber}');
-                            },
-                          );
+                          try {
+                            if (_packageManager.packages.isEmpty) {
+                              return const SizedBox.shrink();
+                            }
+                            
+                            return PackageList(
+                              packages: _packageManager.packages,
+                              onPackageTap: (package) {
+                                // 处理包裹点击事件
+                                print('点击了包裹: ${package.packageNumber}');
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text('包裹: ${package.packageNumber}'),
+                                    duration: const Duration(seconds: 1),
+                                  ),
+                                );
+                              },
+                            );
+                          } catch (e) {
+                            print('包裹列表渲染错误: $e');
+                            // 如果包裹列表渲染失败，显示一个简单的消息
+                            return Container(
+                              padding: const EdgeInsets.all(16),
+                              child: const Text(
+                                '包裹列表加载中...',
+                                style: TextStyle(color: Colors.white70),
+                                textAlign: TextAlign.center,
+                              ),
+                            );
+                          }
                         },
                       ),
                     ),

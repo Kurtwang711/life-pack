@@ -17,22 +17,38 @@ class _CreatePackageButtonState extends State<CreatePackageButton> {
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (context) => PackageCreationForm(
-        onClose: () => Navigator.of(context).pop(),
+      builder: (modalContext) => PackageCreationForm(
+        onClose: () => Navigator.of(modalContext).pop(),
         onSubmit: (formData) {
+          print('开始创建包裹，表单数据: $formData');
           try {
             // 通过包裹管理器创建包裹
             PackageManager().createPackageFromForm(formData);
-            print('包裹创建数据: $formData');
-            Navigator.of(context).pop();
+            print('包裹创建成功');
+            
+            // 关闭模态框 - 使用modalContext确保关闭的是模态框而不是主屏幕
+            Navigator.of(modalContext).pop();
+            
+            // 显示成功消息 - 使用原始的context
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('包裹创建成功！'),
+                backgroundColor: Colors.green,
+                duration: Duration(seconds: 2),
+              ),
+            );
           } catch (e) {
             print('创建包裹时发生错误: $e');
-            Navigator.of(context).pop();
-            // 显示错误信息
+            
+            // 关闭模态框 - 使用modalContext
+            Navigator.of(modalContext).pop();
+            
+            // 显示错误信息 - 使用原始的context
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text('创建包裹失败: $e'),
                 backgroundColor: Colors.red,
+                duration: const Duration(seconds: 3),
               ),
             );
           }

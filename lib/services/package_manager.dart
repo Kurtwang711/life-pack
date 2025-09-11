@@ -19,6 +19,8 @@ class PackageManager extends ChangeNotifier {
     String? email,
     String userName = 'User', // 默认用户名，实际使用时应该从用户系统获取
   }) {
+    print('开始添加包裹: recipient=$recipient, phone=$phone, deliveryMethod=$deliveryMethod');
+    
     final now = DateTime.now();
     final packageNumber = PackageModel.generatePackageNumber(
       userName,
@@ -39,8 +41,14 @@ class PackageManager extends ChangeNotifier {
       sequenceNumber: sequenceNumber,
     );
 
+    print('创建包裹对象: ${newPackage.packageNumber}');
+    
     _packages.add(newPackage);
+    print('包裹添加到列表，当前数量: ${_packages.length}');
+    
+    // 立即通知监听器
     notifyListeners();
+    print('监听器通知完成');
   }
 
   /// 从表单数据创建包裹

@@ -63,22 +63,8 @@ class _PackageCreationFormState extends State<PackageCreationForm>
         'email': _emailController.text,
       };
 
+      // 只调用onSubmit，让父组件处理导航和提示
       widget.onSubmit?.call(formData);
-
-      // 显示提交成功提示
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: const Text('包裹创建成功！'),
-          backgroundColor: const Color(0xFF4CAF50),
-          behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
-        ),
-      );
-
-      // 关闭表单
-      widget.onClose?.call();
     }
   }
 
