@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'screens/home/home_screen.dart';
-import 'screens/stable_package_screen.dart';
 
 void main() {
   runApp(const LifepodApp());

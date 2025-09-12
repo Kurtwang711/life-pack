@@ -224,7 +224,7 @@ class _RecordingManagementScreenState extends State<RecordingManagementScreen> {
           ),
         ),
       ),
-    );
+    )
   }
 
   Widget _buildFunctionButton(String text) {

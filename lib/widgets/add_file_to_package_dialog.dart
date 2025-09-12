@@ -39,7 +39,7 @@ class _AddFileToPackageDialogState extends State<AddFileToPackageDialog> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               // 自定义云朵上传SVG图标
-              Container(
+              SizedBox(
                 height: 50,
                 width: 50,
                 child: CustomPaint(painter: CloudUploadPainter()),

@@ -42,6 +42,41 @@ class _PackageContentScreenState extends State<PackageContentScreen> {
             ],
           ),
         ),
+      // 标准底部导航栏
+      bottomNavigationBar: CustomBottomNavigation(
+        currentIndex: _currentNavIndex,
+        onTap: (index) {
+          setState(() {
+            _currentNavIndex = index;
+          });
+          // 导航逻辑
+          if (index == 0) {
+            // 首页
+            Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                builder: (context) => const HomeScreen(),
+              ),
+              (route) => false,
+            );
+          } else if (index == 1) {
+            // 守望服务
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => const GuardianServiceScreen(),
+              ),
+            );
+          } else if (index == 2) {
+            // 个人中心
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                          builder: (context) => const ProfileScreen(),
+                        ),
+                builder: (context) => const ProfileScreen(),
+              ),
+            )
+          }
+        },
+      ),
         child: Stack(
           children: [
             // 主要内容区域
@@ -127,41 +162,6 @@ class _PackageContentScreenState extends State<PackageContentScreen> {
             ),
 
             // 悬浮底部导航栏
-      ),
-      // 标准底部导航栏
-      bottomNavigationBar: CustomBottomNavigation(
-        currentIndex: _currentNavIndex,
-        onTap: (index) {
-          setState(() {
-            _currentNavIndex = index;
-          });
-          // 导航逻辑
-          if (index == 0) {
-            // 首页
-            Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(
-                builder: (context) => const HomeScreen(),
-              ),
-              (route) => false,
-            );
-          } else if (index == 1) {
-            // 守望服务
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => const GuardianServiceScreen(),
-              ),
-            );
-          } else if (index == 2) {
-            // 个人中心
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                          builder: (context) => const ProfileScreen(),
-                        ),
-                builder: (context) => const ProfileScreen(),
-              ),
-            );
-          }
-        },
       ),
     );
   }

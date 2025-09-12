@@ -136,8 +136,8 @@ class _TestPackageScreenState extends State<TestPackageScreen> {
             context,
           ).showSnackBar(const SnackBar(content: Text('已添加测试包裹')));
         },
-        child: const Icon(Icons.add),
         backgroundColor: Colors.green[700],
+        child: const Icon(Icons.add),
       ),
     );
   }

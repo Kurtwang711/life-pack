@@ -39,6 +39,6 @@ class ImageFile {
   }
 
   String get resolution {
-    return '${width}×${height}';
+    return '$width×$height';
   }
 }

@@ -51,6 +51,6 @@ class VideoFile {
   }
 
   String get resolution {
-    return '${width}×${height}';
+    return '$width×$height';
   }
 }

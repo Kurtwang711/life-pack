@@ -6,7 +6,7 @@ class PackageManager extends ChangeNotifier {
   factory PackageManager() => _instance;
   PackageManager._internal();
 
-  List<PackageModel> _packages = [];
+  final List<PackageModel> _packages = [];
 
   List<PackageModel> get packages => List.unmodifiable(_packages);
 

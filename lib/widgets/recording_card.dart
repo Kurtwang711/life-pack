@@ -444,7 +444,7 @@ class _RecordingCardState extends State<RecordingCard> {
         return AlertDialog(
           backgroundColor: const Color(0xFF2D3748),
           title: const Text('AI语音识别', style: TextStyle(color: Colors.white)),
-          content: Container(
+          content: SizedBox(
             width: 300,
             height: 200,
             child: Column(
