@@ -169,7 +169,8 @@ class _WishScreenState extends State<WishScreen> {
           } else if (index == 1) {
             Navigator.of(context).pushReplacement(
               MaterialPageRoute(
-                  builder: (context) => const GuardianServiceScreen()),
+                builder: (context) => const GuardianServiceScreen(),
+              ),
             );
           } else if (index == 2) {
             Navigator.of(context).pushReplacement(

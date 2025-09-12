@@ -51,10 +51,7 @@ class _VideoCardState extends State<VideoCard> {
       decoration: BoxDecoration(
         color: Colors.black.withOpacity(0.3),
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(
-          color: const Color(0xFF333333),
-          width: 1,
-        ),
+        border: Border.all(color: const Color(0xFF333333), width: 1),
       ),
       child: Row(
         children: [
@@ -73,7 +70,9 @@ class _VideoCardState extends State<VideoCard> {
                 borderRadius: BorderRadius.circular(6),
                 image: widget.video.thumbnailPath.isNotEmpty
                     ? DecorationImage(
-                        image: AssetImage('assets/images/sample_video_thumbnail.jpg'),
+                        image: AssetImage(
+                          'assets/images/sample_video_thumbnail.jpg',
+                        ),
                         fit: BoxFit.cover,
                         onError: (exception, stackTrace) {
                           // 处理缩略图加载错误
@@ -156,7 +155,9 @@ class _VideoCardState extends State<VideoCard> {
                                   _isEditingFileName = false;
                                 });
                                 if (_fileNameController.text.isNotEmpty) {
-                                  widget.onFileNameChanged?.call(_fileNameController.text);
+                                  widget.onFileNameChanged?.call(
+                                    _fileNameController.text,
+                                  );
                                 }
                               },
                             ),
@@ -234,7 +235,9 @@ class _VideoCardState extends State<VideoCard> {
                                 setState(() {
                                   _isEditingNote = false;
                                 });
-                                widget.onNoteChanged?.call(_noteController.text);
+                                widget.onNoteChanged?.call(
+                                  _noteController.text,
+                                );
                               },
                             ),
                           )
@@ -299,10 +302,7 @@ class _VideoCardState extends State<VideoCard> {
                       ),
                       IconButton(
                         onPressed: () => Navigator.of(context).pop(),
-                        icon: const Icon(
-                          Icons.close,
-                          color: Colors.white,
-                        ),
+                        icon: const Icon(Icons.close, color: Colors.white),
                       ),
                     ],
                   ),
@@ -330,7 +330,8 @@ class _VideoCardState extends State<VideoCard> {
                                   fit: BoxFit.contain,
                                   errorBuilder: (context, error, stackTrace) {
                                     return const Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
                                         Icon(
                                           Icons.videocam_off,
@@ -368,11 +369,9 @@ class _VideoCardState extends State<VideoCard> {
                                   ],
                                 ),
                         ),
-                        
+
                         // 播放控制层
-                        Positioned.fill(
-                          child: _buildVideoPlayer(),
-                        ),
+                        Positioned.fill(child: _buildVideoPlayer()),
                       ],
                     ),
                   ),
@@ -397,8 +396,10 @@ class _VideoCardState extends State<VideoCard> {
                       _buildInfoRow('视频格式', widget.video.format.toUpperCase()),
                       _buildInfoRow('分辨率', widget.video.resolution),
                       _buildInfoRow('视频时长', widget.video.formattedDuration),
-                      _buildInfoRow('创建时间', 
-                        '${widget.video.timestamp.year}-${widget.video.timestamp.month.toString().padLeft(2, '0')}-${widget.video.timestamp.day.toString().padLeft(2, '0')} ${widget.video.timestamp.hour.toString().padLeft(2, '0')}:${widget.video.timestamp.minute.toString().padLeft(2, '0')}'),
+                      _buildInfoRow(
+                        '创建时间',
+                        '${widget.video.timestamp.year}-${widget.video.timestamp.month.toString().padLeft(2, '0')}-${widget.video.timestamp.day.toString().padLeft(2, '0')} ${widget.video.timestamp.hour.toString().padLeft(2, '0')}:${widget.video.timestamp.minute.toString().padLeft(2, '0')}',
+                      ),
                     ],
                   ),
                 ),
@@ -416,7 +417,7 @@ class _VideoCardState extends State<VideoCard> {
       children: [
         // 上方空间
         const Spacer(),
-        
+
         // 播放控制区域
         Container(
           padding: const EdgeInsets.all(16),
@@ -424,10 +425,7 @@ class _VideoCardState extends State<VideoCard> {
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              colors: [
-                Colors.transparent,
-                Colors.black.withOpacity(0.7),
-              ],
+              colors: [Colors.transparent, Colors.black.withOpacity(0.7)],
             ),
           ),
           child: Column(
@@ -447,9 +445,9 @@ class _VideoCardState extends State<VideoCard> {
                       size: 32,
                     ),
                   ),
-                  
+
                   const SizedBox(width: 20),
-                  
+
                   // 播放/暂停按钮
                   Container(
                     width: 60,
@@ -469,9 +467,9 @@ class _VideoCardState extends State<VideoCard> {
                       ),
                     ),
                   ),
-                  
+
                   const SizedBox(width: 20),
-                  
+
                   // 快进按钮
                   IconButton(
                     onPressed: () {
@@ -485,16 +483,18 @@ class _VideoCardState extends State<VideoCard> {
                   ),
                 ],
               ),
-              
+
               const SizedBox(height: 16),
-              
+
               // 进度条
               SliderTheme(
                 data: SliderTheme.of(context).copyWith(
                   activeTrackColor: const Color(0xFF9C27B0),
                   inactiveTrackColor: Colors.white.withOpacity(0.3),
                   thumbColor: const Color(0xFF9C27B0),
-                  thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 8),
+                  thumbShape: const RoundSliderThumbShape(
+                    enabledThumbRadius: 8,
+                  ),
                   trackHeight: 4,
                 ),
                 child: Slider(
@@ -504,7 +504,7 @@ class _VideoCardState extends State<VideoCard> {
                   },
                 ),
               ),
-              
+
               // 时间显示
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -551,10 +551,7 @@ class _VideoCardState extends State<VideoCard> {
           Expanded(
             child: Text(
               value,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 14,
-              ),
+              style: const TextStyle(color: Colors.white, fontSize: 14),
             ),
           ),
         ],

@@ -27,15 +27,15 @@ class _CreatePackageButtonState extends State<CreatePackageButton> {
             // 通过包裹管理器创建包裹
             PackageManager().createPackageFromForm(formData);
             print('包裹创建成功');
-            
+
             // 关闭模态框 - 使用modalContext确保关闭的是模态框而不是主屏幕
             Navigator.of(modalContext).pop();
-            
+
             // 获取刚创建的包裹信息
             final packageManager = PackageManager();
             final packages = packageManager.packages;
             final latestPackage = packages.isNotEmpty ? packages.last : null;
-            
+
             // 显示包裹创建成功的文件添加确认对话框
             final shouldAddFile = await showDialog<bool>(
               context: context,
@@ -45,7 +45,7 @@ class _CreatePackageButtonState extends State<CreatePackageButton> {
                 onCancel: () => Navigator.of(context).pop(false),
               ),
             );
-            
+
             if (shouldAddFile == true && latestPackage != null) {
               // 用户选择"好" - 导航到包裹内容管理页面
               print('用户选择添加文件到包裹，导航到包裹内容管理页面');
@@ -70,10 +70,10 @@ class _CreatePackageButtonState extends State<CreatePackageButton> {
             }
           } catch (e) {
             print('创建包裹时发生错误: $e');
-            
+
             // 关闭模态框 - 使用modalContext
             Navigator.of(modalContext).pop();
-            
+
             // 显示错误信息 - 使用原始的context
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(

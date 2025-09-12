@@ -29,9 +29,7 @@ class VaultFileDisplayArea extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.black.withOpacity(0.2),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: Colors.grey.withOpacity(0.3),
-        ),
+        border: Border.all(color: Colors.grey.withOpacity(0.3)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -39,11 +37,7 @@ class VaultFileDisplayArea extends StatelessWidget {
           // 标题区域
           Row(
             children: [
-              Icon(
-                icon,
-                color: titleColor,
-                size: 20,
-              ),
+              Icon(icon, color: titleColor, size: 20),
               const SizedBox(width: 8),
               Text(
                 title,
@@ -56,11 +50,9 @@ class VaultFileDisplayArea extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 16),
-          
+
           // 文件列表区域
-          Expanded(
-            child: child ?? _buildEmptyState(),
-          ),
+          Expanded(child: child ?? _buildEmptyState()),
         ],
       ),
     );
@@ -71,11 +63,7 @@ class VaultFileDisplayArea extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
-            emptyIcon,
-            size: 64,
-            color: Colors.grey[600],
-          ),
+          Icon(emptyIcon, size: 64, color: Colors.grey[600]),
           const SizedBox(height: 16),
           Text(
             emptyMessage,
@@ -88,10 +76,7 @@ class VaultFileDisplayArea extends StatelessWidget {
           const SizedBox(height: 8),
           Text(
             emptySubMessage,
-            style: TextStyle(
-              fontSize: 14,
-              color: Colors.grey[700],
-            ),
+            style: TextStyle(fontSize: 14, color: Colors.grey[700]),
             textAlign: TextAlign.center,
           ),
         ],

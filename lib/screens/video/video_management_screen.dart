@@ -26,7 +26,8 @@ class _VideoManagementScreenState extends State<VideoManagementScreen> {
       fileSizeBytes: 125000000, // 125MB
       format: 'mp4',
       duration: const Duration(seconds: 180), // 3分钟
-      thumbnailPath: '/storage/emulated/0/Movies/thumbnails/birthday_party_thumb.jpg',
+      thumbnailPath:
+          '/storage/emulated/0/Movies/thumbnails/birthday_party_thumb.jpg',
       width: 1920,
       height: 1080,
     ),
@@ -39,7 +40,8 @@ class _VideoManagementScreenState extends State<VideoManagementScreen> {
       fileSizeBytes: 89000000, // 89MB
       format: 'mov',
       duration: const Duration(seconds: 120), // 2分钟
-      thumbnailPath: '/storage/emulated/0/Movies/thumbnails/travel_scenery_thumb.jpg',
+      thumbnailPath:
+          '/storage/emulated/0/Movies/thumbnails/travel_scenery_thumb.jpg',
       width: 1280,
       height: 720,
     ),
@@ -58,13 +60,18 @@ class _VideoManagementScreenState extends State<VideoManagementScreen> {
   }
 
   Widget _buildVideoList() {
-    return ListView.builder(
-      padding: const EdgeInsets.all(16),
-      itemCount: _videos.length,
-      itemBuilder: (context, index) {
-        return Padding(
-          padding: const EdgeInsets.only(bottom: 8),
-          child: VideoCard(
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.black.withOpacity(0.2),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: const Color(0xFF333333), width: 1),
+      ),
+      margin: const EdgeInsets.symmetric(horizontal: 4),
+      child: ListView.builder(
+        padding: const EdgeInsets.symmetric(vertical: 8),
+        itemCount: _videos.length,
+        itemBuilder: (context, index) {
+          return VideoCard(
             video: _videos[index],
             onTap: () {
               // 点击播放视频
@@ -80,7 +87,7 @@ class _VideoManagementScreenState extends State<VideoManagementScreen> {
                   id: _videos[index].id,
                   fileName: fileName,
                   filePath: _videos[index].filePath,
-                  timestamp: _videos[index].timestamp,
+                  timestamp: DateTime.now(), // 使用当前时间作为更新时间戳
                   note: _videos[index].note,
                   fileSizeBytes: _videos[index].fileSizeBytes,
                   format: _videos[index].format,
@@ -91,9 +98,9 @@ class _VideoManagementScreenState extends State<VideoManagementScreen> {
                 );
               });
             },
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 
@@ -321,7 +328,7 @@ class _VideoManagementScreenState extends State<VideoManagementScreen> {
                         ),
                       ),
                     ),
-                    
+
                     // 标题
                     Expanded(
                       child: Text(
@@ -334,7 +341,7 @@ class _VideoManagementScreenState extends State<VideoManagementScreen> {
                         textAlign: TextAlign.center,
                       ),
                     ),
-                    
+
                     // 占位，保持标题居中
                     const SizedBox(width: 40),
                   ],
@@ -452,7 +459,8 @@ class _VideoManagementScreenState extends State<VideoManagementScreen> {
           } else if (index == 1) {
             Navigator.of(context).pushReplacement(
               MaterialPageRoute(
-                  builder: (context) => const GuardianServiceScreen()),
+                builder: (context) => const GuardianServiceScreen(),
+              ),
             );
           } else if (index == 2) {
             Navigator.of(context).pushReplacement(

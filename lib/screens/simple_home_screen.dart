@@ -34,7 +34,7 @@ class _SimpleHomeScreenState extends State<SimpleHomeScreen> {
         child: Column(
           children: [
             const SizedBox(height: 20),
-            
+
             // 标题
             const Text(
               '包裹管理',
@@ -44,14 +44,14 @@ class _SimpleHomeScreenState extends State<SimpleHomeScreen> {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            
+
             const SizedBox(height: 20),
-            
+
             // 创建包裹按钮
             const Center(child: CreatePackageButton()),
-            
+
             const SizedBox(height: 20),
-            
+
             // 包裹列表
             Expanded(
               child: Container(
@@ -61,7 +61,7 @@ class _SimpleHomeScreenState extends State<SimpleHomeScreen> {
                   builder: (context, child) {
                     try {
                       print('正在构建包裹列表，包裹数量: ${_packageManager.packageCount}');
-                      
+
                       if (_packageManager.packages.isEmpty) {
                         return const Center(
                           child: Text(
@@ -74,7 +74,7 @@ class _SimpleHomeScreenState extends State<SimpleHomeScreen> {
                           ),
                         );
                       }
-                      
+
                       return SingleChildScrollView(
                         child: Column(
                           children: [
@@ -86,7 +86,8 @@ class _SimpleHomeScreenState extends State<SimpleHomeScreen> {
                                 borderRadius: BorderRadius.circular(8),
                               ),
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
                                     '包裹总数: ${_packageManager.packageCount}',
@@ -97,7 +98,10 @@ class _SimpleHomeScreenState extends State<SimpleHomeScreen> {
                                     ),
                                   ),
                                   IconButton(
-                                    icon: const Icon(Icons.refresh, color: Colors.white),
+                                    icon: const Icon(
+                                      Icons.refresh,
+                                      color: Colors.white,
+                                    ),
                                     onPressed: () {
                                       setState(() {
                                         _packageManager.loadTestData();
@@ -112,7 +116,9 @@ class _SimpleHomeScreenState extends State<SimpleHomeScreen> {
                               onPackageTap: (package) {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
-                                    content: Text('点击了包裹: ${package.packageNumber}'),
+                                    content: Text(
+                                      '点击了包裹: ${package.packageNumber}',
+                                    ),
                                     duration: const Duration(seconds: 2),
                                   ),
                                 );

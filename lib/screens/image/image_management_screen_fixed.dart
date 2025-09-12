@@ -19,22 +19,22 @@ class _ImageManagementScreenState extends State<ImageManagementScreen> {
   final List<ImageFile> _images = [
     ImageFile(
       id: '1',
-      fileName: '旅行风景照',
-      filePath: '/storage/emulated/0/Pictures/travel_scenery.jpg',
+      fileName: '春游照片',
+      filePath: '/storage/emulated/0/Pictures/spring_trip.jpg',
       timestamp: DateTime.now().subtract(const Duration(days: 2)),
-      note: '美丽的自然风光',
+      note: '美好的春游回忆',
       fileSizeBytes: 3500000, // 3.5MB
       format: 'jpg',
-      width: 3840,
-      height: 2160,
+      width: 1920,
+      height: 1080,
     ),
     ImageFile(
       id: '2',
-      fileName: '家庭聚会',
-      filePath: '/storage/emulated/0/Pictures/family_gathering.png',
+      fileName: '家庭聚餐',
+      filePath: '/storage/emulated/0/Pictures/family_dinner.png',
       timestamp: DateTime.now().subtract(const Duration(days: 5)),
       note: '温馨的家庭时光',
-      fileSizeBytes: 2800000, // 2.8MB
+      fileSizeBytes: 5200000, // 5.2MB
       format: 'png',
       width: 2560,
       height: 1440,
@@ -50,231 +50,6 @@ class _ImageManagementScreenState extends State<ImageManagementScreen> {
   void _navigateToHome() {
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(builder: (context) => const HomeScreen()),
-    );
-  }
-
-  Widget _buildImageList() {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.black.withOpacity(0.2),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: const Color(0xFF333333), width: 1),
-      ),
-      margin: const EdgeInsets.symmetric(horizontal: 4),
-      child: ListView.builder(
-        padding: const EdgeInsets.symmetric(vertical: 8),
-        itemCount: _images.length,
-        itemBuilder: (context, index) {
-          return ImageCard(
-            image: _images[index],
-            onTap: () {
-              // 点击查看图片
-            },
-            onNoteChanged: (note) {
-              setState(() {
-                _images[index].note = note;
-              });
-            },
-            onFileNameChanged: (fileName) {
-              setState(() {
-                _images[index] = ImageFile(
-                  id: _images[index].id,
-                  fileName: fileName,
-                  filePath: _images[index].filePath,
-                  timestamp: DateTime.now(), // 使用当前时间作为更新时间戳
-                  note: _images[index].note,
-                  fileSizeBytes: _images[index].fileSizeBytes,
-                  format: _images[index].format,
-                  width: _images[index].width,
-                  height: _images[index].height,
-                );
-              });
-            },
-          );
-        },
-      ),
-    );
-  }
-
-  void _showUploadDialog() {
-    showDialog(
-      context: context,
-      barrierColor: Colors.black.withOpacity(0.5),
-      builder: (context) => Dialog(
-        backgroundColor: Colors.transparent,
-        child: Container(
-          margin: const EdgeInsets.all(24),
-          padding: const EdgeInsets.all(24),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(16),
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Row(
-                children: [
-                  Container(
-                    width: 32,
-                    height: 32,
-                    decoration: BoxDecoration(
-                      color: const Color(0xFF2196F3).withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: const Icon(
-                      Icons.image,
-                      color: Color(0xFF2196F3),
-                      size: 20,
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  const Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          '上传图片文件',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            color: Color(0xFF1A1A1A),
-                          ),
-                        ),
-                        Text(
-                          '选择要上传的图片文件',
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: Color(0xFF666666),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () => Navigator.of(context).pop(),
-                    child: Container(
-                      width: 24,
-                      height: 24,
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFF5F5F5),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: const Icon(
-                        Icons.close,
-                        size: 16,
-                        color: Color(0xFF666666),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 24),
-              Row(
-                children: [
-                  Expanded(
-                    child: TextButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                        // TODO: 从相册选择
-                      },
-                      style: TextButton.styleFrom(
-                        backgroundColor: const Color(0xFFF8F9FA),
-                        padding: const EdgeInsets.symmetric(vertical: 12),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                      child: const Column(
-                        children: [
-                          Icon(
-                            Icons.photo_library,
-                            color: Color(0xFF2196F3),
-                            size: 24,
-                          ),
-                          SizedBox(height: 4),
-                          Text(
-                            '从相册选择',
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: Color(0xFF2196F3),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: TextButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                        // TODO: 拍照
-                      },
-                      style: TextButton.styleFrom(
-                        backgroundColor: const Color(0xFFF8F9FA),
-                        padding: const EdgeInsets.symmetric(vertical: 12),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                      child: const Column(
-                        children: [
-                          Icon(
-                            Icons.camera_alt,
-                            color: Color(0xFF2196F3),
-                            size: 24,
-                          ),
-                          SizedBox(height: 4),
-                          Text(
-                            '拍照',
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: Color(0xFF2196F3),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: TextButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                        // TODO: 从文件选择
-                      },
-                      style: TextButton.styleFrom(
-                        backgroundColor: const Color(0xFFF8F9FA),
-                        padding: const EdgeInsets.symmetric(vertical: 12),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                      child: const Column(
-                        children: [
-                          Icon(
-                            Icons.folder,
-                            color: Color(0xFF2196F3),
-                            size: 24,
-                          ),
-                          SizedBox(height: 4),
-                          Text(
-                            '文件选择',
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: Color(0xFF2196F3),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
     );
   }
 
@@ -464,6 +239,211 @@ class _ImageManagementScreenState extends State<ImageManagementScreen> {
     );
   }
 
+  Widget _buildImageList() {
+    return ListView.builder(
+      padding: const EdgeInsets.all(16),
+      itemCount: _images.length,
+      itemBuilder: (context, index) {
+        return Padding(
+          padding: const EdgeInsets.only(bottom: 8),
+          child: ImageCard(
+            image: _images[index],
+            onTap: () {
+              // 点击查看详情
+            },
+            onNoteChanged: (note) {
+              setState(() {
+                _images[index].note = note;
+              });
+            },
+            onFileNameChanged: (fileName) {
+              setState(() {
+                _images[index] = ImageFile(
+                  id: _images[index].id,
+                  fileName: fileName,
+                  filePath: _images[index].filePath,
+                  timestamp: _images[index].timestamp,
+                  note: _images[index].note,
+                  fileSizeBytes: _images[index].fileSizeBytes,
+                  format: _images[index].format,
+                  width: _images[index].width,
+                  height: _images[index].height,
+                );
+              });
+            },
+          ),
+        );
+      },
+    );
+  }
+
+  void _showUploadDialog() {
+    showDialog(
+      context: context,
+      barrierColor: Colors.black.withOpacity(0.5),
+      builder: (context) => Dialog(
+        backgroundColor: Colors.transparent,
+        child: Container(
+          margin: const EdgeInsets.all(24),
+          padding: const EdgeInsets.all(24),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                children: [
+                  Container(
+                    width: 32,
+                    height: 32,
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF2196F3).withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: const Icon(
+                      Icons.image,
+                      color: Color(0xFF2196F3),
+                      size: 20,
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  const Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          '上传图片文件',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: Color(0xFF1A1A1A),
+                          ),
+                        ),
+                        Text(
+                          '选择要上传的图片文件',
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Color(0xFF666666),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () => Navigator.of(context).pop(),
+                    child: Container(
+                      width: 32,
+                      height: 32,
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFF5F5F5),
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: const Icon(
+                        Icons.close,
+                        size: 18,
+                        color: Color(0xFF666666),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 24),
+              Row(
+                children: [
+                  Expanded(
+                    child: Container(
+                      height: 48,
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFF8F9FA),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: const Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.camera_alt,
+                            color: Color(0xFF2196F3),
+                            size: 24,
+                          ),
+                          SizedBox(height: 4),
+                          Text(
+                            '拍照',
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Color(0xFF2196F3),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: Container(
+                      height: 48,
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFF8F9FA),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: const Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.photo_library,
+                            color: Color(0xFF2196F3),
+                            size: 24,
+                          ),
+                          SizedBox(height: 4),
+                          Text(
+                            '相册选择',
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Color(0xFF2196F3),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: Container(
+                      height: 48,
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFF8F9FA),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: const Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.folder,
+                            color: Color(0xFF2196F3),
+                            size: 24,
+                          ),
+                          SizedBox(height: 4),
+                          Text(
+                            '文件选择',
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Color(0xFF2196F3),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   // 构建添加按钮 - 采用首页年轮相册按钮同样的风格
   Widget _buildAddButton() {
     return GestureDetector(
@@ -477,7 +457,7 @@ class _ImageManagementScreenState extends State<ImageManagementScreen> {
         child: Container(
           width: 58,
           height: 28,
-          padding: const EdgeInsets.all(6),
+          padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
             gradient: const LinearGradient(
               begin: Alignment.topCenter,
@@ -521,17 +501,13 @@ class _ImageManagementScreenState extends State<ImageManagementScreen> {
         print('点击了$title按钮');
       },
       child: Container(
-        height: 36,
         decoration: BoxDecoration(
           color: Colors.black,
           borderRadius: BorderRadius.circular(10),
         ),
         padding: const EdgeInsets.all(4),
         child: Container(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 12,
-            vertical: 4,
-          ),
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
           decoration: BoxDecoration(
             gradient: const LinearGradient(
               begin: Alignment.topCenter,

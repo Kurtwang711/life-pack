@@ -44,10 +44,7 @@ class PackageList extends StatelessWidget {
       print('包裹列表渲染错误: $e');
       return Container(
         padding: const EdgeInsets.all(16),
-        child: Text(
-          '包裹列表加载失败: $e',
-          style: const TextStyle(color: Colors.red),
-        ),
+        child: Text('包裹列表加载失败: $e', style: const TextStyle(color: Colors.red)),
       );
     }
   }

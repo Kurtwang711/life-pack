@@ -32,7 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
       print('HomeScreen initState 开始');
       _packageManager = PackageManager();
       print('PackageManager 实例获取成功');
-      
+
       // 使用WidgetsBinding确保在下一帧加载数据
       WidgetsBinding.instance.addPostFrameCallback((_) {
         try {
@@ -185,7 +185,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             if (_packageManager.packages.isEmpty) {
                               return const SizedBox.shrink();
                             }
-                            
+
                             return PackageList(
                               packages: _packageManager.packages,
                               onPackageTap: (package) {
@@ -243,9 +243,7 @@ class _HomeScreenState extends State<HomeScreen> {
           } else if (index == 2) {
             // 个人中心
             Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => const ProfileScreen(),
-              ),
+              MaterialPageRoute(builder: (context) => const ProfileScreen()),
             );
           }
         },

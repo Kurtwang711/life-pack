@@ -56,12 +56,12 @@ class _TestPackageScreenState extends State<TestPackageScreen> {
           child: Column(
             children: [
               const SizedBox(height: 20),
-              
+
               // 创建包裹按钮
               const Center(child: CreatePackageButton()),
-              
+
               const SizedBox(height: 20),
-              
+
               // 包裹列表
               Expanded(
                 child: Padding(
@@ -105,7 +105,9 @@ class _TestPackageScreenState extends State<TestPackageScreen> {
                               onPackageTap: (package) {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
-                                    content: Text('点击了包裹: ${package.packageNumber}'),
+                                    content: Text(
+                                      '点击了包裹: ${package.packageNumber}',
+                                    ),
                                     duration: const Duration(seconds: 2),
                                   ),
                                 );
@@ -130,9 +132,9 @@ class _TestPackageScreenState extends State<TestPackageScreen> {
             phone: '13800138000',
             deliveryMethod: 'package_id_app',
           );
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('已添加测试包裹')),
-          );
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(const SnackBar(content: Text('已添加测试包裹')));
         },
         child: const Icon(Icons.add),
         backgroundColor: Colors.green[700],

@@ -70,7 +70,7 @@ class _DocumentManagementScreenState extends State<DocumentManagementScreen> {
                         ),
                       ),
                     ),
-                    
+
                     // 标题
                     Expanded(
                       child: Text(
@@ -83,7 +83,7 @@ class _DocumentManagementScreenState extends State<DocumentManagementScreen> {
                         textAlign: TextAlign.center,
                       ),
                     ),
-                    
+
                     // 占位，保持标题居中
                     const SizedBox(width: 40),
                   ],
@@ -199,7 +199,8 @@ class _DocumentManagementScreenState extends State<DocumentManagementScreen> {
           } else if (index == 1) {
             Navigator.of(context).pushReplacement(
               MaterialPageRoute(
-                  builder: (context) => const GuardianServiceScreen()),
+                builder: (context) => const GuardianServiceScreen(),
+              ),
             );
           } else if (index == 2) {
             Navigator.of(context).pushReplacement(

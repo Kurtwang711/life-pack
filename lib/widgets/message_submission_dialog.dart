@@ -5,7 +5,8 @@ class MessageSubmissionDialog extends StatefulWidget {
   const MessageSubmissionDialog({super.key});
 
   @override
-  State<MessageSubmissionDialog> createState() => _MessageSubmissionDialogState();
+  State<MessageSubmissionDialog> createState() =>
+      _MessageSubmissionDialogState();
 }
 
 class _MessageSubmissionDialogState extends State<MessageSubmissionDialog> {
@@ -102,7 +103,7 @@ class _MessageSubmissionDialogState extends State<MessageSubmissionDialog> {
                         ],
                       ),
                     ),
-                    
+
                     // 输入区域
                     Container(
                       margin: const EdgeInsets.symmetric(horizontal: 10),
@@ -141,7 +142,7 @@ class _MessageSubmissionDialogState extends State<MessageSubmissionDialog> {
                               ],
                             ),
                           ),
-                          
+
                           // 操作区域
                           Container(
                             padding: const EdgeInsets.all(10),
@@ -195,23 +196,20 @@ class _MessageSubmissionDialogState extends State<MessageSubmissionDialog> {
                         ],
                       ),
                     ),
-                    
+
                     // 底部提示
                     Container(
                       padding: const EdgeInsets.all(14),
                       child: const Text(
                         '投稿经录用会赠送一周会员资格',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 10,
-                        ),
+                        style: TextStyle(color: Colors.white, fontSize: 10),
                       ),
                     ),
                   ],
                 ),
               ),
             ),
-            
+
             // 光效装饰 - 参考HTML中的::after效果
             Positioned(
               top: -10,

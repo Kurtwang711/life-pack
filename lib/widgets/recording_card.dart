@@ -56,10 +56,7 @@ class _RecordingCardState extends State<RecordingCard> {
           decoration: BoxDecoration(
             color: Colors.black.withOpacity(0.3),
             borderRadius: BorderRadius.circular(8),
-            border: Border.all(
-              color: const Color(0xFF333333),
-              width: 1,
-            ),
+            border: Border.all(color: const Color(0xFF333333), width: 1),
           ),
           child: Row(
             children: [
@@ -86,7 +83,7 @@ class _RecordingCardState extends State<RecordingCard> {
                   ),
                 ),
               ),
-              
+
               // 右侧文字信息
               Expanded(
                 child: Padding(
@@ -101,7 +98,8 @@ class _RecordingCardState extends State<RecordingCard> {
                         onTap: () {
                           setState(() {
                             _isEditingFileName = true;
-                            _fileNameController.text = widget.recording.fileName;
+                            _fileNameController.text =
+                                widget.recording.fileName;
                           });
                           // 延迟聚焦，确保TextField已经构建完成
                           Future.delayed(const Duration(milliseconds: 50), () {
@@ -140,7 +138,9 @@ class _RecordingCardState extends State<RecordingCard> {
                                       _isEditingFileName = false;
                                     });
                                     if (_fileNameController.text.isNotEmpty) {
-                                      widget.onFileNameChanged?.call(_fileNameController.text);
+                                      widget.onFileNameChanged?.call(
+                                        _fileNameController.text,
+                                      );
                                     }
                                   },
                                 ),
@@ -175,9 +175,9 @@ class _RecordingCardState extends State<RecordingCard> {
                                 ),
                               ),
                       ),
-                      
+
                       const SizedBox(height: 1),
-                      
+
                       // 第二行：备注（可编辑）
                       GestureDetector(
                         onTap: () {
@@ -219,7 +219,9 @@ class _RecordingCardState extends State<RecordingCard> {
                                     setState(() {
                                       _isEditingNote = false;
                                     });
-                                    widget.onNoteChanged?.call(_noteController.text);
+                                    widget.onNoteChanged?.call(
+                                      _noteController.text,
+                                    );
                                   },
                                 ),
                               )
@@ -241,7 +243,7 @@ class _RecordingCardState extends State<RecordingCard> {
             ],
           ),
         ),
-        
+
         // 播放器（展开时显示）
         if (_showPlayer) _buildPlayer(),
       ],
@@ -256,23 +258,20 @@ class _RecordingCardState extends State<RecordingCard> {
       decoration: BoxDecoration(
         color: Colors.black.withOpacity(0.4),
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(
-          color: const Color(0xFF333333),
-          width: 1,
-        ),
+        border: Border.all(color: const Color(0xFF333333), width: 1),
       ),
       child: Column(
         children: [
           // 播放控制区
           _buildPlayControls(),
-          
+
           const SizedBox(height: 8),
-          
+
           // 倍速控制
           _buildSpeedControls(),
-          
+
           const SizedBox(height: 8),
-          
+
           // 转文字功能
           _buildTranscriptButton(),
         ],
@@ -289,13 +288,9 @@ class _RecordingCardState extends State<RecordingCard> {
           onPressed: () {
             print('快退');
           },
-          icon: const Icon(
-            Icons.replay_10,
-            color: Colors.white,
-            size: 20,
-          ),
+          icon: const Icon(Icons.replay_10, color: Colors.white, size: 20),
         ),
-        
+
         // 播放/暂停按钮
         IconButton(
           onPressed: () {
@@ -307,19 +302,15 @@ class _RecordingCardState extends State<RecordingCard> {
             size: 28,
           ),
         ),
-        
+
         // 快进按钮
         IconButton(
           onPressed: () {
             print('快进');
           },
-          icon: const Icon(
-            Icons.forward_10,
-            color: Colors.white,
-            size: 20,
-          ),
+          icon: const Icon(Icons.forward_10, color: Colors.white, size: 20),
         ),
-        
+
         // 进度条
         Expanded(
           child: Column(
@@ -329,7 +320,9 @@ class _RecordingCardState extends State<RecordingCard> {
                   activeTrackColor: const Color(0xFF4CAF50),
                   inactiveTrackColor: Colors.white.withOpacity(0.3),
                   thumbColor: const Color(0xFF4CAF50),
-                  thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 6),
+                  thumbShape: const RoundSliderThumbShape(
+                    enabledThumbRadius: 6,
+                  ),
                   trackHeight: 2,
                 ),
                 child: Slider(
@@ -369,15 +362,12 @@ class _RecordingCardState extends State<RecordingCard> {
   Widget _buildSpeedControls() {
     final speeds = [0.5, 0.75, 1.0, 1.25, 1.5, 2.0];
     double currentSpeed = 1.0;
-    
+
     return Row(
       children: [
         Text(
           '倍速:',
-          style: TextStyle(
-            color: Colors.white.withOpacity(0.8),
-            fontSize: 12,
-          ),
+          style: TextStyle(color: Colors.white.withOpacity(0.8), fontSize: 12),
         ),
         const SizedBox(width: 8),
         Expanded(
@@ -392,7 +382,10 @@ class _RecordingCardState extends State<RecordingCard> {
                   print('设置倍速: ${speed}x');
                 },
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 4,
+                  ),
                   decoration: BoxDecoration(
                     color: currentSpeed == speed
                         ? const Color(0xFF4CAF50)
@@ -434,9 +427,7 @@ class _RecordingCardState extends State<RecordingCard> {
         style: ElevatedButton.styleFrom(
           backgroundColor: const Color(0xFF4CAF50),
           foregroundColor: Colors.white,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(6),
-          ),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
           padding: const EdgeInsets.symmetric(vertical: 8),
         ),
         icon: const Icon(Icons.text_fields, size: 16),
@@ -452,10 +443,7 @@ class _RecordingCardState extends State<RecordingCard> {
       builder: (BuildContext context) {
         return AlertDialog(
           backgroundColor: const Color(0xFF2D3748),
-          title: const Text(
-            'AI语音识别',
-            style: TextStyle(color: Colors.white),
-          ),
+          title: const Text('AI语音识别', style: TextStyle(color: Colors.white)),
           content: Container(
             width: 300,
             height: 200,
@@ -500,10 +488,7 @@ class _RecordingCardState extends State<RecordingCard> {
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text(
-                '关闭',
-                style: TextStyle(color: Colors.white),
-              ),
+              child: const Text('关闭', style: TextStyle(color: Colors.white)),
             ),
             ElevatedButton(
               onPressed: () {

@@ -20,7 +20,7 @@ class _MinimalTestScreenState extends State<MinimalTestScreen> {
   @override
   Widget build(BuildContext context) {
     print('正在构建MinimalTestScreen，计数器: $_counter');
-    
+
     return Scaffold(
       backgroundColor: const Color(0xFF1B4332),
       appBar: AppBar(
@@ -43,10 +43,7 @@ class _MinimalTestScreenState extends State<MinimalTestScreen> {
             const SizedBox(height: 20),
             Text(
               '计数器: $_counter',
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 24,
-              ),
+              style: const TextStyle(color: Colors.white, fontSize: 24),
             ),
             const SizedBox(height: 20),
             ElevatedButton(

@@ -4,20 +4,48 @@ import '../guardian_service/guardian_service_screen.dart';
 import '../profile/profile_screen.dart';
 import '../../widgets/custom_bottom_navigation.dart';
 import '../../widgets/vault_file_display_area.dart';
-import '../../widgets/recording_card.dart';
-import '../../models/recording_file.dart';
+import '../../widgets/video_card.dart';
+import '../../models/video_file.dart';
 
-class RecordingManagementScreen extends StatefulWidget {
-  const RecordingManagementScreen({super.key});
+class VideoManagementScreen extends StatefulWidget {
+  const VideoManagementScreen({super.key});
 
   @override
-  State<RecordingManagementScreen> createState() =>
-      _RecordingManagementScreenState();
+  State<VideoManagementScreen> createState() => _VideoManagementScreenState();
 }
 
-class _RecordingManagementScreenState extends State<RecordingManagementScreen> {
+class _VideoManagementScreenState extends State<VideoManagementScreen> {
   final TextEditingController _searchController = TextEditingController();
-  final List<RecordingFile> _recordings = [];
+  final List<VideoFile> _videos = [
+    VideoFile(
+      id: '1',
+      fileName: '生日派对视频',
+      filePath: '/storage/emulated/0/Movies/birthday_party.mp4',
+      timestamp: DateTime.now().subtract(const Duration(days: 1)),
+      note: '难忘的生日庆祝',
+      fileSizeBytes: 125000000, // 125MB
+      format: 'mp4',
+      duration: const Duration(seconds: 180), // 3分钟
+      thumbnailPath:
+          '/storage/emulated/0/Movies/thumbnails/birthday_party_thumb.jpg',
+      width: 1920,
+      height: 1080,
+    ),
+    VideoFile(
+      id: '2',
+      fileName: '旅游风景',
+      filePath: '/storage/emulated/0/Movies/travel_scenery.mov',
+      timestamp: DateTime.now().subtract(const Duration(days: 7)),
+      note: '美丽的自然风光',
+      fileSizeBytes: 89000000, // 89MB
+      format: 'mov',
+      duration: const Duration(seconds: 120), // 2分钟
+      thumbnailPath:
+          '/storage/emulated/0/Movies/thumbnails/travel_scenery_thumb.jpg',
+      width: 1280,
+      height: 720,
+    ),
+  ];
 
   @override
   void dispose() {
@@ -40,9 +68,9 @@ class _RecordingManagementScreenState extends State<RecordingManagementScreen> {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              Color(0xFF1B4332), // 墨绿偏暗色
-              Color(0xFF2D5016), // 深绿色
-              Color(0xFF081C15), // 更深的绿黑色
+              Color(0xFF4A1E3F), // 深紫色
+              Color(0xFF6B2C91), // 紫色
+              Color(0xFF9C27B0), // 亮紫色
             ],
             stops: [0.0, 0.6, 1.0],
           ),
@@ -77,7 +105,7 @@ class _RecordingManagementScreenState extends State<RecordingManagementScreen> {
                     // 标题
                     Expanded(
                       child: Text(
-                        '录音管理（${_recordings.length}个文件）',
+                        '视频管理（${_videos.length}个文件）',
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 18,
@@ -132,7 +160,7 @@ class _RecordingManagementScreenState extends State<RecordingManagementScreen> {
                                   fontSize: 14,
                                 ),
                                 decoration: const InputDecoration(
-                                  hintText: '搜索录音...',
+                                  hintText: '搜索视频...',
                                   hintStyle: TextStyle(
                                     color: Color(0xFF666666),
                                     fontSize: 14,
@@ -169,21 +197,20 @@ class _RecordingManagementScreenState extends State<RecordingManagementScreen> {
                 ),
               ),
 
-              // 录音列表区域
+              // 视频列表区域
               Expanded(
                 child: Container(
                   margin: const EdgeInsets.only(top: 4),
-                  child: _recordings.isEmpty
+                  child: _videos.isEmpty
                       ? VaultFileDisplayArea(
-                          title: '录音文件列表',
-                          icon: Icons.mic,
-                          titleColor: const Color(0xFF4CAF50), // 绿色主题
-                          emptyMessage: '暂无录音文件',
-                          emptySubMessage:
-                              '点击上传按钮开始录制或添加录音文件\n支持mp3、wav、m4a等格式',
-                          emptyIcon: Icons.mic_none_outlined,
+                          title: '视频文件列表',
+                          icon: Icons.videocam,
+                          titleColor: const Color(0xFF9C27B0), // 紫色主题
+                          emptyMessage: '暂无视频文件',
+                          emptySubMessage: '点击上传按钮添加视频文件\n支持mp4、mov、avi等格式',
+                          emptyIcon: Icons.videocam_off_outlined,
                         )
-                      : _buildRecordingList(),
+                      : _buildVideoList(),
                 ),
               ),
             ],
@@ -218,10 +245,217 @@ class _RecordingManagementScreenState extends State<RecordingManagementScreen> {
     );
   }
 
+  Widget _buildVideoList() {
+    return ListView.builder(
+      padding: const EdgeInsets.all(16),
+      itemCount: _videos.length,
+      itemBuilder: (context, index) {
+        return Padding(
+          padding: const EdgeInsets.only(bottom: 8),
+          child: VideoCard(
+            video: _videos[index],
+            onTap: () {
+              // 点击播放视频
+            },
+            onNoteChanged: (note) {
+              setState(() {
+                _videos[index].note = note;
+              });
+            },
+            onFileNameChanged: (fileName) {
+              setState(() {
+                _videos[index] = VideoFile(
+                  id: _videos[index].id,
+                  fileName: fileName,
+                  filePath: _videos[index].filePath,
+                  timestamp: _videos[index].timestamp,
+                  note: _videos[index].note,
+                  fileSizeBytes: _videos[index].fileSizeBytes,
+                  format: _videos[index].format,
+                  duration: _videos[index].duration,
+                  thumbnailPath: _videos[index].thumbnailPath,
+                  width: _videos[index].width,
+                  height: _videos[index].height,
+                );
+              });
+            },
+          ),
+        );
+      },
+    );
+  }
+
+  void _showUploadDialog() {
+    showDialog(
+      context: context,
+      barrierColor: Colors.black.withOpacity(0.5),
+      builder: (context) => Dialog(
+        backgroundColor: Colors.transparent,
+        child: Container(
+          margin: const EdgeInsets.all(24),
+          padding: const EdgeInsets.all(24),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                children: [
+                  Container(
+                    width: 32,
+                    height: 32,
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF9C27B0).withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: const Icon(
+                      Icons.videocam,
+                      color: Color(0xFF9C27B0),
+                      size: 20,
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  const Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          '上传视频文件',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: Color(0xFF1A1A1A),
+                          ),
+                        ),
+                        Text(
+                          '选择要上传的视频文件',
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Color(0xFF666666),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () => Navigator.of(context).pop(),
+                    child: Container(
+                      width: 32,
+                      height: 32,
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFF5F5F5),
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: const Icon(
+                        Icons.close,
+                        size: 18,
+                        color: Color(0xFF666666),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 24),
+              Row(
+                children: [
+                  Expanded(
+                    child: Container(
+                      height: 48,
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFF8F9FA),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: const Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.videocam,
+                            color: Color(0xFF9C27B0),
+                            size: 24,
+                          ),
+                          SizedBox(height: 4),
+                          Text(
+                            '录制',
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Color(0xFF9C27B0),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: Container(
+                      height: 48,
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFF8F9FA),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: const Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.video_library,
+                            color: Color(0xFF9C27B0),
+                            size: 24,
+                          ),
+                          SizedBox(height: 4),
+                          Text(
+                            '视频库选择',
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Color(0xFF9C27B0),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: Container(
+                      height: 48,
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFF8F9FA),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: const Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.folder,
+                            color: Color(0xFF9C27B0),
+                            size: 24,
+                          ),
+                          SizedBox(height: 4),
+                          Text(
+                            '文件选择',
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Color(0xFF9C27B0),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   // 构建添加按钮 - 采用首页年轮相册按钮同样的风格
   Widget _buildAddButton() {
     return GestureDetector(
-      onTap: _showRecordingOptions,
+      onTap: _showUploadDialog,
       child: Container(
         decoration: BoxDecoration(
           color: Colors.black,
@@ -230,8 +464,8 @@ class _RecordingManagementScreenState extends State<RecordingManagementScreen> {
         padding: const EdgeInsets.all(4),
         child: Container(
           width: 58,
-          height: 28, // 总高度36px，减去padding 8px = 28px
-          padding: const EdgeInsets.all(6), // 减少内边距以适应36px高度
+          height: 28,
+          padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
             gradient: const LinearGradient(
               begin: Alignment.topCenter,
@@ -275,17 +509,13 @@ class _RecordingManagementScreenState extends State<RecordingManagementScreen> {
         print('点击了$title按钮');
       },
       child: Container(
-        height: 36, // 匹配搜索框高度
         decoration: BoxDecoration(
           color: Colors.black,
           borderRadius: BorderRadius.circular(10),
         ),
         padding: const EdgeInsets.all(4),
         child: Container(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 12,
-            vertical: 4,
-          ), // 调整垂直内边距
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
           decoration: BoxDecoration(
             gradient: const LinearGradient(
               begin: Alignment.topCenter,
@@ -323,166 +553,6 @@ class _RecordingManagementScreenState extends State<RecordingManagementScreen> {
             ),
           ),
         ),
-      ),
-    );
-  }
-
-  // 显示录音选项对话框
-  void _showRecordingOptions() {
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: const Color(0xFF2D3748),
-      builder: (BuildContext context) {
-        return Container(
-          padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              // 标题
-              const Text(
-                '选择录音方式',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              const SizedBox(height: 24),
-
-              // 录音选项
-              ListTile(
-                leading: const Icon(Icons.mic, color: Colors.white, size: 24),
-                title: const Text(
-                  '录音',
-                  style: TextStyle(color: Colors.white, fontSize: 16),
-                ),
-                onTap: () {
-                  Navigator.of(context).pop();
-                  _startRecording();
-                },
-              ),
-
-              // 本地文件选项
-              ListTile(
-                leading: const Icon(
-                  Icons.folder,
-                  color: Colors.white,
-                  size: 24,
-                ),
-                title: const Text(
-                  '本地文件',
-                  style: TextStyle(color: Colors.white, fontSize: 16),
-                ),
-                onTap: () {
-                  Navigator.of(context).pop();
-                  _selectLocalFile();
-                },
-              ),
-
-              const SizedBox(height: 16),
-
-              // 取消按钮
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () => Navigator.of(context).pop(),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF4A5568),
-                    foregroundColor: Colors.white,
-                  ),
-                  child: const Text('取消'),
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-
-  // 开始录音
-  void _startRecording() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('录音功能开发中...'),
-        backgroundColor: Color(0xFF2a2a2a),
-      ),
-    );
-  }
-
-  // 选择本地文件
-  void _selectLocalFile() {
-    // 模拟文件选择器
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('正在选择本地文件...'),
-        backgroundColor: Color(0xFF4CAF50),
-        duration: Duration(seconds: 1),
-      ),
-    );
-
-    // 模拟添加文件
-    Future.delayed(const Duration(seconds: 1), () {
-      setState(() {
-        _recordings.add(
-          RecordingFile(
-            id: DateTime.now().millisecondsSinceEpoch.toString(),
-            fileName: '会议录音',
-            filePath: '/path/to/recording.mp3',
-            timestamp: DateTime.now(),
-            duration: const Duration(minutes: 5, seconds: 23),
-          ),
-        );
-      });
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('录音文件添加成功'),
-          backgroundColor: Color(0xFF4CAF50),
-        ),
-      );
-    });
-  }
-
-  // 构建录音列表
-  Widget _buildRecordingList() {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.black.withOpacity(0.2),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: const Color(0xFF333333), width: 1),
-      ),
-      margin: const EdgeInsets.symmetric(horizontal: 4),
-      child: ListView.builder(
-        padding: const EdgeInsets.symmetric(vertical: 8),
-        itemCount: _recordings.length,
-        itemBuilder: (context, index) {
-          final recording = _recordings[index];
-          return RecordingCard(
-            recording: recording,
-            onPlay: () {
-              print('播放录音: ${recording.fileName}');
-            },
-            onNoteChanged: (note) {
-              setState(() {
-                recording.note = note;
-              });
-            },
-            onFileNameChanged: (fileName) {
-              setState(() {
-                // 创建新的录音文件对象，更新文件名和时间戳
-                _recordings[index] = RecordingFile(
-                  id: recording.id,
-                  fileName: fileName,
-                  filePath: recording.filePath,
-                  timestamp: DateTime.now(), // 使用当前时间作为更新时间戳
-                  note: recording.note,
-                  duration: recording.duration,
-                );
-              });
-            },
-          );
-        },
       ),
     );
   }

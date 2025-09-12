@@ -5,14 +5,15 @@ import '../profile/profile_screen.dart';
 import '../../widgets/custom_bottom_navigation.dart';
 import '../../widgets/vault_file_display_area.dart';
 
-class AssetsManagementScreen extends StatefulWidget {
-  const AssetsManagementScreen({super.key});
+class RecordingManagementScreen extends StatefulWidget {
+  const RecordingManagementScreen({super.key});
 
   @override
-  State<AssetsManagementScreen> createState() => _AssetsManagementScreenState();
+  State<RecordingManagementScreen> createState() =>
+      _RecordingManagementScreenState();
 }
 
-class _AssetsManagementScreenState extends State<AssetsManagementScreen> {
+class _RecordingManagementScreenState extends State<RecordingManagementScreen> {
   final TextEditingController _searchController = TextEditingController();
 
   @override
@@ -36,9 +37,9 @@ class _AssetsManagementScreenState extends State<AssetsManagementScreen> {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              Color(0xFF004D40), // 深青绿色
-              Color(0xFF00695C), // 青绿色
-              Color(0xFF00897B), // 较亮青绿色
+              Color(0xFF1B4332), // 墨绿偏暗色
+              Color(0xFF2D5016), // 深绿色
+              Color(0xFF081C15), // 更深的绿黑色
             ],
             stops: [0.0, 0.6, 1.0],
           ),
@@ -73,7 +74,7 @@ class _AssetsManagementScreenState extends State<AssetsManagementScreen> {
                     // 标题
                     Expanded(
                       child: Text(
-                        '资产管理',
+                        '录音管理',
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 18,
@@ -128,7 +129,7 @@ class _AssetsManagementScreenState extends State<AssetsManagementScreen> {
                                   fontSize: 14,
                                 ),
                                 decoration: const InputDecoration(
-                                  hintText: '搜索资产...',
+                                  hintText: '搜索录音...',
                                   hintStyle: TextStyle(
                                     color: Color(0xFF666666),
                                     fontSize: 14,
@@ -165,17 +166,17 @@ class _AssetsManagementScreenState extends State<AssetsManagementScreen> {
                 ),
               ),
 
-              // 资产信息列表区域
+              // 录音列表区域
               Expanded(
                 child: Container(
                   margin: const EdgeInsets.only(top: 4),
                   child: VaultFileDisplayArea(
-                    title: '资产信息',
-                    icon: Icons.account_balance,
-                    titleColor: Colors.teal,
-                    emptyMessage: '暂无资产信息',
-                    emptySubMessage: '点击上方"+"按钮添加新的资产记录',
-                    emptyIcon: Icons.account_balance_wallet,
+                    title: '录音文件列表',
+                    icon: Icons.mic,
+                    titleColor: const Color(0xFF4CAF50), // 绿色主题
+                    emptyMessage: '暂无录音文件',
+                    emptySubMessage: '点击上传按钮开始录制或添加录音文件\n支持mp3、wav、m4a等格式',
+                    emptyIcon: Icons.mic_none_outlined,
                   ),
                 ),
               ),
@@ -211,109 +212,37 @@ class _AssetsManagementScreenState extends State<AssetsManagementScreen> {
     );
   }
 
-  // 构建添加按钮 - 采用首页年轮相册按钮同样的风格
+  // 构建添加按钮
   Widget _buildAddButton() {
     return GestureDetector(
       onTap: () {
-        print('添加资产信息');
+        print('上传录音文件');
       },
       child: Container(
+        width: 32,
+        height: 32,
         decoration: BoxDecoration(
-          color: Colors.black,
-          borderRadius: BorderRadius.circular(10),
+          color: Colors.black.withOpacity(0.6),
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: const Color(0xFF333333), width: 1),
         ),
-        padding: const EdgeInsets.all(4),
-        child: Container(
-          width: 58,
-          height: 28,
-          padding: const EdgeInsets.all(8),
-          decoration: BoxDecoration(
-            gradient: const LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [Color(0xFF333333), Color(0xFF242323)],
-            ),
-            border: const Border(top: BorderSide(color: Color(0xFF4E4D4D))),
-            borderRadius: BorderRadius.circular(6),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.2),
-                blurRadius: 5,
-                spreadRadius: 1,
-              ),
-            ],
-          ),
-          child: const Center(
-            child: Icon(
-              Icons.add,
-              color: Colors.black,
-              size: 16,
-              shadows: [
-                Shadow(offset: Offset(-1, -1), color: Color(0x1AE0E0E0)),
-                Shadow(
-                  offset: Offset(0, 2),
-                  blurRadius: 3,
-                  color: Color(0x4D000000),
-                ),
-              ],
-            ),
-          ),
-        ),
+        child: const Icon(Icons.add, color: Colors.white, size: 16),
       ),
     );
   }
 
-  // 构建功能按钮 - 采用首页年轮相册按钮同样的风格
+  // 构建功能按钮
   Widget _buildFunctionButton(String title) {
-    return GestureDetector(
-      onTap: () {
-        print('点击了$title按钮');
-      },
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.black,
-          borderRadius: BorderRadius.circular(10),
-        ),
-        padding: const EdgeInsets.all(4),
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-          decoration: BoxDecoration(
-            gradient: const LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [Color(0xFF333333), Color(0xFF242323)],
-            ),
-            border: const Border(top: BorderSide(color: Color(0xFF4E4D4D))),
-            borderRadius: BorderRadius.circular(6),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.2),
-                blurRadius: 5,
-                spreadRadius: 1,
-              ),
-            ],
-          ),
-          child: Center(
-            child: Text(
-              title,
-              style: const TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.w800,
-                color: Colors.black,
-                letterSpacing: 0.5,
-                height: 0.8,
-                shadows: [
-                  Shadow(offset: Offset(-1, -1), color: Color(0x1AE0E0E0)),
-                  Shadow(
-                    offset: Offset(0, 2),
-                    blurRadius: 3,
-                    color: Color(0x4D000000),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      decoration: BoxDecoration(
+        color: Colors.black.withOpacity(0.6),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: const Color(0xFF333333), width: 1),
+      ),
+      child: Text(
+        title,
+        style: const TextStyle(color: Colors.white, fontSize: 12),
       ),
     );
   }

@@ -19,8 +19,10 @@ class PackageManager extends ChangeNotifier {
     String? email,
     String userName = 'User', // 默认用户名，实际使用时应该从用户系统获取
   }) {
-    print('开始添加包裹: recipient=$recipient, phone=$phone, deliveryMethod=$deliveryMethod');
-    
+    print(
+      '开始添加包裹: recipient=$recipient, phone=$phone, deliveryMethod=$deliveryMethod',
+    );
+
     final now = DateTime.now();
     final packageNumber = PackageModel.generatePackageNumber(
       userName,
@@ -42,10 +44,10 @@ class PackageManager extends ChangeNotifier {
     );
 
     print('创建包裹对象: ${newPackage.packageNumber}');
-    
+
     _packages.add(newPackage);
     print('包裹添加到列表，当前数量: ${_packages.length}');
-    
+
     // 立即通知监听器
     notifyListeners();
     print('监听器通知完成');
@@ -75,33 +77,34 @@ class PackageManager extends ChangeNotifier {
     try {
       final packageId = formData['id'];
       print('正在更新包裹，ID: $packageId, 表单数据: $formData');
-      
+
       // 查找要更新的包裹
       final packageIndex = _packages.indexWhere((p) => p.id == packageId);
       if (packageIndex == -1) {
         throw Exception('未找到ID为 $packageId 的包裹');
       }
-      
+
       final originalPackage = _packages[packageIndex];
-      
+
       // 创建更新后的包裹对象
       final updatedPackage = PackageModel(
         id: originalPackage.id,
         packageNumber: originalPackage.packageNumber,
         recipient: formData['recipient'] ?? originalPackage.recipient,
         phone: formData['phone'] ?? originalPackage.phone,
-        deliveryMethod: formData['deliveryMethod'] ?? originalPackage.deliveryMethod,
+        deliveryMethod:
+            formData['deliveryMethod'] ?? originalPackage.deliveryMethod,
         address: formData['address'],
         email: formData['email'],
         createdAt: originalPackage.createdAt,
         lastModified: DateTime.now(), // 更新修改时间
         sequenceNumber: originalPackage.sequenceNumber,
       );
-      
+
       // 替换原包裹
       _packages[packageIndex] = updatedPackage;
       print('包裹更新成功: ${updatedPackage.packageNumber}');
-      
+
       // 立即通知监听器
       notifyListeners();
       print('监听器通知完成');

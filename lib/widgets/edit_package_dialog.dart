@@ -32,14 +32,18 @@ class _EditPackageDialogState extends State<EditPackageDialog>
   @override
   void initState() {
     super.initState();
-    
+
     // 初始化控制器，填入现有数据
-    _recipientController = TextEditingController(text: widget.package.recipient);
+    _recipientController = TextEditingController(
+      text: widget.package.recipient,
+    );
     _phoneController = TextEditingController(text: widget.package.phone);
-    _addressController = TextEditingController(text: widget.package.address ?? '');
+    _addressController = TextEditingController(
+      text: widget.package.address ?? '',
+    );
     _emailController = TextEditingController(text: widget.package.email ?? '');
     _selectedDeliveryMethod = widget.package.deliveryMethod;
-    
+
     _expandController = AnimationController(
       duration: const Duration(milliseconds: 300),
       vsync: this,
@@ -48,7 +52,7 @@ class _EditPackageDialogState extends State<EditPackageDialog>
       parent: _expandController,
       curve: Curves.easeInOut,
     );
-    
+
     // 如果有选中的投递方式，立即展开
     if (_selectedDeliveryMethod.isNotEmpty) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -189,11 +193,7 @@ class _EditPackageDialogState extends State<EditPackageDialog>
                 color: Color(0xFF333333),
                 shape: BoxShape.circle,
               ),
-              child: const Icon(
-                Icons.close,
-                color: Colors.white,
-                size: 18,
-              ),
+              child: const Icon(Icons.close, color: Colors.white, size: 18),
             ),
           ),
 

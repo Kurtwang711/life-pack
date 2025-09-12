@@ -96,8 +96,6 @@ class _TrueSelfRecordScreenState extends State<TrueSelfRecordScreen> {
               left: 4, // 距离左侧边线4px
               child: _buildAvatarUploadArea(),
             ),
-
-
           ],
         ),
       ),
@@ -116,7 +114,8 @@ class _TrueSelfRecordScreenState extends State<TrueSelfRecordScreen> {
           } else if (index == 1) {
             Navigator.of(context).pushReplacement(
               MaterialPageRoute(
-                  builder: (context) => const GuardianServiceScreen()),
+                builder: (context) => const GuardianServiceScreen(),
+              ),
             );
           } else if (index == 2) {
             Navigator.of(context).pushReplacement(

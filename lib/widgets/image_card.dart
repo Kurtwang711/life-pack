@@ -51,10 +51,7 @@ class _ImageCardState extends State<ImageCard> {
       decoration: BoxDecoration(
         color: Colors.black.withOpacity(0.3),
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(
-          color: const Color(0xFF333333),
-          width: 1,
-        ),
+        border: Border.all(color: const Color(0xFF333333), width: 1),
       ),
       child: Row(
         children: [
@@ -82,11 +79,7 @@ class _ImageCardState extends State<ImageCard> {
                     : null,
               ),
               child: widget.image.filePath.isEmpty
-                  ? const Icon(
-                      Icons.image,
-                      color: Colors.white,
-                      size: 20,
-                    )
+                  ? const Icon(Icons.image, color: Colors.white, size: 20)
                   : null,
             ),
           ),
@@ -143,7 +136,9 @@ class _ImageCardState extends State<ImageCard> {
                                   _isEditingFileName = false;
                                 });
                                 if (_fileNameController.text.isNotEmpty) {
-                                  widget.onFileNameChanged?.call(_fileNameController.text);
+                                  widget.onFileNameChanged?.call(
+                                    _fileNameController.text,
+                                  );
                                 }
                               },
                             ),
@@ -221,7 +216,9 @@ class _ImageCardState extends State<ImageCard> {
                                 setState(() {
                                   _isEditingNote = false;
                                 });
-                                widget.onNoteChanged?.call(_noteController.text);
+                                widget.onNoteChanged?.call(
+                                  _noteController.text,
+                                );
                               },
                             ),
                           )
@@ -286,10 +283,7 @@ class _ImageCardState extends State<ImageCard> {
                       ),
                       IconButton(
                         onPressed: () => Navigator.of(context).pop(),
-                        icon: const Icon(
-                          Icons.close,
-                          color: Colors.white,
-                        ),
+                        icon: const Icon(Icons.close, color: Colors.white),
                       ),
                     ],
                   ),
@@ -373,8 +367,10 @@ class _ImageCardState extends State<ImageCard> {
                       _buildInfoRow('文件大小', widget.image.formattedFileSize),
                       _buildInfoRow('图片格式', widget.image.format.toUpperCase()),
                       _buildInfoRow('分辨率', widget.image.resolution),
-                      _buildInfoRow('创建时间', 
-                        '${widget.image.timestamp.year}-${widget.image.timestamp.month.toString().padLeft(2, '0')}-${widget.image.timestamp.day.toString().padLeft(2, '0')} ${widget.image.timestamp.hour.toString().padLeft(2, '0')}:${widget.image.timestamp.minute.toString().padLeft(2, '0')}'),
+                      _buildInfoRow(
+                        '创建时间',
+                        '${widget.image.timestamp.year}-${widget.image.timestamp.month.toString().padLeft(2, '0')}-${widget.image.timestamp.day.toString().padLeft(2, '0')} ${widget.image.timestamp.hour.toString().padLeft(2, '0')}:${widget.image.timestamp.minute.toString().padLeft(2, '0')}',
+                      ),
                     ],
                   ),
                 ),
@@ -405,10 +401,7 @@ class _ImageCardState extends State<ImageCard> {
           Expanded(
             child: Text(
               value,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 14,
-              ),
+              style: const TextStyle(color: Colors.white, fontSize: 14),
             ),
           ),
         ],

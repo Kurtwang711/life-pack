@@ -23,7 +23,8 @@ class ImageFile {
 
   String get displayName {
     // 格式化显示名称：文件名（时间戳）
-    final formattedTime = '${timestamp.year}${timestamp.month.toString().padLeft(2, '0')}${timestamp.day.toString().padLeft(2, '0')} ${timestamp.hour.toString().padLeft(2, '0')}:${timestamp.minute.toString().padLeft(2, '0')}';
+    final formattedTime =
+        '${timestamp.year}${timestamp.month.toString().padLeft(2, '0')}${timestamp.day.toString().padLeft(2, '0')} ${timestamp.hour.toString().padLeft(2, '0')}:${timestamp.minute.toString().padLeft(2, '0')}';
     return '$fileName（$formattedTime）';
   }
 
