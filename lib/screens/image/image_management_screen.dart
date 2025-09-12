@@ -96,186 +96,230 @@ class _ImageManagementScreenState extends State<ImageManagementScreen> {
     );
   }
 
+  // 显示图片选项对话框 - 与录音管理和文档管理一致的底部模态框
   void _showUploadDialog() {
-    showDialog(
+    showModalBottomSheet(
       context: context,
-      barrierColor: Colors.black.withOpacity(0.5),
-      builder: (context) => Dialog(
-        backgroundColor: Colors.transparent,
-        child: Container(
-          margin: const EdgeInsets.all(24),
-          padding: const EdgeInsets.all(24),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(16),
-          ),
+      backgroundColor: const Color(0xFF2D3748),
+      builder: (BuildContext context) {
+        return Container(
+          padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Row(
-                children: [
-                  Container(
-                    width: 32,
-                    height: 32,
-                    decoration: BoxDecoration(
-                      color: const Color(0xFF2196F3).withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: const Icon(
-                      Icons.image,
-                      color: Color(0xFF2196F3),
-                      size: 20,
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  const Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          '上传图片文件',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            color: Color(0xFF1A1A1A),
-                          ),
-                        ),
-                        Text(
-                          '选择要上传的图片文件',
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: Color(0xFF666666),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () => Navigator.of(context).pop(),
-                    child: Container(
-                      width: 24,
-                      height: 24,
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFF5F5F5),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: const Icon(
-                        Icons.close,
-                        size: 16,
-                        color: Color(0xFF666666),
-                      ),
-                    ),
-                  ),
-                ],
+              // 标题
+              const Text(
+                '选择图片来源',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
               const SizedBox(height: 24),
-              Row(
-                children: [
-                  Expanded(
-                    child: TextButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                        // TODO: 从相册选择
-                      },
-                      style: TextButton.styleFrom(
-                        backgroundColor: const Color(0xFFF8F9FA),
-                        padding: const EdgeInsets.symmetric(vertical: 12),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                      child: const Column(
-                        children: [
-                          Icon(
-                            Icons.photo_library,
-                            color: Color(0xFF2196F3),
-                            size: 24,
-                          ),
-                          SizedBox(height: 4),
-                          Text(
-                            '从相册选择',
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: Color(0xFF2196F3),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+
+              // 从相册选择选项
+              ListTile(
+                leading: const Icon(
+                  Icons.photo_library,
+                  color: Colors.white,
+                  size: 24,
+                ),
+                title: const Text(
+                  '从相册选择',
+                  style: TextStyle(color: Colors.white, fontSize: 16),
+                ),
+                subtitle: const Text(
+                  '从手机相册中选择图片',
+                  style: TextStyle(color: Colors.white70, fontSize: 12),
+                ),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  _selectFromGallery();
+                },
+              ),
+
+              // 拍照选项
+              ListTile(
+                leading: const Icon(
+                  Icons.camera_alt,
+                  color: Colors.white,
+                  size: 24,
+                ),
+                title: const Text(
+                  '拍照',
+                  style: TextStyle(color: Colors.white, fontSize: 16),
+                ),
+                subtitle: const Text(
+                  '使用相机拍摄新照片',
+                  style: TextStyle(color: Colors.white70, fontSize: 12),
+                ),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  _takePhoto();
+                },
+              ),
+
+              // 从文件选择选项
+              ListTile(
+                leading: const Icon(
+                  Icons.folder,
+                  color: Colors.white,
+                  size: 24,
+                ),
+                title: const Text(
+                  '从文件选择',
+                  style: TextStyle(color: Colors.white, fontSize: 16),
+                ),
+                subtitle: const Text(
+                  '选择本地图片文件',
+                  style: TextStyle(color: Colors.white70, fontSize: 12),
+                ),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  _selectFromFiles();
+                },
+              ),
+
+              const SizedBox(height: 16),
+
+              // 取消按钮
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF4A5568),
+                    foregroundColor: Colors.white,
                   ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: TextButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                        // TODO: 拍照
-                      },
-                      style: TextButton.styleFrom(
-                        backgroundColor: const Color(0xFFF8F9FA),
-                        padding: const EdgeInsets.symmetric(vertical: 12),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                      child: const Column(
-                        children: [
-                          Icon(
-                            Icons.camera_alt,
-                            color: Color(0xFF2196F3),
-                            size: 24,
-                          ),
-                          SizedBox(height: 4),
-                          Text(
-                            '拍照',
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: Color(0xFF2196F3),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: TextButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                        // TODO: 从文件选择
-                      },
-                      style: TextButton.styleFrom(
-                        backgroundColor: const Color(0xFFF8F9FA),
-                        padding: const EdgeInsets.symmetric(vertical: 12),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                      child: const Column(
-                        children: [
-                          Icon(
-                            Icons.folder,
-                            color: Color(0xFF2196F3),
-                            size: 24,
-                          ),
-                          SizedBox(height: 4),
-                          Text(
-                            '文件选择',
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: Color(0xFF2196F3),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
+                  child: const Text('取消'),
+                ),
               ),
             ],
           ),
-        ),
+        );
+      },
+    );
+  }
+
+  // 从相册选择
+  void _selectFromGallery() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('正在从相册选择图片...'),
+        backgroundColor: Color(0xFF2196F3),
+        duration: Duration(seconds: 1),
       ),
     );
+
+    // 模拟添加图片
+    Future.delayed(const Duration(seconds: 1), () {
+      setState(() {
+        _images.insert(
+          0,
+          ImageFile(
+            id: DateTime.now().millisecondsSinceEpoch.toString(),
+            fileName: '新图片',
+            filePath: '/storage/emulated/0/Pictures/new_image.jpg',
+            timestamp: DateTime.now(),
+            note: '从相册选择的图片',
+            fileSizeBytes: 2500000,
+            format: 'jpg',
+            width: 1920,
+            height: 1080,
+          ),
+        );
+      });
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('图片添加成功'),
+            backgroundColor: Color(0xFF4CAF50),
+          ),
+        );
+      }
+    });
+  }
+
+  // 拍照
+  void _takePhoto() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('正在启动相机...'),
+        backgroundColor: Color(0xFF2196F3),
+        duration: Duration(seconds: 1),
+      ),
+    );
+
+    // 模拟拍照
+    Future.delayed(const Duration(seconds: 1), () {
+      setState(() {
+        _images.insert(
+          0,
+          ImageFile(
+            id: DateTime.now().millisecondsSinceEpoch.toString(),
+            fileName: '拍摄照片',
+            filePath: '/storage/emulated/0/Pictures/camera_photo.jpg',
+            timestamp: DateTime.now(),
+            note: '刚刚拍摄的照片',
+            fileSizeBytes: 3200000,
+            format: 'jpg',
+            width: 2560,
+            height: 1440,
+          ),
+        );
+      });
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('照片拍摄成功'),
+            backgroundColor: Color(0xFF4CAF50),
+          ),
+        );
+      }
+    });
+  }
+
+  // 从文件选择
+  void _selectFromFiles() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('正在选择本地文件...'),
+        backgroundColor: Color(0xFF2196F3),
+        duration: Duration(seconds: 1),
+      ),
+    );
+
+    // 模拟文件选择
+    Future.delayed(const Duration(seconds: 1), () {
+      setState(() {
+        _images.insert(
+          0,
+          ImageFile(
+            id: DateTime.now().millisecondsSinceEpoch.toString(),
+            fileName: '本地图片',
+            filePath: '/storage/emulated/0/Pictures/local_image.png',
+            timestamp: DateTime.now(),
+            note: '从文件选择的图片',
+            fileSizeBytes: 1800000,
+            format: 'png',
+            width: 1280,
+            height: 720,
+          ),
+        );
+      });
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('图片文件添加成功'),
+            backgroundColor: Color(0xFF4CAF50),
+          ),
+        );
+      }
+    });
   }
 
   @override
@@ -528,10 +572,7 @@ class _ImageManagementScreenState extends State<ImageManagementScreen> {
         ),
         padding: const EdgeInsets.all(4),
         child: Container(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 12,
-            vertical: 4,
-          ),
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
           decoration: BoxDecoration(
             gradient: const LinearGradient(
               begin: Alignment.topCenter,

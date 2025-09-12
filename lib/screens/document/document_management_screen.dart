@@ -4,6 +4,9 @@ import '../guardian_service/guardian_service_screen.dart';
 import '../profile/profile_screen.dart';
 import '../../widgets/custom_bottom_navigation.dart';
 import '../../widgets/vault_file_display_area.dart';
+import '../../widgets/document_card.dart';
+import '../../widgets/document_note_editor.dart';
+import '../../models/document_file.dart';
 
 class DocumentManagementScreen extends StatefulWidget {
   const DocumentManagementScreen({super.key});
@@ -15,6 +18,7 @@ class DocumentManagementScreen extends StatefulWidget {
 
 class _DocumentManagementScreenState extends State<DocumentManagementScreen> {
   final TextEditingController _searchController = TextEditingController();
+  final List<DocumentFile> _documents = [];
 
   @override
   void dispose() {
@@ -37,9 +41,9 @@ class _DocumentManagementScreenState extends State<DocumentManagementScreen> {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              Color(0xFF8B4513), // 深橙棕色
-              Color(0xFFD2691E), // 橙棕色
-              Color(0xFFFF8C00), // 深橙色
+              Color(0xFF6A1B9A), // 深紫色
+              Color(0xFF8E24AA), // 紫色
+              Color(0xFF9C27B0), // 亮紫色
             ],
             stops: [0.0, 0.6, 1.0],
           ),
@@ -60,7 +64,7 @@ class _DocumentManagementScreenState extends State<DocumentManagementScreen> {
                         width: 40,
                         height: 40,
                         decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.1),
+                          color: Colors.white.withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: const Icon(
@@ -74,7 +78,7 @@ class _DocumentManagementScreenState extends State<DocumentManagementScreen> {
                     // 标题
                     Expanded(
                       child: Text(
-                        '文档管理',
+                        '文档管理（${_documents.length}个文件）',
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 18,
@@ -104,7 +108,7 @@ class _DocumentManagementScreenState extends State<DocumentManagementScreen> {
                         width: MediaQuery.of(context).size.width * 0.45 - 24,
                         height: 36,
                         decoration: BoxDecoration(
-                          color: Colors.black.withOpacity(0.6),
+                          color: Colors.black.withValues(alpha: 0.6),
                           borderRadius: BorderRadius.circular(8),
                           border: Border.all(
                             color: const Color(0xFF333333),
@@ -153,10 +157,10 @@ class _DocumentManagementScreenState extends State<DocumentManagementScreen> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            // 新建按钮 (+ 图标)
+                            // 新建按钮 (+ 图标) - 与录音管理一致的尺寸
                             _buildAddButton(),
 
-                            // 编辑按钮
+                            // 编辑按钮 - 与录音管理一致的尺寸
                             _buildFunctionButton('编辑'),
                           ],
                         ),
@@ -170,14 +174,17 @@ class _DocumentManagementScreenState extends State<DocumentManagementScreen> {
               Expanded(
                 child: Container(
                   margin: const EdgeInsets.only(top: 4),
-                  child: VaultFileDisplayArea(
-                    title: '文档文件列表',
-                    icon: Icons.description,
-                    titleColor: const Color(0xFFFF9800), // 橙色主题
-                    emptyMessage: '暂无文档文件',
-                    emptySubMessage: '点击上传按钮添加文档文件\n支持pdf、doc、docx、txt等格式',
-                    emptyIcon: Icons.description_outlined,
-                  ),
+                  child: _documents.isEmpty
+                      ? VaultFileDisplayArea(
+                          title: '文档文件列表',
+                          icon: Icons.description,
+                          titleColor: const Color(0xFF9C27B0), // 紫色主题
+                          emptyMessage: '暂无文档文件',
+                          emptySubMessage:
+                              '点击新建按钮开始创建笔记或上传文档\n支持pdf、doc、txt等格式',
+                          emptyIcon: Icons.description_outlined,
+                        )
+                      : _buildDocumentList(),
                 ),
               ),
             ],
@@ -212,12 +219,10 @@ class _DocumentManagementScreenState extends State<DocumentManagementScreen> {
     );
   }
 
-  // 构建添加按钮 - 采用首页年轮相册按钮同样的风格
+  // 构建添加按钮 - 与录音管理完全一致的尺寸和样式
   Widget _buildAddButton() {
     return GestureDetector(
-      onTap: () {
-        print('上传文档文件');
-      },
+      onTap: _showDocumentOptions,
       child: Container(
         decoration: BoxDecoration(
           color: Colors.black,
@@ -226,8 +231,8 @@ class _DocumentManagementScreenState extends State<DocumentManagementScreen> {
         padding: const EdgeInsets.all(4),
         child: Container(
           width: 58,
-          height: 28,
-          padding: const EdgeInsets.all(8),
+          height: 28, // 总高度36px，减去padding 8px = 28px
+          padding: const EdgeInsets.all(6), // 减少内边距以适应36px高度
           decoration: BoxDecoration(
             gradient: const LinearGradient(
               begin: Alignment.topCenter,
@@ -238,7 +243,7 @@ class _DocumentManagementScreenState extends State<DocumentManagementScreen> {
             borderRadius: BorderRadius.circular(6),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.2),
+                color: Colors.black.withValues(alpha: 0.2),
                 blurRadius: 5,
                 spreadRadius: 1,
               ),
@@ -264,20 +269,24 @@ class _DocumentManagementScreenState extends State<DocumentManagementScreen> {
     );
   }
 
-  // 构建功能按钮 - 采用首页年轮相册按钮同样的风格
+  // 构建功能按钮 - 与录音管理完全一致的尺寸和样式
   Widget _buildFunctionButton(String title) {
     return GestureDetector(
       onTap: () {
         print('点击了$title按钮');
       },
       child: Container(
+        height: 36, // 匹配搜索框高度
         decoration: BoxDecoration(
           color: Colors.black,
           borderRadius: BorderRadius.circular(10),
         ),
         padding: const EdgeInsets.all(4),
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+          padding: const EdgeInsets.symmetric(
+            horizontal: 12,
+            vertical: 4,
+          ), // 调整垂直内边距
           decoration: BoxDecoration(
             gradient: const LinearGradient(
               begin: Alignment.topCenter,
@@ -288,7 +297,7 @@ class _DocumentManagementScreenState extends State<DocumentManagementScreen> {
             borderRadius: BorderRadius.circular(6),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.2),
+                color: Colors.black.withValues(alpha: 0.2),
                 blurRadius: 5,
                 spreadRadius: 1,
               ),
@@ -315,6 +324,202 @@ class _DocumentManagementScreenState extends State<DocumentManagementScreen> {
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  // 显示文档选项对话框 - 类似录音管理的模态框
+  void _showDocumentOptions() {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: const Color(0xFF2D3748),
+      builder: (BuildContext context) {
+        return Container(
+          padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // 标题
+              const Text(
+                '选择文档类型',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              const SizedBox(height: 24),
+
+              // 写笔记选项
+              ListTile(
+                leading: const Icon(
+                  Icons.note_add,
+                  color: Colors.white,
+                  size: 24,
+                ),
+                title: const Text(
+                  '写笔记',
+                  style: TextStyle(color: Colors.white, fontSize: 16),
+                ),
+                subtitle: const Text(
+                  '创建新的文本笔记',
+                  style: TextStyle(color: Colors.white70, fontSize: 12),
+                ),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  _showNoteEditor();
+                },
+              ),
+
+              // 上传本地文件选项
+              ListTile(
+                leading: const Icon(
+                  Icons.upload_file,
+                  color: Colors.white,
+                  size: 24,
+                ),
+                title: const Text(
+                  '上传本地文件',
+                  style: TextStyle(color: Colors.white, fontSize: 16),
+                ),
+                subtitle: const Text(
+                  '选择本地文档文件',
+                  style: TextStyle(color: Colors.white70, fontSize: 12),
+                ),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  _selectLocalFile();
+                },
+              ),
+
+              const SizedBox(height: 16),
+
+              // 取消按钮
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF4A5568),
+                    foregroundColor: Colors.white,
+                  ),
+                  child: const Text('取消'),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  // 显示笔记编辑器
+  void _showNoteEditor() {
+    showDialog(
+      context: context,
+      builder: (context) => DocumentNoteEditor(
+        onSave: (fileName, content) {
+          // 创建新的笔记文档
+          final newDocument = DocumentFile(
+            id: DateTime.now().millisecondsSinceEpoch.toString(),
+            fileName: fileName,
+            filePath: '/storage/emulated/0/Documents/$fileName.note',
+            timestamp: DateTime.now(),
+            note: '个人笔记',
+            fileSizeBytes: content.length * 2, // 估算字节数
+            format: 'note',
+            type: DocumentType.note,
+          );
+
+          setState(() {
+            _documents.insert(0, newDocument);
+          });
+        },
+      ),
+    );
+  }
+
+  // 选择本地文件
+  void _selectLocalFile() {
+    // 模拟文件选择器
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('正在选择本地文件...'),
+        backgroundColor: Color(0xFF9C27B0),
+        duration: Duration(seconds: 1),
+      ),
+    );
+
+    // 模拟添加文件
+    Future.delayed(const Duration(seconds: 1), () {
+      setState(() {
+        _documents.insert(
+          0,
+          DocumentFile(
+            id: DateTime.now().millisecondsSinceEpoch.toString(),
+            fileName: '新上传文档',
+            filePath: '/storage/emulated/0/Documents/new_document.pdf',
+            timestamp: DateTime.now(),
+            note: '刚刚上传的文档',
+            fileSizeBytes: 1500000, // 1.5MB
+            format: 'pdf',
+            type: DocumentType.file,
+          ),
+        );
+      });
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('文档文件添加成功'),
+            backgroundColor: Color(0xFF4CAF50),
+          ),
+        );
+      }
+    });
+  }
+
+  // 构建文档列表
+  Widget _buildDocumentList() {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.black.withValues(alpha: 0.2),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: const Color(0xFF333333), width: 1),
+      ),
+      margin: const EdgeInsets.symmetric(horizontal: 4),
+      child: ListView.builder(
+        padding: const EdgeInsets.symmetric(vertical: 8),
+        itemCount: _documents.length,
+        itemBuilder: (context, index) {
+          final document = _documents[index];
+          return DocumentCard(
+            document: document,
+            onTap: () {
+              // 点击查看文档
+            },
+            onNoteChanged: (note) {
+              setState(() {
+                document.note = note;
+              });
+            },
+            onFileNameChanged: (fileName) {
+              setState(() {
+                // 创建新的文档对象，更新文件名和时间戳
+                _documents[index] = DocumentFile(
+                  id: document.id,
+                  fileName: fileName,
+                  filePath: document.filePath,
+                  timestamp: DateTime.now(), // 使用当前时间作为更新时间戳
+                  note: document.note,
+                  fileSizeBytes: document.fileSizeBytes,
+                  format: document.format,
+                  type: document.type,
+                );
+              });
+            },
+          );
+        },
       ),
     );
   }

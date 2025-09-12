@@ -104,186 +104,239 @@ class _VideoManagementScreenState extends State<VideoManagementScreen> {
     );
   }
 
+  // 显示视频选项对话框 - 与录音管理和文档管理一致的底部模态框
   void _showUploadDialog() {
-    showDialog(
+    showModalBottomSheet(
       context: context,
-      barrierColor: Colors.black.withOpacity(0.5),
-      builder: (context) => Dialog(
-        backgroundColor: Colors.transparent,
-        child: Container(
-          margin: const EdgeInsets.all(24),
-          padding: const EdgeInsets.all(24),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(16),
-          ),
+      backgroundColor: const Color(0xFF2D3748),
+      builder: (BuildContext context) {
+        return Container(
+          padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Row(
-                children: [
-                  Container(
-                    width: 32,
-                    height: 32,
-                    decoration: BoxDecoration(
-                      color: const Color(0xFF9C27B0).withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: const Icon(
-                      Icons.videocam,
-                      color: Color(0xFF9C27B0),
-                      size: 20,
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  const Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          '上传视频文件',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            color: Color(0xFF1A1A1A),
-                          ),
-                        ),
-                        Text(
-                          '选择要上传的视频文件',
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: Color(0xFF666666),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () => Navigator.of(context).pop(),
-                    child: Container(
-                      width: 24,
-                      height: 24,
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFF5F5F5),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: const Icon(
-                        Icons.close,
-                        size: 16,
-                        color: Color(0xFF666666),
-                      ),
-                    ),
-                  ),
-                ],
+              // 标题
+              const Text(
+                '选择视频来源',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
               const SizedBox(height: 24),
-              Row(
-                children: [
-                  Expanded(
-                    child: TextButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                        // TODO: 从相册选择
-                      },
-                      style: TextButton.styleFrom(
-                        backgroundColor: const Color(0xFFF8F9FA),
-                        padding: const EdgeInsets.symmetric(vertical: 12),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                      child: const Column(
-                        children: [
-                          Icon(
-                            Icons.video_library,
-                            color: Color(0xFF9C27B0),
-                            size: 24,
-                          ),
-                          SizedBox(height: 4),
-                          Text(
-                            '从相册选择',
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: Color(0xFF9C27B0),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+
+              // 从相册选择选项
+              ListTile(
+                leading: const Icon(
+                  Icons.video_library,
+                  color: Colors.white,
+                  size: 24,
+                ),
+                title: const Text(
+                  '从相册选择',
+                  style: TextStyle(color: Colors.white, fontSize: 16),
+                ),
+                subtitle: const Text(
+                  '从手机相册中选择视频',
+                  style: TextStyle(color: Colors.white70, fontSize: 12),
+                ),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  _selectFromGallery();
+                },
+              ),
+
+              // 录制视频选项
+              ListTile(
+                leading: const Icon(
+                  Icons.videocam,
+                  color: Colors.white,
+                  size: 24,
+                ),
+                title: const Text(
+                  '录制视频',
+                  style: TextStyle(color: Colors.white, fontSize: 16),
+                ),
+                subtitle: const Text(
+                  '使用相机录制新视频',
+                  style: TextStyle(color: Colors.white70, fontSize: 12),
+                ),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  _recordVideo();
+                },
+              ),
+
+              // 从文件选择选项
+              ListTile(
+                leading: const Icon(
+                  Icons.folder,
+                  color: Colors.white,
+                  size: 24,
+                ),
+                title: const Text(
+                  '从文件选择',
+                  style: TextStyle(color: Colors.white, fontSize: 16),
+                ),
+                subtitle: const Text(
+                  '选择本地视频文件',
+                  style: TextStyle(color: Colors.white70, fontSize: 12),
+                ),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  _selectFromFiles();
+                },
+              ),
+
+              const SizedBox(height: 16),
+
+              // 取消按钮
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF4A5568),
+                    foregroundColor: Colors.white,
                   ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: TextButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                        // TODO: 录制视频
-                      },
-                      style: TextButton.styleFrom(
-                        backgroundColor: const Color(0xFFF8F9FA),
-                        padding: const EdgeInsets.symmetric(vertical: 12),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                      child: const Column(
-                        children: [
-                          Icon(
-                            Icons.videocam,
-                            color: Color(0xFF9C27B0),
-                            size: 24,
-                          ),
-                          SizedBox(height: 4),
-                          Text(
-                            '录制视频',
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: Color(0xFF9C27B0),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: TextButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                        // TODO: 从文件选择
-                      },
-                      style: TextButton.styleFrom(
-                        backgroundColor: const Color(0xFFF8F9FA),
-                        padding: const EdgeInsets.symmetric(vertical: 12),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                      child: const Column(
-                        children: [
-                          Icon(
-                            Icons.folder,
-                            color: Color(0xFF9C27B0),
-                            size: 24,
-                          ),
-                          SizedBox(height: 4),
-                          Text(
-                            '文件选择',
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: Color(0xFF9C27B0),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
+                  child: const Text('取消'),
+                ),
               ),
             ],
           ),
-        ),
+        );
+      },
+    );
+  }
+
+  // 从相册选择
+  void _selectFromGallery() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('正在从相册选择视频...'),
+        backgroundColor: Color(0xFF9C27B0),
+        duration: Duration(seconds: 1),
       ),
     );
+
+    // 模拟添加视频
+    Future.delayed(const Duration(seconds: 1), () {
+      setState(() {
+        _videos.insert(
+          0,
+          VideoFile(
+            id: DateTime.now().millisecondsSinceEpoch.toString(),
+            fileName: '新视频',
+            filePath: '/storage/emulated/0/Movies/new_video.mp4',
+            timestamp: DateTime.now(),
+            note: '从相册选择的视频',
+            fileSizeBytes: 85000000,
+            format: 'mp4',
+            duration: const Duration(seconds: 150),
+            thumbnailPath:
+                '/storage/emulated/0/Movies/thumbnails/new_video_thumb.jpg',
+            width: 1920,
+            height: 1080,
+          ),
+        );
+      });
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('视频添加成功'),
+            backgroundColor: Color(0xFF4CAF50),
+          ),
+        );
+      }
+    });
+  }
+
+  // 录制视频
+  void _recordVideo() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('正在启动相机录制...'),
+        backgroundColor: Color(0xFF9C27B0),
+        duration: Duration(seconds: 1),
+      ),
+    );
+
+    // 模拟录制视频
+    Future.delayed(const Duration(seconds: 1), () {
+      setState(() {
+        _videos.insert(
+          0,
+          VideoFile(
+            id: DateTime.now().millisecondsSinceEpoch.toString(),
+            fileName: '录制视频',
+            filePath: '/storage/emulated/0/Movies/recorded_video.mp4',
+            timestamp: DateTime.now(),
+            note: '刚刚录制的视频',
+            fileSizeBytes: 95000000,
+            format: 'mp4',
+            duration: const Duration(seconds: 200),
+            thumbnailPath:
+                '/storage/emulated/0/Movies/thumbnails/recorded_video_thumb.jpg',
+            width: 1920,
+            height: 1080,
+          ),
+        );
+      });
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('视频录制成功'),
+            backgroundColor: Color(0xFF4CAF50),
+          ),
+        );
+      }
+    });
+  }
+
+  // 从文件选择
+  void _selectFromFiles() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('正在选择本地文件...'),
+        backgroundColor: Color(0xFF9C27B0),
+        duration: Duration(seconds: 1),
+      ),
+    );
+
+    // 模拟文件选择
+    Future.delayed(const Duration(seconds: 1), () {
+      setState(() {
+        _videos.insert(
+          0,
+          VideoFile(
+            id: DateTime.now().millisecondsSinceEpoch.toString(),
+            fileName: '本地视频',
+            filePath: '/storage/emulated/0/Movies/local_video.avi',
+            timestamp: DateTime.now(),
+            note: '从文件选择的视频',
+            fileSizeBytes: 75000000,
+            format: 'avi',
+            duration: const Duration(seconds: 120),
+            thumbnailPath:
+                '/storage/emulated/0/Movies/thumbnails/local_video_thumb.jpg',
+            width: 1280,
+            height: 720,
+          ),
+        );
+      });
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('视频文件添加成功'),
+            backgroundColor: Color(0xFF4CAF50),
+          ),
+        );
+      }
+    });
   }
 
   @override
