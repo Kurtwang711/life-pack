@@ -1,15 +1,13 @@
 // Version information for Lifepack
 class AppVersion {
-  static const String version = '1.4.5';
-  static const int buildNumber = 5;
-  static const String releaseDate = '2025-01-12';
-  static const String codeName = 'Asset Management Beta';
+  static const String version = '1.4.6';
+  static const int buildNumber = 6;
+  static const String releaseDate = '2025-01-13';
+  static const String codeName = 'Asset Management Stable';
 
   // Known issues in this version
   static const List<String> knownIssues = [
-    'Asset creation causes app crash after confirmation',
-    'State management conflict in asset dialog',
-    'Data persistence not implemented',
+    // All major issues have been fixed
   ];
 
   // Features added in this version
@@ -25,9 +23,12 @@ class AppVersion {
 
   // Bug fixes in this version
   static const List<String> bugFixes = [
-    'Improved dialog state management',
-    'Optimized data passing mechanism',
-    'Enhanced controller lifecycle management',
+    'Fixed asset creation crash issue',
+    'Resolved state management conflicts in dialogs',
+    'Implemented data persistence with SharedPreferences',
+    'Fixed controller lifecycle management',
+    'Added automatic data loading on app start',
+    'Ensured data saving after all operations',
   ];
 
   static String get fullVersion => '$version+$buildNumber';

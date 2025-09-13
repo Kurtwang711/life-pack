@@ -6,6 +6,7 @@ import '../../widgets/custom_bottom_navigation.dart';
 import '../../widgets/vault_file_display_area.dart';
 import '../../models/asset_file.dart';
 import '../../widgets/asset_card.dart';
+import '../../services/asset_storage_service.dart';
 
 class AssetsManagementScreen extends StatefulWidget {
   const AssetsManagementScreen({super.key});
@@ -16,7 +17,34 @@ class AssetsManagementScreen extends StatefulWidget {
 
 class _AssetsManagementScreenState extends State<AssetsManagementScreen> {
   final TextEditingController _searchController = TextEditingController();
-  final List<AssetFile> _assets = []; // 添加资产列表
+  List<AssetFile> _assets = []; // 添加资产列表
+  bool _isLoading = true; // 添加加载状态
+
+  @override
+  void initState() {
+    super.initState();
+    _loadAssets(); // 初始化时加载资产
+  }
+
+  // 加载资产数据
+  Future<void> _loadAssets() async {
+    try {
+      final loadedAssets = await AssetStorageService.loadAssets();
+      if (mounted) {
+        setState(() {
+          _assets = loadedAssets;
+          _isLoading = false;
+        });
+      }
+    } catch (e) {
+      print('加载资产失败: $e');
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }
+  }
 
   @override
   void dispose() {
@@ -172,16 +200,22 @@ class _AssetsManagementScreenState extends State<AssetsManagementScreen> {
               Expanded(
                 child: Container(
                   margin: const EdgeInsets.only(top: 4),
-                  child: _assets.isEmpty
-                      ? VaultFileDisplayArea(
-                          title: '资产信息',
-                          icon: Icons.account_balance,
-                          titleColor: Colors.teal,
-                          emptyMessage: '暂无资产信息',
-                          emptySubMessage: '点击上方"+"按钮添加新的资产记录',
-                          emptyIcon: Icons.account_balance_wallet,
+                  child: _isLoading
+                      ? const Center(
+                          child: CircularProgressIndicator(
+                            color: Colors.teal,
+                          ),
                         )
-                      : _buildAssetList(),
+                      : _assets.isEmpty
+                          ? VaultFileDisplayArea(
+                              title: '资产信息',
+                              icon: Icons.account_balance,
+                              titleColor: Colors.teal,
+                              emptyMessage: '暂无资产信息',
+                              emptySubMessage: '点击上方"+"按钮添加新的资产记录',
+                              emptyIcon: Icons.account_balance_wallet,
+                            )
+                          : _buildAssetList(),
                 ),
               ),
             ],
@@ -578,7 +612,12 @@ class _AssetsManagementScreenState extends State<AssetsManagementScreen> {
           onCreateAsset: _createAsset,
         );
       },
-    );
+    ).then((_) {
+      // 对话框关闭后清理 controllers
+      for (var controller in controllers) {
+        controller.dispose();
+      }
+    });
   }
 
   // 获取资产配置
@@ -820,7 +859,7 @@ class _AssetsManagementScreenState extends State<AssetsManagementScreen> {
   }
 
   // 创建资产
-  void _createAsset(String assetType, List<String> values, List<Color> colors) {
+  void _createAsset(String assetType, List<String> values, List<Color> colors) async {
     print('_createAsset 方法被调用: $assetType'); // 添加调试信息
 
     final assetConfig = _getAssetConfig(assetType);
@@ -852,6 +891,14 @@ class _AssetsManagementScreenState extends State<AssetsManagementScreen> {
       setState(() {
         _assets.add(asset);
       });
+
+      // 保存到持久化存储
+      final saved = await AssetStorageService.saveAssets(_assets);
+      if (saved) {
+        print('资产已保存到本地存储');
+      } else {
+        print('资产保存失败');
+      }
 
       print('资产已添加，当前资产数量: ${_assets.length}'); // 调试信息
 
@@ -910,19 +957,24 @@ class _AssetsManagementScreenState extends State<AssetsManagementScreen> {
                 final asset = _assets[index];
                 return AssetCard(
                   asset: asset,
-                  onNoteChanged: (note) {
+                  onNoteChanged: (note) async {
+                    // 创建新的资产对象，更新备注
+                    final updatedAsset = AssetFile(
+                      id: asset.id,
+                      assetType: asset.assetType,
+                      primaryInfo: asset.primaryInfo,
+                      note: note,
+                      timestamp: asset.timestamp,
+                      details: asset.details,
+                      colors: asset.colors,
+                    );
+                    
                     setState(() {
-                      // 创建新的资产对象，更新备注
-                      _assets[index] = AssetFile(
-                        id: asset.id,
-                        assetType: asset.assetType,
-                        primaryInfo: asset.primaryInfo,
-                        note: note,
-                        timestamp: asset.timestamp,
-                        details: asset.details,
-                        colors: asset.colors,
-                      );
+                      _assets[index] = updatedAsset;
                     });
+                    
+                    // 保存到持久化存储
+                    await AssetStorageService.saveAssets(_assets);
                   },
                 );
               },
@@ -999,9 +1051,7 @@ class _AssetClueDialogState extends State<_AssetClueDialog> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      for (var controller in widget.controllers) {
-                        controller.dispose();
-                      }
+                      // 不在这里 dispose controllers，由父widget管理
                       Navigator.of(context).pop();
                     },
                     child: Container(
@@ -1105,20 +1155,15 @@ class _AssetClueDialogState extends State<_AssetClueDialog> {
                               .map((c) => c.text)
                               .toList();
 
-                          // 关闭弹窗
-                          Navigator.of(context).pop();
-
-                          // 立即调用创建方法，传递数据而不是controllers
+                          // 先调用创建方法，传递数据而不是controllers
                           widget.onCreateAsset(
                             assetType,
                             controllerValues,
                             colors,
                           );
 
-                          // dispose controllers
-                          for (var controller in widget.controllers) {
-                            controller.dispose();
-                          }
+                          // 然后关闭弹窗
+                          Navigator.of(context).pop();
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFF4CAF50),
