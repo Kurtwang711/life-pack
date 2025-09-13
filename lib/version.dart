@@ -1,13 +1,13 @@
 // Version information for Lifepack
 class AppVersion {
-  static const String version = '1.4.6';
-  static const int buildNumber = 6;
+  static const String version = '1.4.7';
+  static const int buildNumber = 7;
   static const String releaseDate = '2025-01-13';
-  static const String codeName = 'Asset Management Stable';
+  static const String codeName = 'Asset Management Fixed';
 
   // Known issues in this version
   static const List<String> knownIssues = [
-    // All major issues have been fixed
+    // All known issues have been resolved
   ];
 
   // Features added in this version
@@ -23,12 +23,13 @@ class AppVersion {
 
   // Bug fixes in this version
   static const List<String> bugFixes = [
-    'Fixed asset creation crash issue',
-    'Resolved state management conflicts in dialogs',
-    'Implemented data persistence with SharedPreferences',
-    'Fixed controller lifecycle management',
-    'Added automatic data loading on app start',
-    'Ensured data saving after all operations',
+    'Fixed Flutter framework assertion error (_dependents.isEmpty)',
+    'Resolved widget lifecycle management issues',
+    'Fixed TextEditingController disposal problems',
+    'Created independent AssetClueDialog component',
+    'Improved error handling and user feedback',
+    'Added loading states to prevent duplicate submissions',
+    'Optimized state management for dialogs',
   ];
 
   static String get fullVersion => '$version+$buildNumber';
