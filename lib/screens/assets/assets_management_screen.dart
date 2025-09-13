@@ -7,6 +7,7 @@ import '../../widgets/vault_file_display_area.dart';
 import '../../models/asset_file.dart';
 import '../../widgets/asset_card.dart';
 import '../../services/asset_storage_service.dart';
+import '../../widgets/asset_clue_dialog.dart';
 
 class AssetsManagementScreen extends StatefulWidget {
   const AssetsManagementScreen({super.key});
@@ -594,30 +595,15 @@ class _AssetsManagementScreenState extends State<AssetsManagementScreen> {
     print('显示${assetType}线索弹窗'); // 添加调试信息
 
     final assetConfig = _getAssetConfig(assetType);
-    final List<TextEditingController> controllers = List.generate(
-      assetConfig['labels'].length,
-      (index) => TextEditingController(),
-    );
-
-    showDialog(
+    
+    AssetClueDialog.show(
       context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return _AssetClueDialog(
-          assetType: assetType,
-          colors: colors,
-          controllers: controllers,
-          labels: assetConfig['labels'],
-          explanation: assetConfig['explanation'],
-          onCreateAsset: _createAsset,
-        );
-      },
-    ).then((_) {
-      // 对话框关闭后清理 controllers
-      for (var controller in controllers) {
-        controller.dispose();
-      }
-    });
+      assetType: assetType,
+      colors: colors,
+      labels: assetConfig['labels'],
+      explanation: assetConfig['explanation'],
+      onCreateAsset: _createAsset,
+    );
   }
 
   // 获取资产配置
@@ -859,55 +845,80 @@ class _AssetsManagementScreenState extends State<AssetsManagementScreen> {
   }
 
   // 创建资产
-  void _createAsset(String assetType, List<String> values, List<Color> colors) async {
+  void _createAsset(String assetType, List<String> values, List<Color> colors) {
     print('_createAsset 方法被调用: $assetType'); // 添加调试信息
-
-    final assetConfig = _getAssetConfig(assetType);
-    final labels = assetConfig['labels'] as List<String>;
-
-    // 构建详细信息映射
-    final Map<String, String> details = {};
-    for (int i = 0; i < values.length && i < labels.length; i++) {
-      details[labels[i]] = values[i];
-      print('${labels[i]}: ${values[i]}'); // 调试信息
+    
+    // 确保在正确的上下文中执行
+    if (!mounted) {
+      print('Widget 已经卸载，取消创建资产');
+      return;
     }
 
-    // 创建资产文件
-    final asset = AssetFile(
-      id: DateTime.now().millisecondsSinceEpoch.toString(),
-      assetType: assetType,
-      primaryInfo: values.isNotEmpty && values[0].isNotEmpty
-          ? values[0]
-          : '未填写${labels.isNotEmpty ? labels[0] : '信息'}',
-      note: values.length > 1 ? values.last : '',
-      timestamp: DateTime.now(),
-      details: details,
-      colors: colors,
-    );
+    try {
+      final assetConfig = _getAssetConfig(assetType);
+      final labels = assetConfig['labels'] as List<String>;
 
-    print('准备添加资产到列表'); // 调试信息
+      // 构建详细信息映射
+      final Map<String, String> details = {};
+      for (int i = 0; i < values.length && i < labels.length; i++) {
+        details[labels[i]] = values[i];
+        print('${labels[i]}: ${values[i]}'); // 调试信息
+      }
 
-    if (mounted) {
+      // 创建资产文件
+      final asset = AssetFile(
+        id: DateTime.now().millisecondsSinceEpoch.toString(),
+        assetType: assetType,
+        primaryInfo: values.isNotEmpty && values[0].isNotEmpty
+            ? values[0]
+            : '未填写${labels.isNotEmpty ? labels[0] : '信息'}',
+        note: values.length > 1 ? values.last : '',
+        timestamp: DateTime.now(),
+        details: details,
+        colors: colors,
+      );
+
+      print('准备添加资产到列表'); // 调试信息
+
+      // 直接更新状态
       setState(() {
         _assets.add(asset);
       });
 
-      // 保存到持久化存储
-      final saved = await AssetStorageService.saveAssets(_assets);
-      if (saved) {
-        print('资产已保存到本地存储');
-      } else {
-        print('资产保存失败');
-      }
+      // 异步保存到持久化存储
+      AssetStorageService.saveAssets(_assets).then((saved) {
+        if (saved) {
+          print('资产已保存到本地存储');
+        } else {
+          print('资产保存失败');
+        }
+      }).catchError((error) {
+        print('保存资产时出错: $error');
+      });
 
       print('资产已添加，当前资产数量: ${_assets.length}'); // 调试信息
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('${assetType}线索创建成功'),
-          backgroundColor: const Color(0xFF4CAF50),
-        ),
-      );
+      // 显示成功提示
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('$assetType线索创建成功'),
+            backgroundColor: const Color(0xFF4CAF50),
+            duration: const Duration(seconds: 2),
+          ),
+        );
+      }
+    } catch (e) {
+      print('创建资产时出错: $e');
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('创建失败: $e'),
+            backgroundColor: Colors.red,
+            duration: const Duration(seconds: 3),
+          ),
+        );
+      }
     }
   }
 
@@ -983,295 +994,5 @@ class _AssetsManagementScreenState extends State<AssetsManagementScreen> {
         ],
       ),
     );
-  }
-}
-
-// 通用的资产线索弹窗 Widget
-class _AssetClueDialog extends StatefulWidget {
-  final String assetType;
-  final List<Color> colors;
-  final List<TextEditingController> controllers;
-  final List<String> labels;
-  final String explanation;
-  final Function(String, List<String>, List<Color>) onCreateAsset;
-
-  const _AssetClueDialog({
-    required this.assetType,
-    required this.colors,
-    required this.controllers,
-    required this.labels,
-    required this.explanation,
-    required this.onCreateAsset,
-  });
-
-  @override
-  State<_AssetClueDialog> createState() => _AssetClueDialogState();
-}
-
-class _AssetClueDialogState extends State<_AssetClueDialog> {
-  bool showExplanation = false;
-
-  @override
-  Widget build(BuildContext context) {
-    return Dialog(
-      backgroundColor: Colors.transparent,
-      child: Container(
-        width: MediaQuery.of(context).size.width * 0.9,
-        height: MediaQuery.of(context).size.height * 0.8,
-        decoration: BoxDecoration(
-          color: const Color(0xFF2D3748),
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: const Color(0xFF4A5568), width: 1),
-        ),
-        child: Column(
-          children: [
-            // 头部
-            Container(
-              height: 60,
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              decoration: const BoxDecoration(
-                color: Color(0xFF1A202C),
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(16),
-                  topRight: Radius.circular(16),
-                ),
-              ),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Text(
-                      '${widget.assetType}线索',
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      // 不在这里 dispose controllers，由父widget管理
-                      Navigator.of(context).pop();
-                    },
-                    child: Container(
-                      width: 32,
-                      height: 32,
-                      decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(6),
-                      ),
-                      child: const Icon(
-                        Icons.close,
-                        color: Colors.white,
-                        size: 20,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
-            // 内容区域
-            Expanded(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // 输入字段
-                    ..._buildInputFields(),
-
-                    const SizedBox(height: 16),
-
-                    // 说明按钮
-                    Row(
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              showExplanation = !showExplanation;
-                            });
-                          },
-                          child: Container(
-                            width: 32,
-                            height: 32,
-                            decoration: BoxDecoration(
-                              color: const Color(0xFF4A5568),
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                            child: const Center(
-                              child: Text(
-                                '?',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        const Text(
-                          '点击查看说明',
-                          style: TextStyle(color: Colors.white70, fontSize: 14),
-                        ),
-                      ],
-                    ),
-
-                    // 说明文字
-                    if (showExplanation) ...[
-                      const SizedBox(height: 16),
-                      Container(
-                        padding: const EdgeInsets.all(16),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFF1A202C),
-                          borderRadius: BorderRadius.circular(8),
-                          border: Border.all(color: const Color(0xFF4A5568)),
-                        ),
-                        child: Text(
-                          widget.explanation,
-                          style: TextStyle(
-                            color: Colors.white70,
-                            fontSize: 14,
-                            height: 1.5,
-                          ),
-                        ),
-                      ),
-                    ],
-
-                    const SizedBox(height: 24),
-
-                    // 确认创建按钮
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          // 收集数据
-                          final assetType = widget.assetType;
-                          final colors = widget.colors;
-                          final controllerValues = widget.controllers
-                              .map((c) => c.text)
-                              .toList();
-
-                          // 先调用创建方法，传递数据而不是controllers
-                          widget.onCreateAsset(
-                            assetType,
-                            controllerValues,
-                            colors,
-                          );
-
-                          // 然后关闭弹窗
-                          Navigator.of(context).pop();
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF4CAF50),
-                          foregroundColor: Colors.white,
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                        ),
-                        child: const Text(
-                          '确认创建',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                    ),
-
-                    const SizedBox(height: 16),
-
-                    // 法律声明
-                    Container(
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF1A202C),
-                        borderRadius: BorderRadius.circular(8),
-                        border: Border.all(color: const Color(0xFF4A5568)),
-                      ),
-                      child: const Text(
-                        '本功能仅为信息提示，不具备任何法律效力，不构成遗嘱或其他任何法律文书。所有权转移最终必须依照法律程序进行。',
-                        style: TextStyle(
-                          color: Colors.orange,
-                          fontSize: 12,
-                          height: 1.4,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  // 构建输入字段
-  List<Widget> _buildInputFields() {
-    final List<String> labels = widget.labels;
-
-    return List.generate(labels.length, (index) {
-      return Padding(
-        padding: const EdgeInsets.only(bottom: 16),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // 左侧提示词
-            SizedBox(
-              width: 100,
-              child: Padding(
-                padding: const EdgeInsets.only(top: 12),
-                child: Text(
-                  labels[index],
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(width: 12),
-            // 右侧输入框
-            Expanded(
-              child: Container(
-                decoration: BoxDecoration(
-                  color: const Color(0xFF1A202C),
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: const Color(0xFF4A5568)),
-                ),
-                child: TextField(
-                  controller: widget.controllers[index],
-                  style: const TextStyle(color: Colors.white, fontSize: 14),
-                  maxLines: index == 5 ? 3 : 1, // 备注字段多行
-                  decoration: InputDecoration(
-                    hintText: '请不要填写完整账号和密码！',
-                    hintStyle: TextStyle(
-                      color: Colors.white.withOpacity(0.6),
-                      fontSize: 14,
-                    ),
-                    border: InputBorder.none,
-                    contentPadding: const EdgeInsets.all(12),
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      );
-    });
-  }
-
-  @override
-  void dispose() {
-    // 不在这里 dispose controllers，因为它们由父 widget 管理
-    super.dispose();
   }
 }
